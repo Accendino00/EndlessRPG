@@ -10,6 +10,26 @@ int main(int argc, char ** argv)
     noecho();
     cbreak();
 
+        char mesg[]="Just";		/* message to be appeared on the screen */
+        int row,col;				/* to store the number of rows and *
+					 * the number of colums of the screen */
+        initscr();				/* start the curses mode */
+        getmaxyx(stdscr,row,col);
+        WINDOW * menuwin = newwin(10,20, 10,30);
+        box(menuwin,0,0);
+        refresh();
+        wrefresh(menuwin);/* get the number of rows and columns */
+        mvprintw(row/2,(col-strlen(mesg))/2,"%s",mesg);
+        refresh();
+        getch();
+        endwin();
+
+        getch();
+        endwin();
+        return 0;
+}
+
+/*
     //Grandezza Schermo
     int yMax, xMax;
     getmaxyx(stdscr, yMax, xMax);
@@ -41,9 +61,15 @@ int main(int argc, char ** argv)
         {
             case KEY_UP:
                 evidenziato--;
+                if(evidenziato==-1){
+                    evidenziato=0;
+                }
                 break;
             case KEY_DOWN:
                 evidenziato++;
+                if(evidenziato==3){
+                    evidenziato=2;
+                }
                 break;
             default:
                 break;
@@ -52,8 +78,9 @@ int main(int argc, char ** argv)
             break;
         }
     }
-    //Il wait
+
     getch();
     endwin();
     return 0;
 }
+ */
