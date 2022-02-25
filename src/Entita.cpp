@@ -28,7 +28,7 @@ void Entita::stampa(WINDOW * window, int offsetX, int offsetY) {
     for(int i = 0; i < (*this).dim_y; i++) {
         for(int j = 0; j < (*this).dim_x; j++) {
             printf("%c\n", (*this).stampabile[i][j]);
-            mvwaddch(window, (*this).y+i+offsetY, (*this).x+j+offsetX, (*this).stampabile[i][j]);
+            mvwaddchstr(window, (*this).y+i+offsetY, (*this).x+j+offsetX,(chtype *)"X");
         }
     } 
     wattroff(window, (*this).color);
