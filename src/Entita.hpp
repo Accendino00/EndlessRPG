@@ -6,8 +6,10 @@
  * @date 2022-02-07
  */
 
+#include <ncurses.h>
+
 class Entita {
-protected:
+public:
     // Coordinate
     int x, y;
     // Dimensioni hitbox

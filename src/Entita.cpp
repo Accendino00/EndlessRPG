@@ -23,6 +23,7 @@ Entita::Entita(int x,int y, int dim_x, int dim_y, int attr, int color, char ** s
 }
 
 void Entita::stampa(WINDOW * window, int offsetX, int offsetY) {
+    printf("dioporco");
     wattron(window, (*this).color);
     for(int i = 0; i < (*this).dim_y; i++) {
         for(int j = 0; j < (*this).dim_x; j++) {

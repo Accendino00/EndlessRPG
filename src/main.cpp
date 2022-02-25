@@ -13,6 +13,7 @@
 */
 
 #include <iostream>
+#include <stdio.h>
 #include <ncurses.h>
 #include <unistd.h>
 
@@ -20,6 +21,7 @@
 
 
 int main() {
+	std::cout << "ciao";
     //Start NCURSES
     initscr();
     noecho();
@@ -43,11 +45,12 @@ int main() {
 	init_pair(1, COLOR_WHITE, COLOR_BLUE);
 	attron(COLOR_PAIR(1));
 
-	char ** example = (char **) malloc(sizeof(char **));
-	example[0] = (char *) malloc(sizeof(char*));
+	char ** example = (char **) malloc(sizeof(char *));
+	example[0] = (char *) malloc(sizeof(char));
 	example[0][0] = 'P';
 
 	Entita * player = new Entita(0,0,1,1,0,1,example);
+	std::cout << example[0][0];
 
 	do {
 		i = 0;
