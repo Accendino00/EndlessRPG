@@ -3,7 +3,7 @@
 
 #include "Entita.hpp"
 
-Entita::Entita(int x,int y, int dim_x, int dim_y, int attr, int color, char ** stampa) {
+Entita::Entita(int x,int y, int dim_x, int dim_y, int attr, int color, chtype ** stampa) {
     (*this).x = x;
     (*this).y = y;
     (*this).dim_x = dim_x;
@@ -11,9 +11,9 @@ Entita::Entita(int x,int y, int dim_x, int dim_y, int attr, int color, char ** s
     (*this).attr = attr;
     (*this).color = color;
 
-    (*this).stampabile = (char **) calloc(dim_y, sizeof(char*));
+    (*this).stampabile = (chtype **) calloc(dim_y, sizeof(chtype*));
     for(int i = 0; i < dim_y; i++) {
-        (*this).stampabile[i] = (char *) calloc(dim_x, sizeof(char));
+        (*this).stampabile[i] = (chtype *) calloc(dim_x, sizeof(chtype));
     }
     for(int i = 0; i < dim_y; i++) {
         for(int j = 0; j < dim_x; j++) {
@@ -28,7 +28,8 @@ void Entita::stampa(WINDOW * window, int offsetX, int offsetY) {
     for(int i = 0; i < (*this).dim_y; i++) {
         for(int j = 0; j < (*this).dim_x; j++) {
             printf("%c\n", (*this).stampabile[i][j]);
-            mvwaddch(window, (*this).y+i+offsetY, (*this).x+j+offsetX, (*this).stampabile[i][j]);
+            move((*this).y+i+offsetY, (*this).x+j+offsetX);
+            waddch(window, (*this).stampabile[i][j]);
         }
     } 
     wattroff(window, (*this).color);

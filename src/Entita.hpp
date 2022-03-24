@@ -15,13 +15,13 @@ public:
     // Dimensioni hitbox
     int dim_x, dim_y;
     // Matrice che contiene il contenuto da stampare per rappresentare l'entità
-    char ** stampabile;
+    chtype ** stampabile;
 
     int attr;   // Posso fare | tra gli attributi che voglio e salvarli come int
     int color;  // Uno dei diversi colori che definisco
 
 public:
-    Entita(int x,int y, int dim_x, int dim_y, int attr, int color, char ** stampa);
+    Entita(int x,int y, int dim_x, int dim_y, int attr, int color, chtype ** stampa);
 
     void stampa(WINDOW * window, int offsetX, int offsetY);
     
