@@ -3,7 +3,7 @@
 
 #include "Entita.hpp"
 
-Entita::Entita(int x,int y, int dim_x, int dim_y, int attr, int color, chtype ** stampa) {
+Entita::Entita(int x,int y, int dim_x, int dim_y, int attr, int color, wchar_t ** stampa) {
     (*this).x = x;
     (*this).y = y;
     (*this).dim_x = dim_x;
@@ -11,28 +11,36 @@ Entita::Entita(int x,int y, int dim_x, int dim_y, int attr, int color, chtype **
     (*this).attr = attr;
     (*this).color = color;
 
-    (*this).stampabile = (chtype **) calloc(dim_y, sizeof(chtype*));
+
+    (*this).stampabile = (wchar_t **) calloc(dim_y, sizeof(wchar_t*));
     for(int i = 0; i < dim_y; i++) {
-        (*this).stampabile[i] = (chtype *) calloc(dim_x, sizeof(chtype));
+        (*this).stampabile[i] = (wchar_t *) calloc(dim_x, sizeof(wchar_t));
     }
     for(int i = 0; i < dim_y; i++) {
         for(int j = 0; j < dim_x; j++) {
-            (*this).stampabile[i][j] = stampa[i][j]; 
+            (*this).stampabile[i][j] = stampa[i][j];
         }
     }
 }
 
+Entita::~Entita() {
+    for(int i = 0; i < (*this).dim_y; i++) {
+        free((*this).stampabile[i]);
+    }
+    free((*this).stampabile);
+}
+
 void Entita::stampa(WINDOW * window, int offsetX, int offsetY) {
-    printf("dioporco");
-    wattron(window, (*this).color);
+    wattron(window, COLOR_PAIR((*this).color));
+    wattron(window, (*this).attr);
     for(int i = 0; i < (*this).dim_y; i++) {
         for(int j = 0; j < (*this).dim_x; j++) {
-            printf("%c\n", (*this).stampabile[i][j]);
             move((*this).y+i+offsetY, (*this).x+j+offsetX);
-            waddch(window, (*this).stampabile[i][j]);
+            wprintw(window, "%lc", (*this).stampabile[i][j]);
         }
     } 
-    wattroff(window, (*this).color);
+    wattroff(window, (*this).attr);
+    wattroff(window, COLOR_PAIR((*this).color));
 }
     
 bool Entita::controllaContatto(Entita entita) {

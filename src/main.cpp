@@ -17,14 +17,17 @@
 #include <ncurses.h>
 #include <unistd.h>
 
+#include <locale.h>
+
 #include "Entita.hpp"
 
 
 int main() {
-	setlocale(LC_ALL, "");
 
     //Start NCURSES
+	setlocale(LC_ALL, "");
     initscr();
+	curs_set(0);
     noecho();
     cbreak();
 	nodelay(stdscr, true);
@@ -37,24 +40,21 @@ int main() {
     keypad(stdscr,true);
 	
 
-	int input;
-	int pressedKeys[100];
+	chtype pressedKeys[100];
 	int i = 0;
 
 
 	start_color();
-	init_pair(1, COLOR_WHITE, COLOR_BLUE);
-	attron(COLOR_PAIR(1));
+	init_pair(1, COLOR_WHITE, COLOR_MAGENTA);
 
-	for(char xincin = 'a'; xincin < 'z'; xincin++) {
-		chtype ** example = (chtype **) calloc(1, sizeof(chtype *));
-		example[0] = (chtype *) calloc(1, sizeof(chtype));
-		example[0][0] = (chtype) (unsigned char) xincin;
+	for(unsigned int xincin = 0u; xincin <= 1000000u; xincin++) {
+		wchar_t ** example = (wchar_t **) calloc(1, sizeof(wchar_t *));
+		example[0] = (wchar_t *) calloc(1, sizeof(wchar_t));
+		example[0][0] = (wchar_t) L'┤';
 
-		Entita * player = new Entita(0,0,1,1,0,1,example);
-		std::cout << example[0][0];
+		Entita * player = new Entita(0,0,1,1,A_BOLD,1,example);
 
-		do {
+		//do {
 			i = 0;
 			//input = getch();
 			int c;
@@ -66,20 +66,26 @@ int main() {
 
 			clear();
 			move(yMax/2, (xMax/2));
-			if (i>0)
+			if (i>0) {
 				for(int j = 0; j < i; j++) {
-					waddch(stdscr, pressedKeys[j]);
+            		wprintw(stdscr, "%lc", pressedKeys[j]);
 				}
-			else
+			} else {
 				waddch(stdscr,'e');
-
+			}
+		//mvwprintw(stdscr,0,0,"┤東京 \u0061");
+		//waddwstr(stdscr, xy);
+		move(0,0);
+		wchar_t * xy = L"🥸😋┤";
+		waddwstr(stdscr,xy);
 			(*player).stampa(stdscr,20,20);
+			move(10,10);
+			addch(example[0][0]);
 			refresh();
-			usleep(100000);
-		} while (pressedKeys[0] != 'q');
+			usleep(50000);
+		//} while (pressedKeys[0] != 'q');
 
-		attroff(COLOR_PAIR(1));
-		
+		delete player;		
 		free(example[0]);
 		free(example);
 

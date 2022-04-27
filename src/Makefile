@@ -1,7 +1,7 @@
 All: Gioco clean
 
 Gioco: main.o Entita.o
-	g++ -Wall -o Gioco main.o Entita.o -lncurses
+	g++ -Wall -o Gioco main.o Entita.o -lncursesw
 
 main.o: main.cpp Entita.hpp
 	g++ -Wall -c main.cpp -lncurses
