@@ -19,7 +19,7 @@
 #elif _WIN32
     #include <ncursesw/ncurses.h>
 #else
-    #error Errore di compilazione, non un sistema operativo supportato
+    #error Errore di compilazione, sistema operativo non supportato
 #endif
 #include <unistd.h>
 #include <chrono>
@@ -64,7 +64,7 @@ int main() {
 	}
 	for(int i = 0; i < 1; i++) {
 		for(int j = 0; j < 1; j++) {
-			example[i][j] = (wchar_t) L'🧙';
+			example[i][j] = (wchar_t) L'P';
 		}
 	}
 	
@@ -73,10 +73,12 @@ int main() {
 	wchar_t ** example2 = (wchar_t **) calloc(2, sizeof(wchar_t *));
 	example2[0] = (wchar_t *) calloc(2, sizeof(wchar_t));
 	example2[1] = (wchar_t *) calloc(2, sizeof(wchar_t));
-	example2[0][0] = (wchar_t) L'🔥';
-	example2[1][0] = (wchar_t) L'🔥';
-	example2[0][1] = (wchar_t) L'🔥';
-	example2[1][1] = (wchar_t) L'🔥';
+	example2[0][0] = (wchar_t) L'I';
+	example2[1][0] = (wchar_t) L'T';
+	example2[0][1] = (wchar_t) L'E';
+	example2[1][1] = (wchar_t) L'M';
+
+	double numcontrolli = 0;
 	
 	Entita * item = new Entita(xMax/2-10,yMax/2-5,2,2,0,0,example2);
 
@@ -84,6 +86,7 @@ int main() {
 	int cordx=player->x,cordy=player->y;
 
 	do {
+		auto start = std::chrono::system_clock::now();
 		i = 0;
 		do {
 			input= getch();
@@ -118,19 +121,46 @@ int main() {
 				break;
 		}
 
+		switch(pressedKeys[0]) {
+			case (L'h'):
+				numcontrolli-=10000;
+				break;
+			case (L'j'):
+				numcontrolli-=1000;
+				break;
+			case (L'k'):
+				numcontrolli+=1000;
+				break;
+			case (L'l'):
+				numcontrolli+=10000;
+				break;
+		}
+
 		player->modificaCoordinate(cordx,cordy);
 		item->stampa(stdscr,0,0);
 		player->stampa(stdscr, 0, 0);
-		move(0,0);
+		move(3,0);
+		printw("numcontrolli: %f",numcontrolli);
+		for(int i=0; i < numcontrolli; i++) {
+			player->controllaContattore(item);
+		}
+		move(2,0);
 		if(player->controllaContattore(item)) {
 			printw("True");
 		} else {
 			printw("False");
 		}
 
+		
+		//usleep(16000);
+		auto end = std::chrono::system_clock::now();
+		std::chrono::duration<double> elapsed_seconds = end - start;
+		move(0,0);
+		printw("FPS: %f", (1/elapsed_seconds.count()));
+		move(1,0);
+		printw("ms: %f",elapsed_seconds.count()*1000);
+		
 		refresh();
-		usleep(100000);
-
 	} while (pressedKeys[0] != L'q');
 
 	/*for(unsigned int xincin = 0u; xincin <= 1000000u; xincin++) {

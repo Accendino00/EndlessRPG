@@ -6,6 +6,8 @@
  * @date 2022-02-07
  */
 
+#pragma once
+
 #ifdef __linux__ 
     #include <ncurses.h>
 #elif _WIN32
