@@ -6,7 +6,13 @@
  * @date 2022-02-07
  */
 
-#include <ncurses.h>
+#ifdef __linux__ 
+    #include <ncurses.h>
+#elif _WIN32
+    #include <ncursesw/ncurses.h>
+#else
+    #error Errore di compilazione, sistema operativo non supportato
+#endif
 
 class Entita {
 public:
@@ -16,6 +22,8 @@ public:
     int dim_x, dim_y;
     // Matrice che contiene il contenuto da stampare per rappresentare l'entità
     wchar_t ** stampabile;
+
+    
 
     int attr;   // Posso fare | tra gli attributi che voglio e salvarli come int
     int color;  // Uno dei diversi colori che definisco
