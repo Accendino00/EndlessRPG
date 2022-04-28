@@ -12,13 +12,12 @@
 
 #include "Entita.hpp"
 
-Entita::Entita(int x,int y, int dim_x, int dim_y, int attr, int color, wchar_t ** stampa) {
+Entita::Entita(int x,int y, int dim_x, int dim_y, int attr, wchar_t ** stampa) {
     (*this).x = x;
     (*this).y = y;
     (*this).dim_x = dim_x;
     (*this).dim_y = dim_y;
     (*this).attr = attr;
-    (*this).color = color;
 
 
     (*this).stampabile = (wchar_t **) calloc(dim_y, sizeof(wchar_t*));
@@ -40,7 +39,6 @@ Entita::~Entita() {
 }
 
 void Entita::stampa(WINDOW * window, int offsetX, int offsetY) {
-    wattron(window, COLOR_PAIR((*this).color));
     wattron(window, (*this).attr);
     for(int i = 0; i < (*this).dim_y; i++) {
         for(int j = 0; j < (*this).dim_x; j++) {
@@ -49,66 +47,9 @@ void Entita::stampa(WINDOW * window, int offsetX, int offsetY) {
         }
     } 
     wattroff(window, (*this).attr);
-    wattroff(window, COLOR_PAIR((*this).color));
-}
-    
-bool Entita::controllaContatto(Entita entita) {
-    // Controllo se ciascuno dei 4 vertici di una entità è contenuto tra x e x+dimx e y e y+dimy dell'altra entità
-
-    return (
-        // Primo nel secondo
-        (
-            ((*this).x >= entita.x && (*this).x <= (entita.x + entita.dim_x)) 
-                && 
-            ((*this).y >= entita.y && (*this).y <= (entita.y + entita.dim_y))
-        )
-            ||
-        (
-            (((*this).x + (*this).dim_x) >= entita.x && ((*this).x + (*this).dim_x) <= (entita.x + entita.dim_x)) 
-                && 
-            (((*this).y + (*this).dim_y) >= entita.y && ((*this).y + (*this).dim_y) <= (entita.y + entita.dim_y))
-        )
-            ||
-        (
-            (((*this).x + (*this).dim_x) >= entita.x && ((*this).x + (*this).dim_x) <= (entita.x + entita.dim_x)) 
-                && 
-            ((*this).y >= entita.y && (*this).y <= (entita.y + entita.dim_y))
-        )
-            ||
-        (
-            ((*this).x >= entita.x && (*this).x <= (entita.x + entita.dim_x)) 
-                && 
-            (((*this).y + (*this).dim_y) >= entita.y && ((*this).y + (*this).dim_y) <= (entita.y + entita.dim_y))
-        )
-            ||
-        // Secondo nel primo
-        (
-            ((*this).x <= entita.x && (*this).x >= (entita.x + entita.dim_x)) 
-                && 
-            ((*this).y <= entita.y && (*this).y >= (entita.y + entita.dim_y))
-        )
-            ||
-        (
-            (((*this).x + (*this).dim_x) <= entita.x && ((*this).x + (*this).dim_x) >= (entita.x + entita.dim_x)) 
-                &&
-            (((*this).y + (*this).dim_y) <= entita.y && ((*this).y + (*this).dim_y) >= (entita.y + entita.dim_y))
-        )
-            ||
-        (
-            (((*this).x + (*this).dim_x) <= entita.x && ((*this).x + (*this).dim_x) >= (entita.x + entita.dim_x)) 
-                && 
-            ((*this).y <= entita.y && (*this).y >= (entita.y + entita.dim_y))
-        )
-            ||
-        (
-            ((*this).x <= entita.x && (*this).x >= (entita.x + entita.dim_x)) 
-                && 
-            (((*this).y + (*this).dim_y) <= entita.y && ((*this).y + (*this).dim_y) >= (entita.y + entita.dim_y))
-        )
-    );
 }
 
-bool Entita::controllaContattore(Entita * entita) {
+bool Entita::controllaContatto(Entita * entita) {
         // Controllo se ciascuno dei 4 vertici di una entità è contenuto tra x e x+dimx e y e y+dimy dell'altra entità
 
     return (

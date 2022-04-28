@@ -28,16 +28,14 @@ public:
     
 
     int attr;   // Posso fare | tra gli attributi che voglio e salvarli come int
-    int color;  // Uno dei diversi colori che definisco
 
 public:
-    Entita(int x,int y, int dim_x, int dim_y, int attr, int color, wchar_t ** stampa);
+    Entita(int x,int y, int dim_x, int dim_y, int attr, wchar_t ** stampa);
     ~Entita();
 
     void stampa(WINDOW * window, int offsetX, int offsetY);
     
-    bool controllaContatto(Entita entita);
-    bool controllaContattore(Entita * entita);
+    bool controllaContatto(Entita * entita);
 
     void modificaCoordinate(int new_x, int new_y);
     void incrementaX(int amount);
