@@ -27,7 +27,7 @@ public:
     void stampa(WINDOW * window, int offsetX, int offsetY);
     
     bool controllaContatto(Entita entita);
-    bool controllaContattore(/*Mappa*/);
+    bool controllaContattore(Entita * entita);
 
     void modificaCoordinate(int new_x, int new_y);
     void incrementaX(int amount);

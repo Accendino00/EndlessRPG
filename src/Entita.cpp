@@ -44,10 +44,116 @@ void Entita::stampa(WINDOW * window, int offsetX, int offsetY) {
 }
     
 bool Entita::controllaContatto(Entita entita) {
-    return false;
+    // Controllo se ciascuno dei 4 vertici di una entità è contenuto tra x e x+dimx e y e y+dimy dell'altra entità
+
+    return (
+        // Primo nel secondo
+        (
+            ((*this).x >= entita.x && (*this).x <= (entita.x + entita.dim_x)) 
+                && 
+            ((*this).y >= entita.y && (*this).y <= (entita.y + entita.dim_y))
+        )
+            ||
+        (
+            (((*this).x + (*this).dim_x) >= entita.x && ((*this).x + (*this).dim_x) <= (entita.x + entita.dim_x)) 
+                && 
+            (((*this).y + (*this).dim_y) >= entita.y && ((*this).y + (*this).dim_y) <= (entita.y + entita.dim_y))
+        )
+            ||
+        (
+            (((*this).x + (*this).dim_x) >= entita.x && ((*this).x + (*this).dim_x) <= (entita.x + entita.dim_x)) 
+                && 
+            ((*this).y >= entita.y && (*this).y <= (entita.y + entita.dim_y))
+        )
+            ||
+        (
+            ((*this).x >= entita.x && (*this).x <= (entita.x + entita.dim_x)) 
+                && 
+            (((*this).y + (*this).dim_y) >= entita.y && ((*this).y + (*this).dim_y) <= (entita.y + entita.dim_y))
+        )
+            ||
+        // Secondo nel primo
+        (
+            ((*this).x <= entita.x && (*this).x >= (entita.x + entita.dim_x)) 
+                && 
+            ((*this).y <= entita.y && (*this).y >= (entita.y + entita.dim_y))
+        )
+            ||
+        (
+            (((*this).x + (*this).dim_x) <= entita.x && ((*this).x + (*this).dim_x) >= (entita.x + entita.dim_x)) 
+                &&
+            (((*this).y + (*this).dim_y) <= entita.y && ((*this).y + (*this).dim_y) >= (entita.y + entita.dim_y))
+        )
+            ||
+        (
+            (((*this).x + (*this).dim_x) <= entita.x && ((*this).x + (*this).dim_x) >= (entita.x + entita.dim_x)) 
+                && 
+            ((*this).y <= entita.y && (*this).y >= (entita.y + entita.dim_y))
+        )
+            ||
+        (
+            ((*this).x <= entita.x && (*this).x >= (entita.x + entita.dim_x)) 
+                && 
+            (((*this).y + (*this).dim_y) <= entita.y && ((*this).y + (*this).dim_y) >= (entita.y + entita.dim_y))
+        )
+    );
 }
 
-bool controllaContattore(/*Mappa*/);
+bool Entita::controllaContattore(Entita * entita) {
+        // Controllo se ciascuno dei 4 vertici di una entità è contenuto tra x e x+dimx e y e y+dimy dell'altra entità
+
+    return (
+        // Primo nel secondo
+        (
+            (this->x >= entita->x && this->x < (entita->x + entita->dim_x)) 
+                && 
+            (this->y >= entita->y && this->y < (entita->y + entita->dim_y))
+        )
+            ||
+        (
+            ((this->x + this->dim_x) > entita->x && (this->x + this->dim_x) < (entita->x + entita->dim_x)) 
+                && 
+            ((this->y + this->dim_y) > entita->y && (this->y + this->dim_y) < (entita->y + entita->dim_y))
+        )
+            ||
+        (
+            ((this->x + this->dim_x) > entita->x && (this->x + this->dim_x) < (entita->x + entita->dim_x)) 
+                && 
+            (this->y >= entita->y && this->y < (entita->y + entita->dim_y))
+        )
+            ||
+        (
+            ((*this).x >= entita->x && (*this).x < (entita->x + entita->dim_x)) 
+                && 
+            ((this->y + this->dim_y) > entita->y && (this->y + this->dim_y) < (entita->y + entita->dim_y))
+        )
+            ||
+        // Secondo nel primo        
+        (
+            (entita->x >= this->x && entita->x < (this->x + this->dim_x)) 
+                && 
+            (entita->y >= this->y && entita->y < (this->y + this->dim_y))
+        )
+            ||
+        (
+            ((entita->x + entita->dim_x) > this->x && (entita->x + entita->dim_x) < (this->x + this->dim_x)) 
+                && 
+            ((entita->y + entita->dim_y) > this->y && (entita->y + entita->dim_y) < (this->y + this->dim_y))
+        )
+            ||
+        (
+            ((entita->x + entita->dim_x) > this->x && (entita->x + entita->dim_x) < (this->x + this->dim_x)) 
+                && 
+            (entita->y >= this->y && entita->y < (this->y + this->dim_y))
+        )
+            ||
+        (
+            (entita->x >= this->x && entita->x < (this->x + this->dim_x))
+                && 
+            ((entita->y + entita->dim_y) > this->y && (entita->y + entita->dim_y) < (this->y + this->dim_y))
+        )
+    );
+}
 
 void Entita::modificaCoordinate(int new_x, int new_y) {
     (*this).x = new_x;
