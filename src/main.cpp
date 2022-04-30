@@ -54,33 +54,33 @@ int main() {
 
 	start_color();
 	init_pair(0, COLOR_WHITE, COLOR_BLACK);
-	init_pair(1, COLOR_WHITE, COLOR_MAGENTA);
+	init_pair(1, COLOR_WHITE, COLOR_BLUE);
 
 	int input = L'a';
 
-	wchar_t ** example = (wchar_t **) calloc(1, sizeof(wchar_t *));
-	for(int i = 0; i < 1; i++) {
-		example[0] =(wchar_t *) calloc(1, sizeof(wchar_t));
+	wchar_t ** example = (wchar_t **) calloc(4, sizeof(wchar_t *));
+	for(int i = 0; i < 4; i++) {
+		example[i] =(wchar_t *) calloc(4, sizeof(wchar_t));
 	}
-	for(int i = 0; i < 1; i++) {
-		for(int j = 0; j < 1; j++) {
-			example[i][j] = (wchar_t) L'P';
+	for(int i = 0; i < 4; i++) {
+		for(int j = 0; j < 4; j++) {
+			example[i][j] = (wchar_t) L'≋';
 		}
 	}
 	
-	Entita * player = new Entita(xMax/2,yMax/2,1,1,0,0,example);
+	Entita * player = new Entita(xMax/2,yMax/2,4,4, A_BOLD | COLOR_PAIR(1),example);
 
 	wchar_t ** example2 = (wchar_t **) calloc(2, sizeof(wchar_t *));
 	example2[0] = (wchar_t *) calloc(2, sizeof(wchar_t));
 	example2[1] = (wchar_t *) calloc(2, sizeof(wchar_t));
-	example2[0][0] = (wchar_t) L'I';
-	example2[1][0] = (wchar_t) L'T';
-	example2[0][1] = (wchar_t) L'E';
-	example2[1][1] = (wchar_t) L'M';
+	example2[0][0] = (wchar_t) L'≋';
+	example2[1][0] = (wchar_t) L'≋';
+	example2[0][1] = (wchar_t) L'≋';
+	example2[1][1] = (wchar_t) L'≋';
 
-	double numcontrolli = 0;
+	double numcontrolliGTP = 0, numcontrolliPTG=0;
 	
-	Entita * item = new Entita(xMax/2-10,yMax/2-5,2,2,0,0,example2);
+	Entita * item = new Entita(xMax/2-10,yMax/2-5,2,2,A_BOLD | COLOR_PAIR(0),example2);
 
 
 	int cordx=player->x,cordy=player->y;
@@ -123,16 +123,31 @@ int main() {
 
 		switch(pressedKeys[0]) {
 			case (L'h'):
-				numcontrolli-=10000;
+				numcontrolliGTP-=10000;
 				break;
 			case (L'j'):
-				numcontrolli-=1000;
+				numcontrolliGTP-=1000;
 				break;
 			case (L'k'):
-				numcontrolli+=1000;
+				numcontrolliGTP+=1000;
 				break;
 			case (L'l'):
-				numcontrolli+=10000;
+				numcontrolliGTP+=10000;
+				break;
+		}
+
+		switch(pressedKeys[0]) {
+			case (L'y'):
+				numcontrolliPTG-=10000;
+				break;
+			case (L'u'):
+				numcontrolliPTG-=1000;
+				break;
+			case (L'i'):
+				numcontrolliPTG+=1000;
+				break;
+			case (L'o'):
+				numcontrolliPTG+=10000;
 				break;
 		}
 
@@ -140,12 +155,17 @@ int main() {
 		item->stampa(stdscr,0,0);
 		player->stampa(stdscr, 0, 0);
 		move(3,0);
-		printw("numcontrolli: %f",numcontrolli);
-		for(int i=0; i < numcontrolli; i++) {
-			player->controllaContattore(item);
+		printw("numcontrolli grande -> piccolo: %f",numcontrolliGTP);
+		move(4,0);
+		printw("numcontrolli piccolor -> grande: %f",numcontrolliPTG);
+		for(int i=0; i < numcontrolliGTP; i++) {
+			player->controllaContatto(item);
+		}
+		for(int i=0; i < numcontrolliPTG; i++) {
+			item->controllaContatto(player);
 		}
 		move(2,0);
-		if(player->controllaContattore(item)) {
+		if(player->controllaContatto(item)) {
 			printw("True");
 		} else {
 			printw("False");
