@@ -1,5 +1,3 @@
-#pragma once
-
 #include <iostream>
 
 #ifdef __linux__ 
@@ -12,7 +10,7 @@
 
 #include "Entita.hpp"
 
-Entita::Entita(int x,int y, int dim_x, int dim_y, int attr, wchar_t ** stampa) {
+Entita::Entita(int x,int y, int dim_x, int dim_y, int attr, wchar_t ** stampa, int ** attr_arr) {
     (*this).x = x;
     (*this).y = y;
     (*this).dim_x = dim_x;
@@ -29,6 +27,18 @@ Entita::Entita(int x,int y, int dim_x, int dim_y, int attr, wchar_t ** stampa) {
             (*this).stampabile[i][j] = stampa[i][j];
         }
     }
+
+    if(attr_arr != NULL) {
+        (*this).attr_arr = (int **) calloc(dim_y, sizeof(int*));
+        for(int i = 0; i < dim_y; i++) {
+            (*this).attr_arr[i] = (int *) calloc(dim_x, sizeof(int));
+        }
+        for(int i = 0; i < dim_y; i++) {
+            for(int j = 0; j < dim_x; j++) {
+                (*this).attr_arr[i][j] = attr_arr[i][j];
+            }
+        }   
+    }
 }
 
 Entita::~Entita() {
@@ -39,14 +49,27 @@ Entita::~Entita() {
 }
 
 void Entita::stampa(WINDOW * window, int offsetX, int offsetY) {
-    wattron(window, (*this).attr);
-    for(int i = 0; i < (*this).dim_y; i++) {
-        for(int j = 0; j < (*this).dim_x; j++) {
-            move((*this).y+i+offsetY, (*this).x+j+offsetX);
-            wprintw(window, "%lc", (*this).stampabile[i][j]);
-        }
-    } 
-    wattroff(window, (*this).attr);
+    if(attr_arr == NULL) {
+        wattron(window, (*this).attr);
+        for(int i = 0; i < (*this).dim_y; i++) {
+            for(int j = 0; j < (*this).dim_x; j++) {
+                move((*this).y+i+offsetY, (*this).x+j+offsetX);
+                wprintw(window, "%lc", (*this).stampabile[i][j]);
+            }
+        } 
+        wattroff(window, (*this).attr);
+    } else {
+        wattron(window, (*this).attr);
+        for(int i = 0; i < (*this).dim_y; i++) {
+            for(int j = 0; j < (*this).dim_x; j++) {
+                wattron(window, (*this).attr_arr[i][j]);
+                move((*this).y+i+offsetY, (*this).x+j+offsetX);
+                wprintw(window, "%lc", (*this).stampabile[i][j]);
+                wattroff(window, (*this).attr_arr[i][j]);
+            }
+        } 
+        wattroff(window, (*this).attr);
+    }
 }
 
 bool Entita::controllaContatto(Entita * entita) {
@@ -109,7 +132,6 @@ void Entita::modificaCoordinate(int new_x, int new_y) {
     (*this).x = new_x;
     (*this).y = new_y;
 }
-
 
 void Entita::incrementaX(int amount) {
     (*this).x += amount;

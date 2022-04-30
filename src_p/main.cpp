@@ -64,23 +64,30 @@ int main() {
 	}
 	for(int i = 0; i < 4; i++) {
 		for(int j = 0; j < 4; j++) {
-			example[i][j] = (wchar_t) L'≋';
+			example[i][j] = (wchar_t) L'🧙';
 		}
 	}
 	
-	Entita * player = new Entita(xMax/2,yMax/2,4,4, A_BOLD | COLOR_PAIR(1),example);
+	Entita * player = new Entita(xMax/2,yMax/2,4,4, A_BOLD | COLOR_PAIR(0),example,NULL);
 
 	wchar_t ** example2 = (wchar_t **) calloc(2, sizeof(wchar_t *));
 	example2[0] = (wchar_t *) calloc(2, sizeof(wchar_t));
 	example2[1] = (wchar_t *) calloc(2, sizeof(wchar_t));
-	example2[0][0] = (wchar_t) L'≋';
-	example2[1][0] = (wchar_t) L'≋';
-	example2[0][1] = (wchar_t) L'≋';
-	example2[1][1] = (wchar_t) L'≋';
+	example2[0][0] = (wchar_t) L'I';
+	example2[1][0] = (wchar_t) L'T';
+	example2[0][1] = (wchar_t) L'E';
+	example2[1][1] = (wchar_t) L'M';
+	int ** example3 = (int **) calloc(2, sizeof(int *));
+	example3[0] = (int *) calloc(2, sizeof(int));
+	example3[1] = (int *) calloc(2, sizeof(int));
+	example3[0][0] = A_BOLD;
+	example3[1][0] = A_BLINK;
+	example3[0][1] = A_REVERSE;
+	example3[1][1] = A_TOP;
 
 	double numcontrolliGTP = 0, numcontrolliPTG=0;
 	
-	Entita * item = new Entita(xMax/2-10,yMax/2-5,2,2,A_BOLD | COLOR_PAIR(0),example2);
+	Entita * item = new Entita(xMax/2-10,yMax/2-5,2,2,A_BOLD | COLOR_PAIR(1),example2, example3);
 
 
 	int cordx=player->x,cordy=player->y;

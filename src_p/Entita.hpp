@@ -25,12 +25,11 @@ public:
     // Matrice che contiene il contenuto da stampare per rappresentare l'entità
     wchar_t ** stampabile;
 
-    
-
     int attr;   // Posso fare | tra gli attributi che voglio e salvarli come int
+    int ** attr_arr;
 
 public:
-    Entita(int x,int y, int dim_x, int dim_y, int attr, wchar_t ** stampa);
+    Entita(int x,int y, int dim_x, int dim_y, int attr, wchar_t ** stampa, int ** attr_arr);
     ~Entita();
 
     void stampa(WINDOW * window, int offsetX, int offsetY);
@@ -41,6 +40,6 @@ public:
     void incrementaX(int amount);
     void incrementaY(int amount);
 
-    void incrementaX_CC(Entita * arrayEntita, /*Mappa*/ int amount);
-    void incrementaY_CC(Entita * arrayEntita, /*Mappa*/ int amount);
+    void incrementaX_CC(Entita * arrayEntita, /*Mappa, */ int amount);
+    void incrementaY_CC(Entita * arrayEntita, /*Mappa, */ int amount);
 };
