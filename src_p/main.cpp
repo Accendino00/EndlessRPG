@@ -32,12 +32,12 @@
 int main() {
 
     //Start NCURSES
-	setlocale(LC_ALL, "");
-    initscr();
-	curs_set(0);
-    noecho();
-    cbreak();
-	nodelay(stdscr, true);
+	setlocale(LC_ALL, ""); // UNICODE
+    initscr(); // Startare window
+	curs_set(0); // cursore settato a 0
+    noecho(); // Non scrive i tasti
+    cbreak(); // Combinazione di tasti
+	nodelay(stdscr, true); 
 
     //Grandezza Schermo
     int yMax, xMax;
@@ -99,7 +99,7 @@ int main() {
 		auto start = std::chrono::system_clock::now();
 		i = 0;
 		do {
-			input= getch();
+			input= getch(); // Prende un input dalla coda di input nell'array
 			pressedKeys[i] = (input);
 			i++;	
 		} while(input != ERR);

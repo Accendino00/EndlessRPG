@@ -27,13 +27,13 @@ public:
     // Dimensioni hitbox
     int dim_x, dim_y;
     // Matrice che contiene il contenuto da stampare per rappresentare l'entità
-    wchar_t ** stampabile;
+    cchar_t ** entita_stampabile;
 
     int attr;   // Posso fare | tra gli attributi che voglio e salvarli come int
     int ** attr_arr;
 
 public:
-    Entita(int x,int y, int dim_x, int dim_y, int attr, wchar_t ** stampa, int ** attr_arr);
+    Entita(int x,int y, int dim_x, int dim_y, int attr, cchar_t ** stampa, int ** attr_arr);
     ~Entita();
 
     void stampa(WINDOW * window, int offsetX, int offsetY);
