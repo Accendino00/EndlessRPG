@@ -27,7 +27,7 @@
 #include <locale.h>
 
 #include "Entita.hpp"
-
+#include "General.hpp"
 
 int main() {
 
@@ -86,9 +86,12 @@ int main() {
 	example3[1][1] = A_TOP;
 
 	double numcontrolliGTP = 0, numcontrolliPTG=0;
-	
+	double numStampeADDCH = 0, numStampeWPRINTW=0;
+
 	Entita * item = new Entita(xMax/2-10,yMax/2-5,2,2,A_BOLD | COLOR_PAIR(1),example2, example3);
 
+	cchar_t * x = new cchar_t; 
+	x[0] = {COLOR_PAIR(1) | A_BOLD, L"\u3444\u3761"};
 
 	int cordx=player->x,cordy=player->y;
 
@@ -158,6 +161,48 @@ int main() {
 				break;
 		}
 
+		
+		switch(pressedKeys[0]) {
+			case (L'1'):
+				numStampeADDCH-=10000;
+				break;
+			case (L'2'):
+				numStampeADDCH-=1000;
+				break;
+			case (L'3'):
+				numStampeADDCH+=1000;
+				break;
+			case (L'4'):
+				numStampeADDCH+=10000;
+				break;
+		}
+
+		switch(pressedKeys[0]) {
+			case (L'5'):
+				numStampeWPRINTW-=10000;
+				break;
+			case (L'6'):
+				numStampeWPRINTW-=1000;
+				break;
+			case (L'7'):
+				numStampeWPRINTW+=1000;
+				break;
+			case (L'8'):
+				numStampeWPRINTW+=10000;
+				break;
+		}
+
+		for(int i=0; i < numStampeADDCH; i++) {
+			move(15,15);
+			wadd_wch(stdscr, x);
+		}
+		for(int i=0; i < numStampeWPRINTW; i++) {
+			move(16,16);
+			wattron(stdscr, COLOR_PAIR(1)|A_BOLD);
+			waddwstr(stdscr, L"\u3761");
+			wattroff(stdscr, COLOR_PAIR(1)|A_BOLD);
+		}
+
 		player->modificaCoordinate(cordx,cordy);
 		item->stampa(stdscr,0,0);
 		player->stampa(stdscr, 0, 0);
@@ -165,6 +210,10 @@ int main() {
 		printw("numcontrolli grande -> piccolo: %f",numcontrolliGTP);
 		move(4,0);
 		printw("numcontrolli piccolor -> grande: %f",numcontrolliPTG);
+		move(5,0);
+		printw("num ADDCH: %f",numStampeADDCH);
+		move(6,0);
+		printw("num PRINTW: %f",numStampeWPRINTW);
 		for(int i=0; i < numcontrolliGTP; i++) {
 			player->controllaContatto(item);
 		}

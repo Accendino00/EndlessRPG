@@ -6,6 +6,7 @@
  * @date 2022-02-07
  */
 
+
 #pragma once
 
 #ifdef __linux__ 
@@ -15,6 +16,9 @@
 #else
     #error Errore di compilazione, sistema operativo non supportato
 #endif
+
+#include <iostream>
+#include "General.hpp"
 
 class Entita {
 public:

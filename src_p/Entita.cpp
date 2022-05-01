@@ -1,14 +1,5 @@
-#include <iostream>
-
-#ifdef __linux__ 
-    #include <ncurses.h>
-#elif _WIN32
-    #include <ncursesw/ncurses.h>
-#else
-    #error Errore di compilazione, sistema operativo non supportato
-#endif
-
 #include "Entita.hpp"
+#include <cstdlib>
 
 Entita::Entita(int x,int y, int dim_x, int dim_y, int attr, wchar_t ** stampa, int ** attr_arr) {
     (*this).x = x;
