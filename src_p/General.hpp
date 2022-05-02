@@ -10,3 +10,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <cstdlib>
+
+//Inclusione degli header
+#include "Entita.hpp"
+#include "Stanza.hpp"
+#include "Nemico.hpp"
+#include "Livello.hpp"
+#include "Player.hpp"
+
