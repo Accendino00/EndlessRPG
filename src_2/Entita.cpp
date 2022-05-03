@@ -1,34 +1,24 @@
-#pragma once
-#include "General.hpp"
+#include "libs.hpp"
 
-Entita::Entita(int x,int y, int dim_x, int dim_y, int attr, wchar_t ** stampa, int ** attr_arr) {
-    (*this).x = x;
+Entita::Entita(int y,int x, int dim_y, int dim_x, cchar_t ** stampa) {
     (*this).y = y;
-    (*this).dim_x = dim_x;
+    (*this).x = x;
     (*this).dim_y = dim_y;
-    (*this).attr = attr;
+    (*this).dim_x = dim_x;
 
 
-    (*this).stampabile = (wchar_t **) calloc(dim_y, sizeof(wchar_t*));
+    (*this).stampabile = (cchar_t **) calloc(dim_y, sizeof(cchar_t*));
     for(int i = 0; i < dim_y; i++) {
-        (*this).stampabile[i] = (wchar_t *) calloc(dim_x, sizeof(wchar_t));
+        (*this).stampabile[i] = (cchar_t *) calloc(dim_x, sizeof(cchar_t));
     }
+    wchar_t temp_c [CCHARW_MAX];
+    attr_t temp_a;
+    short temp_s;
     for(int i = 0; i < dim_y; i++) {
         for(int j = 0; j < dim_x; j++) {
-            (*this).stampabile[i][j] = stampa[i][j];
+            getcchar(&(stampa[i][j]), temp_c, &temp_a, &temp_s, NULL);
+            setcchar(&((*this).stampabile[i][j]), temp_c, temp_a, temp_s, NULL);
         }
-    }
-
-    if(attr_arr != NULL) {
-        (*this).attr_arr = (int **) calloc(dim_y, sizeof(int*));
-        for(int i = 0; i < dim_y; i++) {
-            (*this).attr_arr[i] = (int *) calloc(dim_x, sizeof(int));
-        }
-        for(int i = 0; i < dim_y; i++) {
-            for(int j = 0; j < dim_x; j++) {
-                (*this).attr_arr[i][j] = attr_arr[i][j];
-            }
-        }   
     }
 }
 
@@ -39,28 +29,15 @@ Entita::~Entita() {
     free((*this).stampabile);
 }
 
-void Entita::stampa(WINDOW * window, int offsetX, int offsetY) {
-    if(attr_arr == NULL) {
-        wattron(window, (*this).attr);
-        for(int i = 0; i < (*this).dim_y; i++) {
-            for(int j = 0; j < (*this).dim_x; j++) {
-                move((*this).y+i+offsetY, (*this).x+j+offsetX);
-                wprintw(window, "%lc", (*this).stampabile[i][j]);
-            }
-        } 
-        wattroff(window, (*this).attr);
-    } else {
-        wattron(window, (*this).attr);
-        for(int i = 0; i < (*this).dim_y; i++) {
-            for(int j = 0; j < (*this).dim_x; j++) {
-                wattron(window, (*this).attr_arr[i][j]);
-                move((*this).y+i+offsetY, (*this).x+j+offsetX);
-                wprintw(window, "%lc", (*this).stampabile[i][j]);
-                wattroff(window, (*this).attr_arr[i][j]);
-            }
-        } 
-        wattroff(window, (*this).attr);
-    }
+void Entita::stampa(WINDOW * window, int offsetY, int offsetX) {
+    for(int i = 0; i < (*this).dim_y; i++) {
+        for(int j = 0; j < (*this).dim_x; j++) {
+            mvwadd_wch( (window),
+                        (this->y)+i+offsetY, 
+                        (this->x)+j+offsetX, 
+                        & (this->stampabile)[i][j]);
+        }
+    } 
 }
 
 bool Entita::controllaContatto(Entita * entita) {
@@ -119,9 +96,9 @@ bool Entita::controllaContatto(Entita * entita) {
     );
 }
 
-void Entita::modificaCoordinate(int new_x, int new_y) {
-    (*this).x = new_x;
+void Entita::modificaCoordinate(int new_y, int new_x) {
     (*this).y = new_y;
+    (*this).x = new_x;
 }
 
 void Entita::incrementaX(int amount) {
@@ -130,6 +107,3 @@ void Entita::incrementaX(int amount) {
 void Entita::incrementaY(int amount) {
     (*this).y += amount;
 }
-
-void incrementaX_CC(Entita * arrayEntita, /*Mappa*/ int amount);
-void incrementaY_CC(Entita * arrayEntita, /*Mappa*/ int amount);
