@@ -6,7 +6,19 @@
  * @date 2022-02-07
  */
 
-#include <ncurses.h>
+
+#pragma once
+
+#ifdef __linux__ 
+    #include <ncurses.h>
+#elif _WIN32
+    #include <ncursesw/ncurses.h>
+#else
+    #error Errore di compilazione, sistema operativo non supportato
+#endif
+
+#include <iostream>
+#include "General.hpp"
 
 class Entita {
 public:
@@ -15,23 +27,23 @@ public:
     // Dimensioni hitbox
     int dim_x, dim_y;
     // Matrice che contiene il contenuto da stampare per rappresentare l'entità
-    chtype ** stampabile;
+    cchar_t ** entita_stampabile;
 
     int attr;   // Posso fare | tra gli attributi che voglio e salvarli come int
-    int color;  // Uno dei diversi colori che definisco
+    int ** attr_arr;
 
 public:
-    Entita(int x,int y, int dim_x, int dim_y, int attr, int color, chtype ** stampa);
+    Entita(int x,int y, int dim_x, int dim_y, int attr, cchar_t ** stampa, int ** attr_arr);
+    ~Entita();
 
     void stampa(WINDOW * window, int offsetX, int offsetY);
     
-    bool controllaContatto(Entita entita);
-    bool controllaContattore(/*Mappa*/);
+    bool controllaContatto(Entita * entita);
 
     void modificaCoordinate(int new_x, int new_y);
     void incrementaX(int amount);
     void incrementaY(int amount);
 
-    void incrementaX_CC(Entita * arrayEntita, /*Mappa*/ int amount);
-    void incrementaY_CC(Entita * arrayEntita, /*Mappa*/ int amount);
+    void incrementaX_CC(Entita * arrayEntita, /*Mappa, */ int amount);
+    void incrementaY_CC(Entita * arrayEntita, /*Mappa, */ int amount);
 };

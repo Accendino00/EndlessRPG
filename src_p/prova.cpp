@@ -1,6 +1,6 @@
 #include <iostream>
 
 int main() {
-	std::cout << "prova";
+	std::cout << "┤";
 	return 0;
 }
