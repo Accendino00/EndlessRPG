@@ -32,13 +32,14 @@ class Stanza {
 
         Entita * artefatti; //pick me up soon
 
-        struct topologia{
-            wchar_t ** stampabile; //matrice di widechar con attributi cchar_t
-            int ** logica;         //matrice logica/numerica
-        };
+        //volendo potrei fare una struct            
+        wchar_t ** matrice_stampabile; //matrice di widechar con attributi cchar_t
+        int ** matrice_logica;         //matrice logica/numerica
+        
 
         WINDOW * schermata_mappa;  //prima window da stampare
-
+        
+        int x, y, maxx, maxy;
 
     public:
         bool genera_stanza();
