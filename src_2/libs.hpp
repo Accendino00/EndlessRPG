@@ -1,3 +1,4 @@
+#pragma once
 #ifdef __linux__ 
     #include <ncurses.h>
 #elif _WIN32
@@ -17,5 +18,6 @@
 
 //Inclusione degli header
 #include "Entita.hpp"
-
+#include "Stanza.hpp"
+#include "Player.hpp"
 #include "Compatibility.cpp"
