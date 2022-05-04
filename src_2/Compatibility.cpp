@@ -1,3 +1,4 @@
+#pragma once
 #ifdef _WIN32
     #include <ncursesw/ncurses.h>
 
@@ -6,7 +7,7 @@
         {
             attr_t	attr;
             wchar_t	chars[CCHARW_MAX];
-        #if 0
+        #if 1
         #undef NCURSES_EXT_COLORS
         #define NCURSES_EXT_COLORS 20201114
             int		ext_color;	/* color pair, must be more than 16-bits */
@@ -15,7 +16,7 @@
         cchar_t;
 
     // non sono implementate perfettamente uguali a quelle di ncurses normale, ma
-    // ciò che non implemento, non lo suo, quindi trovavo superfluo cercare di imitarlo
+    // ciò che non implemento, non lo uso, quindi trovavo superfluo cercare di imitarlo
 
     int getcchar(  const cchar_t *wcval,
                wchar_t *wch,
@@ -27,7 +28,7 @@
         if (wcval != NULL && wch != NULL && attrs != NULL && color_pair != NULL) {
             int index = 0;
             while ((*wcval).chars[index] != L'\0') {
-                (*wcval).chars[index] = wch[index];
+                wch[index] = (*wcval).chars[index];
             }
             (*attrs) = (*wcval).attr;
             (*color_pair) = (*wcval).ext_color;
@@ -45,13 +46,13 @@
                const void *opts ) 
     {
         int returnValue = OK;
-        if (wcval != NULL && wch != NULL && attrs != NULL && color_pair != NULL) {
+        if (wcval != NULL && wch != NULL) {
             int index = 0;
             while ((*wcval).chars[index] != L'\0') {
                 (*wcval).chars[index] = wch[index];
             }
-            (*wcval).attr = (*attrs);
-            (*wcval).ext_color = (*color_pair);
+            (*wcval).attr = (attrs);
+            (*wcval).ext_color = (color_pair);
         } else {
             returnValue = ERR;
         }
@@ -61,10 +62,10 @@
     void mvwadd_wch (WINDOW * win, int y, int x, const cchar_t * c) {
         attr_t attributo;
         wchar_t carattere;
-        short colorpair;
+        short color_pair;
         getcchar(c, &carattere, &attributo, &color_pair, NULL);
         wattron(win, attributo | COLOR_PAIR(color_pair));
-        mvwprintw(win,y,x,"%lc",carattere);
+        mvwprintw(win,y,x,"%ls",carattere);
         wattroff(win, attributo | COLOR_PAIR(color_pair));
     }
 
