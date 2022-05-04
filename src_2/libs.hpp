@@ -17,7 +17,7 @@
 #include <unistd.h>
 
 //Inclusione degli header
+#include "Compatibility.hpp"
 #include "Entita.hpp"
 #include "Stanza.hpp"
 #include "Player.hpp"
-#include "Compatibility.cpp"

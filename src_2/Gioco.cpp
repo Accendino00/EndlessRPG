@@ -100,20 +100,6 @@ int main () {
     //HighscoreMenu m_score;
     //ConfirmMenu m_confirmExit, m_confirmExitPause;
 
-    WINDOW *win = newwin(15,17,2,10);
-    refresh();
-        box(win,0,0);
-        mvwprintw(win,0,1,"AAAAAA");
-        mvwprintw(win,1,2,"prova");
-        wrefresh(win);
-
-            WINDOW *win2 = newwin(20,18,6,17);
-    refresh();
-        box(win2,0,0);
-        mvwprintw(win2,0,1,"AAAAAA");
-        mvwprintw(win2,1,2,"prova");
-        wrefresh(win2);
-
     // Loop generale del gioco
     do {
         
@@ -137,10 +123,7 @@ int main () {
 //
         //m_main.print();
 
-    refresh();
-    werase(win);
-        wrefresh(win);
-        wrefresh(win2);
+        refresh();
         if (checkInput(gd, L'q'))
             gd.closeGame = true;
     } while (!gd.closeGame);

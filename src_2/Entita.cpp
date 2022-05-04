@@ -1,4 +1,3 @@
-#pragma once
 #include "libs.hpp"
 
 Entita::Entita(int y,int x, int dim_y, int dim_x, cchar_t ** stampa) {
