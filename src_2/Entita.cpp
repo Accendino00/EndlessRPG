@@ -105,5 +105,5 @@ void Entita::incrementaX(int amount) {
     (*this).x += amount;
 }
 void Entita::incrementaY(int amount) {
-    (*this).y += amount;
+    (*this).y -= amount;
 }
