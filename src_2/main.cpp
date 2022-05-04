@@ -1,5 +1,12 @@
 #include "libs.hpp"
 
+/*
+
+    Comandi per compilazione con debug:
+        g++ -g -o Gioco Entita.cpp Compatibility.cpp main.cpp -lncursesw
+        valgrind --leak-check=full          --show-leak-kinds=all          --track-origins=yes          --verbose          --log-file=valgrind-out.txt          ./Gioco
+*/
+
 int main () {
 
     //Start NCURSES
@@ -32,15 +39,22 @@ int main () {
     init_color(27,1000 * 248 / 255,1000 * 255 / 255,1000 * 229 / 255);
     init_pair(2,27,26);
 
-    int dimy = 4, dimx = 2;
+    int dimy = 100, dimx = 100;
+    // ricorda di chiudere queste cose dopo che le apri
     cchar_t ** player_graphical = (cchar_t **) calloc(dimy, sizeof(cchar_t*));
     for(int i = 0; i < dimy; i++) {
         player_graphical[i] = (cchar_t *) calloc(dimx, sizeof(cchar_t));
     }
-    wchar_t prova [5] = L"\u2665";
+
+    srand(time(NULL));
+
+    wchar_t prova1 [5] = L"\u2665";
+    wchar_t prova2 [5] = L"\u2668";
+    wchar_t prova3 [5] = L"\u2605";
     for(int i = 0; i < dimy; i++) {
         for(int j = 0; j < dimx; j++) {
-            setcchar(&(player_graphical[i][j]), prova, A_NORMAL, 2, NULL);
+            int r = rand() % 3;
+            setcchar(&(player_graphical[i][j]), (r==0)?(prova1):((r==1)?(prova2):(prova3)) , A_BOLD, 2, NULL);
         }
     }
     Entita * player = new Entita(yMax/2, xMax/2, dimy, dimx, player_graphical); 
@@ -103,13 +117,12 @@ int main () {
 		std::chrono::duration<double> elapsed_seconds = end - start;
 
         // PER AVERE UN CAP DI FPS
-        double fps_cap = 30;
+        double fps_cap = 1000;
         if(elapsed_seconds.count() <= (1/fps_cap)) {
             usleep(((1/fps_cap) - elapsed_seconds.count())*1000000);
         }
 		end = std::chrono::system_clock::now();
 		elapsed_seconds = end - start;
-
 
 		move(0,0);
 		printw("FPS: %f", (1/elapsed_seconds.count()));
@@ -301,6 +314,8 @@ int main () {
 		refresh();
 	} while (pressedKeys[0] != L'q');
     */
+
+    delete(player);
 
 	endwin();
 	return 0;
