@@ -1,4 +1,3 @@
-#include "Entita.hpp"
 #ifdef __linux__ 
     #include <ncurses.h>
 #elif _WIN32
