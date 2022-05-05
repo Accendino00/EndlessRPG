@@ -1,8 +1,8 @@
-#include "Entita.hpp"
+#include "libs.hpp"
 #include <ncursesw/ncurses.h>
 
 
-Stanza::Stanza(Entita * nemici, Entita * porte, Entita * artefatti, WINDOW * schermata_mappa, wchar_t ** matrice_stampabile, int ** matrice_logica, int x, int y, int maxx, int maxy){
+Stanza::Stanza(Entita * nemici, Entita * porte, Entita * artefatti, WINDOW * schermata_mappa, cchar_t ** matrice_stampabile, int ** matrice_logica, int x, int y, int maxx, int maxy){
     (*this).nemici = nemici;
     (*this).porte = porte;
     (*this).artefatti = artefatti;
@@ -15,17 +15,17 @@ Stanza::Stanza(Entita * nemici, Entita * porte, Entita * artefatti, WINDOW * sch
     (*this).maxy = getmaxy(stdscr);
 }
 
-/*
-    bool Stanza::accessibile(int ** mappa, int x, int y){
-        int returnbool = false;
-        if(x >= 0 && x < 80 && y >= 0 && y < 20 && mappa[x][y] != 1){
-            returnbool = true;
-        } return returnbool;
-    }
-*/
 
-wchar_t ** Stanza::genera_stanza(int ** matrice_stanza){
-    wchar_t ** matrice_da_stampare;
+bool Stanza::accessibile(int ** mappa, int x, int y){
+    int returnbool = false;
+    if(x >= 0 && x < 80 && y >= 0 && y < 20 && mappa[x][y] != 1){
+        returnbool = true;
+    } return returnbool;
+}
+
+
+cchar_t ** Stanza::genera_stanza(int ** matrice_stanza){
+    cchar_t ** matrice_da_stampare;
     for(int i = 0; i < maxy; i++){
         for(int j = 0; j < maxx; j++){
             switch(matrice_stanza [i] [j]){
@@ -46,6 +46,7 @@ wchar_t ** Stanza::genera_stanza(int ** matrice_stanza){
             }
         }
     }
+    return matrice_da_stampare;
 }
 //la funzione ch estampa effetivamente la faccio a parte, qui passo semplicemente da matric elogica a matrice grafica
 
