@@ -24,7 +24,7 @@ bool Stanza::accessibile(int ** mappa, int x, int y){
 }
 
 
-cchar_t ** Stanza::genera_stanza(int ** matrice_stanza){
+cchar_t ** Stanza::da_logica_a_stampabile(int ** matrice_stanza){
     cchar_t ** matrice_da_stampare;
     for(int i = 0; i < maxy; i++){
         for(int j = 0; j < maxx; j++){
@@ -49,4 +49,12 @@ cchar_t ** Stanza::genera_stanza(int ** matrice_stanza){
     return matrice_da_stampare;
 }
 //la funzione ch estampa effetivamente la faccio a parte, qui passo semplicemente da matric elogica a matrice grafica
+
+void Stanza::stampa_stanza(WINDOW * window_one, cchar_t ** mappa_stampabile, int offset_y, int offset_x){
+    for(int i = 0; i < (*this).y; i++){
+        for(int j = 0; j < (*this).x; j++){
+            mvwadd_wch( (window_one), (this->y)+i+offset_y, (this->x)+j+offset_y,  & (mappa_stampabile)[i][j]);
+        }
+    }
+}
 

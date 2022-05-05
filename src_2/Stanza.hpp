@@ -44,9 +44,9 @@ class Stanza {
     public:
         Stanza(Entita * nemici, Entita * porte, Entita * artefatti, WINDOW * schermata_mappa, cchar_t ** matrice_stampabile, int ** matrice_logica, int x, int y, int maxx, int maxy);
         
-        cchar_t ** genera_stanza(int ** matrice_stanza);
+        cchar_t ** da_logica_a_stampabile(int ** matrice_stanza);
 
-        void stampa_stanza();
+        void stampa_stanza(WINDOW * window_one, cchar_t ** mappa_stampabile, int offset_y, int offset_x);
 
         void creazione_porte();
 
