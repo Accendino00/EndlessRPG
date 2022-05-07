@@ -51,6 +51,7 @@ void GameData::startUp() {
     srand(time(NULL));
 
     initializeColors();
+    bkgd(COLOR_PAIR(MAIN_TITLE));
 }
 
 void GameData::getInput () {

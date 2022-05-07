@@ -74,13 +74,18 @@ void MenuMain::print() {
     int centerY = gd->getTerminalY()/2;
     int centerX = gd->getTerminalX()/2;
     attron(COLOR_PAIR(MAIN_TITLE));
-    mvprintw(centerY-7,centerX-11, "█████  █  █████  █████");
-    mvprintw(centerY-6,centerX-11, "█   █  █  █      █    ");
-    mvprintw(centerY-5,centerX-11, "█   █  █  █      █    ");
-    mvprintw(centerY-4,centerX-11, "█████  █  █████  █████");
-    mvprintw(centerY-3,centerX-11, "█      █      █      █");
-    mvprintw(centerY-2,centerX-11, "█      █      █      █");
-    mvprintw(centerY-1,centerX-11, "█      █  █████  █████");
+    mvprintw(centerY-13,centerX-15, "      ,╓▄▄▄▄▄▄▄▄#╗╗╤╤╗╗▄      ");
+    mvprintw(centerY-12,centerX-15, "  .▄Φ╨╨╙p╤═╨╜*\"░7ñm╝bw  ▀▄    ");
+    mvprintw(centerY-11,centerX-15, "  ▄⌐  `   ì   ╙,╓▄▄▄⌡┘─  ╙▄   ");
+    mvprintw(centerY-10,centerX-15, "╓▓╫*^'▀▀▀▀▓#  ▓▄Φ▀▓▀▀Mñ▄▄▄╩▀▄ ");
+    mvprintw(centerY-9, centerX-15, "▓HH╙║▀ΦM ▄▀   ,p, `╙╙╙║▄▌,║W∩▓");
+    mvprintw(centerY-8, centerX-15, "\"▓╙╓█▄¿*╙▀▄╖'╨╩║▄▄▄Φ▀▌▐▄▓└╜╥▄▀");
+    mvprintw(centerY-7, centerX-15, " ▐▌║█▓▐█▀▀▌▀╣▀╙▐▓▄▄▓▓▌▄▀  ╓▀└ ");
+    mvprintw(centerY-6, centerX-15, " :▌╙██████████▀▀╙▓ ╓▄▀`  ╓▀   ");
+    mvprintw(centerY-5, centerX-15, " ║M ╙▀▓▄█▄▓▄▄▓▄▄#▀▀Å╦Xφ▄▀└    ");
+    mvprintw(centerY-4, centerX-15, " ╫ └,*═«-\"\"\"\"╓≤≡╧╨▄▄Φ▀`       ");
+    mvprintw(centerY-3, centerX-15, " ╙▄,  `````╓▄▄▄#▀╙            ");
+    mvprintw(centerY-2, centerX-15, "   `╙▀▀╙╙╙└`                  ");
     attroff(COLOR_PAIR(MAIN_TITLE));
 
     attron(COLOR_PAIR(MENU_NORMAL));
