@@ -1,5 +1,5 @@
 #pragma once
-#include "libs.hpp"
+#include "../generale/libs.hpp"
 
 class Player:public Entita{
     private:

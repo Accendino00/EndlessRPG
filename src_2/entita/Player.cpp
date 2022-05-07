@@ -1,4 +1,4 @@
-#include "libs.hpp"
+#include "../generale/libs.hpp"
 
 Player::Player(int y, int x):Entita(y, x, 0, 0, NULL){
 

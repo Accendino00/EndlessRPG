@@ -92,7 +92,7 @@ int main () {
 		prova.chars[1] = L'\0';
 		prova.attr = A_NORMAL;
 		prova.ext_color = 2;
-		mvwadd_wch(stdscr, 50,20,&prova);
+		mvwadd_wch(stdscr, 50,20,(const cchar_t *) &prova);
 
         switch(pressedKeys[0]) {
 			case (L'w'):
@@ -112,6 +112,11 @@ int main () {
         player->stampa(stdscr, 0, 0);
 
 
+		move(10,2);
+		for(int k = 0; k < i; k++) {
+			printw("%d ", pressedKeys[k]);
+		}
+		usleep(100000);
 
         if(pressedKeys[0] == KEY_RESIZE) {
             getmaxyx(stdscr, yMax, xMax);

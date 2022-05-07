@@ -1,0 +1,129 @@
+#include "../generale/libs.hpp"
+
+MenuMain::MenuMain() {
+    selezione = 0;
+}
+
+void MenuMain::loopMenu() {
+    // Loop generale del gioco
+    MenuOptions * m_options;
+    do {
+        
+
+        // SCHERMATA INIZIALE
+        // Il menu principale
+        gd->getInput();
+        this->manageInput();
+
+        erase();
+
+
+        if(gd->checkInput(10)) {
+            switch(this->getSelezione()) {
+                case 0:
+                    // Play
+                    
+                    break;
+                case 1:
+                    // Score
+                    break;
+                case 2:    
+                    m_options = new MenuOptions();
+                    m_options->loopMenu();
+                    delete m_options;
+                    break;
+                case 3:
+                    gd->setCloseGame(true);
+                    break;
+            }
+        }
+
+        this->print();
+
+        refresh();
+    } while (! (gd->getCloseGame()) );
+
+}
+
+void MenuMain::manageInput() {
+    int i = 0;
+    int numOfOptions = 4;
+    while(i < gd->getNumOfPressedKeys() && gd->getKey(i) != ERR) {
+        switch(gd->getKey(i)) {
+            case KEY_UP:
+            case L'w':
+            case L'W':
+                selezione = (selezione -1 +numOfOptions) % numOfOptions;
+                break;
+            case KEY_DOWN:
+            case L's':
+            case L'S':
+                selezione = (selezione + 1) % numOfOptions;
+                break;
+        }
+        i++;
+    }
+}
+
+int MenuMain::getSelezione() {
+    return this->selezione;
+}
+
+void MenuMain::print() {
+
+    int centerY = gd->getTerminalY()/2;
+    int centerX = gd->getTerminalX()/2;
+    attron(COLOR_PAIR(MAIN_TITLE));
+    mvprintw(centerY-7,centerX-11, "█████  █  █████  █████");
+    mvprintw(centerY-6,centerX-11, "█   █  █  █      █    ");
+    mvprintw(centerY-5,centerX-11, "█   █  █  █      █    ");
+    mvprintw(centerY-4,centerX-11, "█████  █  █████  █████");
+    mvprintw(centerY-3,centerX-11, "█      █      █      █");
+    mvprintw(centerY-2,centerX-11, "█      █      █      █");
+    mvprintw(centerY-1,centerX-11, "█      █  █████  █████");
+    attroff(COLOR_PAIR(MAIN_TITLE));
+
+    attron(COLOR_PAIR(MENU_NORMAL));
+
+    // Stampa delle opzioni
+    if (this->getSelezione() == 0) {
+        attron(COLOR_PAIR(MENU_HIGHLIGHT));
+    }
+    mvprintw(centerY+2,centerX-2,"Gioca");
+    if (this->getSelezione() == 0) {
+        attroff(COLOR_PAIR(MENU_HIGHLIGHT));
+        attron(COLOR_PAIR(MENU_NORMAL));
+    }
+
+    // Stampa delle opzioni
+    if (this->getSelezione() == 1) {
+        attron(COLOR_PAIR(MENU_HIGHLIGHT));
+    }
+    mvprintw(centerY+4,centerX-2,"Punteggi");
+    if (this->getSelezione() == 1) {
+        attroff(COLOR_PAIR(MENU_HIGHLIGHT));
+        attron(COLOR_PAIR(MENU_NORMAL));
+    }
+
+    // Stampa delle opzioni
+    if (this->getSelezione() == 2) {
+        attron(COLOR_PAIR(MENU_HIGHLIGHT));
+    }
+    mvprintw(centerY+6,centerX-2,"Opzioni");
+    if (this->getSelezione() == 2) {
+        attroff(COLOR_PAIR(MENU_HIGHLIGHT));
+        attron(COLOR_PAIR(MENU_NORMAL));
+    }
+
+    // Stampa delle opzioni
+    if (this->getSelezione() == 3) {
+        attron(COLOR_PAIR(MENU_HIGHLIGHT));
+    }
+    mvprintw(centerY+8,centerX-2,"Esci");
+    if (this->getSelezione() == 3) {
+        attroff(COLOR_PAIR(MENU_HIGHLIGHT));
+        attron(COLOR_PAIR(MENU_NORMAL));
+    }
+
+    attroff(COLOR_PAIR(MENU_NORMAL));
+}
