@@ -13,14 +13,18 @@ void Gioco::gameLoop() {
         // Il menu principale
         gd->getInput();
         erase();
+        
+        // Calcola logica
 
         this->player->manageInput();
+
+
+
+        this->player->stampa(gd->getTerminalY()/2, gd->getTerminalX()/2);
 
         if(gd->checkInput('q')) {
             gameOver = true;
         }
-
-        this->player->stampa(gd->getTerminalY()/2, gd->getTerminalX()/2);
 
         gd->frameFinish();
         refresh();

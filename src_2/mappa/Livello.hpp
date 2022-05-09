@@ -18,6 +18,8 @@ class Livello {
         Stanza * ovest;
     };
 
+    Stanza *** stanze;
+
     public:
     void genera_livello();
 

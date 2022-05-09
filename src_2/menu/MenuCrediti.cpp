@@ -36,6 +36,7 @@ void MenuCrediti::print() {
         
         
     attron(COLOR_PAIR(MENU_HIGHLIGHT));
+    mvprintw(centerY+10,centerX-4,">");
     mvprintw(centerY+10,centerX-2,"Esci");
     attroff(COLOR_PAIR(MENU_HIGHLIGHT));
 }

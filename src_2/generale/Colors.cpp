@@ -7,7 +7,7 @@ void initializeColors() {
     init_color(MENU_HL_BACKGROUND, 1000, 1000, 1000);
 
     // Per poter convertire da 1000 1000 1000 a 255 255 255, uso questa costante per moltiplicare
-    short CC = 1000 / 255;
+    double CC = 1000 / 255;
     init_color(MAIN_TITLE_TEXT,         254 * CC,   135 * CC,   93  * CC);
     init_color(MAIN_TITLE_BACKGROUND,   53  * CC,   98  * CC,   136 * CC);
 

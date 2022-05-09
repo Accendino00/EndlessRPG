@@ -108,6 +108,7 @@ void MenuOptions::print() {
     // Stampa delle opzioni
     if (this->getSelezione() == 0) {
         attron(COLOR_PAIR(MENU_HIGHLIGHT));
+        mvprintw(centerY+2,centerX-4,">");
     }
     mvprintw(centerY+2,centerX-2,"Difficoltà:\t< %s \t>",gd->getDifficulty());
     if (this->getSelezione() == 0) {
@@ -118,8 +119,9 @@ void MenuOptions::print() {
     // Stampa delle opzioni
     if (this->getSelezione() == 1) {
         attron(COLOR_PAIR(MENU_HIGHLIGHT));
+        mvprintw(centerY+4,centerX-4,">");
     }
-    mvprintw(centerY+4,centerX-2,"FPS cap:\t\t< %d \t>", gd->getFPSCap());
+    mvprintw(centerY+4,centerX-2,"FPS cap:\t< %d \t>", gd->getFPSCap());
     if (this->getSelezione() == 1) {
         attroff(COLOR_PAIR(MENU_HIGHLIGHT));
         attron(COLOR_PAIR(MENU_NORMAL));
@@ -128,6 +130,7 @@ void MenuOptions::print() {
     // Stampa delle opzioni
     if (this->getSelezione() == 2) {
         attron(COLOR_PAIR(MENU_HIGHLIGHT));
+        mvprintw(centerY+6,centerX-4,">");
     }
     mvprintw(centerY+6,centerX-2,"Mostra FPS:\t< %s\t>", gd->getShowPerformance());
     if (this->getSelezione() == 2) {
@@ -138,6 +141,7 @@ void MenuOptions::print() {
     // Stampa delle opzioni
     if (this->getSelezione() == 3) {
         attron(COLOR_PAIR(MENU_HIGHLIGHT));
+        mvprintw(centerY+8,centerX-4,">");
     }
     mvprintw(centerY+8,centerX-2,"%s", gd->getImpostazioniSalvate());
     if (this->getSelezione() == 3) {
@@ -148,6 +152,7 @@ void MenuOptions::print() {
     // Stampa delle opzioni
     if (this->getSelezione() == 4) {
         attron(COLOR_PAIR(MENU_HIGHLIGHT));
+        mvprintw(centerY+10,centerX-4,">");
     }
     mvprintw(centerY+10,centerX-2,"Crediti");
     if (this->getSelezione() == 4) {
@@ -158,6 +163,7 @@ void MenuOptions::print() {
     // Stampa delle opzioni
     if (this->getSelezione() == 5) {
         attron(COLOR_PAIR(MENU_HIGHLIGHT));
+        mvprintw(centerY+12,centerX-4,">");
     }
     mvprintw(centerY+12,centerX-2,"Indietro");
     if (this->getSelezione() == 5) {

@@ -97,6 +97,7 @@ void MenuMain::print() {
     // Stampa delle opzioni
     if (this->getSelezione() == 0) {
         attron(COLOR_PAIR(MENU_HIGHLIGHT));
+        mvprintw(centerY+2,centerX-4,">");
     }
     mvprintw(centerY+2,centerX-2,"Gioca");
     if (this->getSelezione() == 0) {
@@ -107,6 +108,7 @@ void MenuMain::print() {
     // Stampa delle opzioni
     if (this->getSelezione() == 1) {
         attron(COLOR_PAIR(MENU_HIGHLIGHT));
+        mvprintw(centerY+4,centerX-4,">");
     }
     mvprintw(centerY+4,centerX-2,"Punteggi");
     if (this->getSelezione() == 1) {
@@ -117,6 +119,7 @@ void MenuMain::print() {
     // Stampa delle opzioni
     if (this->getSelezione() == 2) {
         attron(COLOR_PAIR(MENU_HIGHLIGHT));
+        mvprintw(centerY+6,centerX-4,">");
     }
     mvprintw(centerY+6,centerX-2,"Opzioni");
     if (this->getSelezione() == 2) {
@@ -127,6 +130,7 @@ void MenuMain::print() {
     // Stampa delle opzioni
     if (this->getSelezione() == 3) {
         attron(COLOR_PAIR(MENU_HIGHLIGHT));
+        mvprintw(centerY+8,centerX-4,">");
     }
     mvprintw(centerY+8,centerX-2,"Esci");
     if (this->getSelezione() == 3) {
