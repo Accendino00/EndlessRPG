@@ -1,5 +1,13 @@
 #include "../generale/libs.hpp"
 
+Entita::Entita(){
+    this->y = 0;
+    this->x = 0;
+    this->dim_y = 0;
+    this->dim_x = 0;
+    this->stampabile = NULL;
+}
+
 Entita::Entita(int y,int x, int dim_y, int dim_x, cchar_t ** stampa) {
     (*this).y = y;
     (*this).x = x;
@@ -29,11 +37,10 @@ Entita::~Entita() {
     free((*this).stampabile);
 }
 
-void Entita::stampa(WINDOW * window, int offsetY, int offsetX) {
+void Entita::stampa(int offsetY, int offsetX) {
     for(int i = 0; i < (*this).dim_y; i++) {
         for(int j = 0; j < (*this).dim_x; j++) {
-            mvwadd_wch( (window),
-                        (this->y)+i+offsetY, 
+            mvadd_wch(  (this->y)+i+offsetY, 
                         (this->x)+j+offsetX, 
                         & (this->stampabile)[i][j]);
         }

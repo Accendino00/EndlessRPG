@@ -18,9 +18,13 @@ private:
                                 // Il massimo è la define: UINT_LEAST16_MAX
 
     // Settings
-    short maxFPS;
+    short FPSCap;
     short difficulty;
     bool showPerformance; 
+    bool impostazioniSalvate;
+
+    // for fps
+    std::chrono::_V2::system_clock::time_point start, end;
 
 
 public:
@@ -30,6 +34,9 @@ public:
     void startUp();
     void getInput ();
     bool checkInput (int inputToCheck);
+
+    void frameStart();
+    void frameFinish();
 
     int getKey(int index);
     int getNumOfPressedKeys();
@@ -42,5 +49,20 @@ public:
 
     void setStatus(int status);
     int getStatus();
+
+    // Per i settings
+    void salvaImpostazioni();
+    void caricaImpostazioni();
+
+    int getFPSCap();
+    void cycleFPSCap(bool direction);
+
+    const char * getShowPerformance();
+    void cycleShowPerformance(bool direction);
+
+    const char * getDifficulty();
+    void cycleDifficulty(bool direction);
+
+    const char * getImpostazioniSalvate();
 };
 

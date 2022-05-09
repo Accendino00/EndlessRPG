@@ -1,10 +1,10 @@
 All: Gioco clean
 
-Gioco: Gioco.o Entita.o Player.o Stanza.o Livello.o General.o Colors.o MenuMain.o MenuOptions.o 
-	g++ -g -Wall -o Gioco Gioco.o Entita.o Player.o Stanza.o Livello.o General.o Colors.o MenuMain.o MenuOptions.o -lncursesw
+Gioco: main2.o Entita.o Player.o Stanza.o Livello.o General.o Gioco.o Colors.o MenuMain.o MenuOptions.o MenuCrediti.o
+	g++ -g -Wall -o Gioco main2.o Entita.o Player.o Stanza.o Livello.o General.o Gioco.o Colors.o MenuMain.o MenuOptions.o MenuCrediti.o -lncursesw
 
-Gioco.o:
-	g++ -g -Wall -c Gioco.cpp -lncursesw
+main2.o:
+	g++ -g -Wall -c main2.cpp -lncursesw
 
 Entita.o:
 	g++ -g -Wall -c ./entita/Entita.cpp -lncursesw
@@ -29,6 +29,12 @@ MenuMain.o:
 
 MenuOptions.o:
 	g++ -g -Wall -c ./menu/MenuOptions.cpp -lncursesw
+
+MenuCrediti.o:
+	g++ -g -Wall -c ./menu/MenuCrediti.cpp -lncursesw
+
+Gioco.o:
+	g++ -g -Wall -c ./generale/Gioco.cpp -lncursesw
 
 clean:
 	rm *.o

@@ -22,12 +22,16 @@
 // in quanto questa variabile è contenuta nel main e deve essere globale
 extern GameData * gd;
 
-//Menu
-#include "../menu/MenuOptions.hpp"
-#include "../menu/MenuMain.hpp"
-
 //Inclusione degli header
 #include "../entita/Entita.hpp"
-#include "../mappa/Stanza.hpp"
 #include "../entita/Player.hpp"
+#include "../mappa/Stanza.hpp"
+#include "../mappa/Livello.hpp"
+
+//Menu
+#include "../menu/MenuMain.hpp"
+#include "../menu/MenuOptions.hpp"
+#include "../menu/MenuCrediti.hpp"
+#include "../generale/Gioco.hpp"
+
 

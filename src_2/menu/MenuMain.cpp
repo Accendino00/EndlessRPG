@@ -7,8 +7,9 @@ MenuMain::MenuMain() {
 void MenuMain::loopMenu() {
     // Loop generale del gioco
     MenuOptions * m_options;
+    Gioco * gioco;
     do {
-        
+        gd->frameStart();
 
         // SCHERMATA INIZIALE
         // Il menu principale
@@ -22,7 +23,9 @@ void MenuMain::loopMenu() {
             switch(this->getSelezione()) {
                 case 0:
                     // Play
-                    
+                    gioco = new Gioco();
+                    gioco->gameLoop();
+                    delete gioco;
                     break;
                 case 1:
                     // Score
@@ -40,6 +43,7 @@ void MenuMain::loopMenu() {
 
         this->print();
 
+        gd->frameFinish();
         refresh();
     } while (! (gd->getCloseGame()) );
 
@@ -48,7 +52,7 @@ void MenuMain::loopMenu() {
 void MenuMain::manageInput() {
     int i = 0;
     int numOfOptions = 4;
-    while(i < gd->getNumOfPressedKeys() && gd->getKey(i) != ERR) {
+    while(i < gd->getNumOfPressedKeys()) {
         switch(gd->getKey(i)) {
             case KEY_UP:
             case L'w':
