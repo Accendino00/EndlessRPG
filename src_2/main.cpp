@@ -33,12 +33,12 @@ int main () {
 
 
 	start_color(); 
-	init_pair(1, COLOR_WHITE, COLOR_BLUE);
+	init_pair(1, COLOR_BLUE, COLOR_RED);
     // I colori sono occupati da 0 a 7, tutti gli altri numeri short (max 65535) sono occupabili da numeri personalizzati
     init_color(25,500,500,500);
     init_color(26,1000 * 78 / 255,1000 * 65 / 255,1000 * 135 / 255);
     init_color(27,1000 * 248 / 255,1000 * 255 / 255,1000 * 229 / 255);
-    init_pair(2,27,26);
+    init_pair(2,COLOR_BLUE,COLOR_RED);
 
     int dimy = 100, dimx = 100;
     // ricorda di chiudere queste cose dopo che le apri
@@ -49,13 +49,13 @@ int main () {
 
     srand(time(NULL));
 
-    wchar_t prova1 [5] = L"\u2665";
-    wchar_t prova2 [5] = L"\u2668";
-    wchar_t prova3 [5] = L"\u2605";
+    wchar_t prova1 [5] = L"c";
+    wchar_t prova2 [5] = L"a";
+    wchar_t prova3 [5] = L"u";
     for(int i = 0; i < dimy; i++) {
         for(int j = 0; j < dimx; j++) {
             int r = rand() % 3;
-            setcchar(&(player_graphical[i][j]), (r==0)?(prova1):((r==1)?(prova2):(prova3)) , A_BOLD, 2, NULL);
+            setcchar(&(player_graphical[i][j]), (r==0)?(prova1):((r==1)?(prova2):(prova3)) , A_BOLD, 1, NULL);
         }
     }
     Entita * player = new Entita(yMax/2, xMax/2, dimy, dimx, player_graphical); 
@@ -73,7 +73,6 @@ int main () {
 		} while(input != ERR);
 		erase();
 		move(yMax/2, (xMax/2));
-		
 		if (i>0) {
 			for(int j = 0; j < i; j++) {
         		wprintw(stdscr, "%lc", pressedKeys[j]);
@@ -87,6 +86,13 @@ int main () {
         wattron(stdscr, A_BOLD | COLOR_PAIR(2));
         wprintw(stdscr, "Ciao");
         wattroff(stdscr, A_BOLD | COLOR_PAIR(2));
+
+		cchar_t prova;
+		prova.chars[0] = L'a';
+		prova.chars[1] = L'\0';
+		prova.attr = A_NORMAL;
+		prova.ext_color = 2;
+		mvwadd_wch(stdscr, 50,20,(const cchar_t *) &prova);
 
         switch(pressedKeys[0]) {
 			case (L'w'):
@@ -106,6 +112,11 @@ int main () {
         player->stampa(stdscr, 0, 0);
 
 
+		move(10,2);
+		for(int k = 0; k < i; k++) {
+			printw("%d ", pressedKeys[k]);
+		}
+		usleep(100000);
 
         if(pressedKeys[0] == KEY_RESIZE) {
             getmaxyx(stdscr, yMax, xMax);

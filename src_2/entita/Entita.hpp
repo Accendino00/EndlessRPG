@@ -1,8 +1,10 @@
 #pragma once
-#include "libs.hpp"
+#include "../generale/libs.hpp"
 
 class Entita {
 public:
+    // Punti salute
+    int life;
     // Coordinate
     int x, y;
     // Dimensioni hitbox
@@ -11,10 +13,11 @@ public:
     cchar_t ** stampabile;
 
 public:
-    Entita(int y,int x, int dim_y, int dim_x, cchar_t ** stampa);
+    Entita();
+    Entita(int life, int y,int x, int dim_y, int dim_x, cchar_t ** stampa);
     ~Entita();
 
-    void stampa(WINDOW * window, int offsetY, int offsetX);
+    void stampa(int offsetY, int offsetX);
     
     bool controllaContatto(Entita * entita);
 

@@ -1,16 +1,23 @@
-#pragma once
-#include "libs.hpp"
+#include "../generale/libs.hpp"
 
-Entita::Entita(int y,int x, int dim_y, int dim_x, cchar_t ** stampa) {
+Entita::Entita(){
+    this->y = 0;
+    this->x = 0;
+    this->dim_y = 0;
+    this->dim_x = 0;
+    this->stampabile = NULL;
+}
+
+Entita::Entita(int life, int y,int x, int dim_y, int dim_x, cchar_t ** stampa) {
     (*this).y = y;
     (*this).x = x;
     (*this).dim_y = dim_y;
     (*this).dim_x = dim_x;
 
 
-    (*this).stampabile = (cchar_t **) calloc(dim_y, sizeof(cchar_t*));
+    (*this).stampabile = new cchar_t * [dim_y];
     for(int i = 0; i < dim_y; i++) {
-        (*this).stampabile[i] = (cchar_t *) calloc(dim_x, sizeof(cchar_t));
+        (*this).stampabile[i] =  new cchar_t [dim_x];
     }
     wchar_t temp_c [CCHARW_MAX];
     attr_t temp_a;
@@ -30,11 +37,10 @@ Entita::~Entita() {
     free((*this).stampabile);
 }
 
-void Entita::stampa(WINDOW * window, int offsetY, int offsetX) {
+void Entita::stampa(int offsetY, int offsetX) {
     for(int i = 0; i < (*this).dim_y; i++) {
         for(int j = 0; j < (*this).dim_x; j++) {
-            mvwadd_wch( (window),
-                        (this->y)+i+offsetY, 
+            mvadd_wch(  (this->y)+i+offsetY, 
                         (this->x)+j+offsetX, 
                         & (this->stampabile)[i][j]);
         }
@@ -106,5 +112,5 @@ void Entita::incrementaX(int amount) {
     (*this).x += amount;
 }
 void Entita::incrementaY(int amount) {
-    (*this).y += amount;
+    (*this).y -= amount;
 }

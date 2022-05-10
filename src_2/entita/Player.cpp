@@ -1,24 +1,28 @@
-#pragma once
-#include "libs.hpp"
+#include "../generale/libs.hpp"
 
-Player::Player(int y, int x):Entita(y, x, 0, 0, NULL){
+Player::Player(int y, int x) {
+
+	this->dim_x=1;
+	this->dim_y=1;
 
     this->stampabile = new cchar_t * [1];
     this->stampabile[0] = new cchar_t [1];
-
-    wchar_t dragonerosso [5] = L"\u2665";
    
-    setcchar(&(this->stampabile[0][0]), dragonerosso, A_BOLD, 2, NULL);
-
+    setcchar(&(this->stampabile[0][0]), L"P", A_NORMAL, PLAYER_COLOR_PAIR, NULL);
+    
     this->y = y;
     this->x = x;
-
 };
 
-void Player::movimento(int input, Stanza stanza)
-{
-	int lastinput = NULL;
+void Player::manageInput() {
+	int i = 0;
+    while(i < gd->getNumOfPressedKeys()) {
+        this->movimento(gd->getKey(i));
+        i++;
+    }
+}
 
+void Player::movimento(int input){
     switch(input) {
 			case (L'w'):
 			    y--;
