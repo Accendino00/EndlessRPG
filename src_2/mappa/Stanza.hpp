@@ -31,6 +31,7 @@ class Stanza {
         int x, y, maxx, maxy;
 
     public:
+        Stanza(int tipoStanza);
         Stanza(Entita * nemici, Entita * porte, Entita * artefatti, WINDOW * schermata_mappa, cchar_t ** matrice_stampabile, int ** matrice_logica, int x, int y, int maxx, int maxy);
         
         cchar_t ** da_logica_a_stampabile(int ** matrice_stanza);

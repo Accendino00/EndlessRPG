@@ -15,6 +15,8 @@ class Livello {
     Stanza *** matrice_livello;
 
     public:
+    Livello();
+
     void genera_livello();
     
     void scegli_lato(Stanza *** matrice_livello , int * x, int *y);

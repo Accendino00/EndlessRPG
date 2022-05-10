@@ -1,11 +1,16 @@
 #include "../generale/libs.hpp"
 
 Player::Player(int y, int x, int life) {
-    int lastinput = NULL;
+    this->lastinput = L'd';
 	this->dim_x=1;
 	this->dim_y=1;
+
+	this->dashDistanceY = 5;
+	this->dashDistanceX = this->dashDistanceY*2;
+
     this->life=life;
     this->current_life = this->life;
+	
     this->stampabile = new cchar_t * [1];
     this->stampabile[0] = new cchar_t [1];
    
@@ -60,11 +65,10 @@ void Player::gestione_player(int input){
                 this->lastinput = (L'a');
 				break;
             case (L' '):
-                if(this->lastinput == NULL) y=y-2;
-                if(this->lastinput == L'w') y=y-2;
-                if(this->lastinput == L's') y=y+2;
-                if(this->lastinput == L'd') y=x-2;
-                if(this->lastinput == L'a') y=x+2;
+                if(this->lastinput == L'w') y-=this->dashDistanceY;
+                if(this->lastinput == L's') y+=this->dashDistanceY;
+                if(this->lastinput == L'd') x+=this->dashDistanceX;
+                if(this->lastinput == L'a') x-=this->dashDistanceX;
                 break;
 
 		}
@@ -72,6 +76,4 @@ void Player::gestione_player(int input){
 };
 
 void Player::inventario(){
-    getmaxyx(stdscr, yMax, xMax);
-
 }

@@ -4,6 +4,7 @@
 class Player:public Entita{
     private:
     int lastinput;
+    int dashDistanceX, dashDistanceY;
     public:
     Player(int y, int x, int life);
 

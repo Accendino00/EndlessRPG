@@ -34,7 +34,7 @@ Devi far si che sia possibile fare
 ```
 */
 
-Livello::scegli_lato(Stanza *** matrice_livello , int * x, int *y){ 
+void Livello::scegli_lato(Stanza *** matrice_livello , int * x, int *y){ 
     switch(rand() % 4){
         case 0:
         y++;
@@ -55,7 +55,7 @@ Livello::Livello(){
     int current_x = 2;
     int current_y = 2;
     int stanza_counter = 0;
-    while(stanza_counter < 16)
+    while(stanza_counter < 16) {
         if(matrice_livello [current_y] [current_x] != NULL){
             scegli_lato(matrice_livello , &current_y, &current_x);
         } else if (stanza_counter == 8 || stanza_counter == 16){

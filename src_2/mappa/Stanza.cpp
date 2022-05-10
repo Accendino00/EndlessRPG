@@ -1,5 +1,8 @@
 #include "../generale/libs.hpp"
 
+Stanza::Stanza(int tipoStanza) {
+    // Implementare
+}
 
 Stanza::Stanza(Entita * nemici, Entita * porte, Entita * artefatti, WINDOW * schermata_mappa, cchar_t ** matrice_stampabile, int ** matrice_logica, int x, int y, int maxx, int maxy){
     (*this).nemici = nemici;
