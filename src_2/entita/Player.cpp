@@ -4,8 +4,8 @@ Player::Player(int y, int x, int life) {
     int lastinput = NULL;
 	this->dim_x=1;
 	this->dim_y=1;
-    this->life=10;
-
+    this->life=life;
+    this->current_life = this->life;
     this->stampabile = new cchar_t * [1];
     this->stampabile[0] = new cchar_t [1];
    
@@ -23,18 +23,20 @@ void Player::manageInput() {
     }
 }
 
-void Player::stampaHUDplayer(int danno){
+
+void Player::stampaHUDplayer(){
     int coordy = 0;
     int coordx = 0;
-    int life_now;
-    for(int i = life; i>0; i--){
-        
-    }
-    attron(COLOR_PAIR(HEARTS_PAIR));
-    mvprintw(coordy+1, coordx, "        ┌─────────────┐");
+    attron(COLOR_PAIR(0));
     mvprintw(coordy+2, coordx, "HP : ");
-    mvprintw(coordy+2, coordx+6, HP);
-    mvprintw(coordy+3, coordx, "        └─────────────┘");
+    attroff(COLOR_PAIR(0));
+    attron(COLOR_PAIR(HEARTS_PAIR));
+    for(int i = current_life/10; i>0; i--){
+        printw("\u2665");
+    }
+    for(int i = (life-current_life)/10; i>0; i--){
+        printw("\u2661");
+    }
     attroff(COLOR_PAIR(HEARTS_PAIR));
 
 }

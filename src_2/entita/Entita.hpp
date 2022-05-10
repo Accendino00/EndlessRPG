@@ -5,6 +5,7 @@ class Entita {
 public:
     // Punti salute
     int life;
+    int current_life;
     // Coordinate
     int x, y;
     // Dimensioni hitbox

@@ -6,6 +6,8 @@ Entita::Entita(){
     this->dim_y = 0;
     this->dim_x = 0;
     this->stampabile = NULL;
+    this->current_life = 1;
+    this->life = 1;
 }
 
 Entita::Entita(int life, int y,int x, int dim_y, int dim_x, cchar_t ** stampa) {
@@ -13,7 +15,8 @@ Entita::Entita(int life, int y,int x, int dim_y, int dim_x, cchar_t ** stampa) {
     (*this).x = x;
     (*this).dim_y = dim_y;
     (*this).dim_x = dim_x;
-
+    this->current_life = life;
+    this->life = life;
 
     (*this).stampabile = new cchar_t * [dim_y];
     for(int i = 0; i < dim_y; i++) {
@@ -26,15 +29,18 @@ Entita::Entita(int life, int y,int x, int dim_y, int dim_x, cchar_t ** stampa) {
         for(int j = 0; j < dim_x; j++) {
             getcchar(&(stampa[i][j]), temp_c, &temp_a, &temp_s, NULL);
             setcchar(&((*this).stampabile[i][j]), temp_c, temp_a, temp_s, NULL);
+            // petru gay
         }
     }
 }
 
 Entita::~Entita() {
     for(int i = 0; i < (*this).dim_y; i++) {
-        free((*this).stampabile[i]);
+        delete[] this->stampabile[i];
+        //free((*this).stampabile[i]);
     }
-    free((*this).stampabile);
+    delete[] this->stampabile;
+    //free((*this).stampabile);
 }
 
 void Entita::stampa(int offsetY, int offsetX) {

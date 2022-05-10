@@ -21,6 +21,7 @@ void Gioco::gameLoop() {
 
 
         this->player->stampa(gd->getTerminalY()/2, gd->getTerminalX()/2);
+        this->player->stampaHUDplayer();
 
         if(gd->checkInput('q')) {
             gameOver = true;

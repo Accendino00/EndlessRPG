@@ -14,7 +14,7 @@ class Player:public Entita{
     */
    
     void manageInput();
-    void stampaHUDplayer(int danno);
+    void stampaHUDplayer();
     void gestione_player(int input);
 
     void inventario();
