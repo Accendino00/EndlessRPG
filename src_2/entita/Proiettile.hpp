@@ -12,7 +12,7 @@ private:
 public:
 
     Proiettile(int x, int y, bool playerProjectile, int direction) {
-        this->lastTick = gd->currentTick;
+        this->lastTick = gd->getCurrentTick();
         this->x = x;
         this->y = y;
         this->direction = direction;
@@ -39,13 +39,13 @@ public:
     }
 
     void updateProjectile(/*dati sulla mappa e sui nemici da controllare*/) {
-        if((gd->currentTick - this->lastTick) >= ticksBeforeAction) {
-            this->lastTick = gd->currentTick;
-            moveInDirection();
+        if((gd->getCurrentTick() - this->lastTick) >= ticksBeforeAction) {
+            this->lastTick = gd->getCurrentTick();
+            this->moveInDirection();
         }
     }
 
-    void moveInDirection(int direction) {
+    void moveInDirection() {
         switch(direction) {
             case DIRECTION_UP:
                 this->incrementaY(1);
