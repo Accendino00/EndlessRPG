@@ -31,6 +31,9 @@ private:
     // for fps
     std::chrono::_V2::system_clock::time_point start, end;
 
+    std::chrono::_V2::system_clock::time_point last_clock;
+    long int currentTick;
+    double timeForTick;
 
 public:
     GameData ();
@@ -54,6 +57,9 @@ public:
 
     void setStatus(int status);
     int getStatus();
+
+    void manageTicks();
+    long int getCurrentTick();
 
     // Per i settings
     void salvaImpostazioni();
