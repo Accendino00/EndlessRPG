@@ -3,6 +3,11 @@
 
 #define MAX_TASTI_INSIEME 32
 
+#define DIRECTION_UP    0
+#define DIRECTION_RIGHT 1
+#define DIRECTION_DOWN  2
+#define DIRECTION_LEFT  3
+
 
 class GameData {
 private:
@@ -26,6 +31,9 @@ private:
     // for fps
     std::chrono::_V2::system_clock::time_point start, end;
 
+    std::chrono::_V2::system_clock::time_point last_clock;
+    long int currentTick;
+    double timeForTick;
 
 public:
     GameData ();
@@ -49,6 +57,9 @@ public:
 
     void setStatus(int status);
     int getStatus();
+
+    void manageTicks();
+    long int getCurrentTick();
 
     // Per i settings
     void salvaImpostazioni();

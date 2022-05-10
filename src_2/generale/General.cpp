@@ -12,6 +12,9 @@ GameData::GameData () {
     this->difficulty = 1;
     this->showPerformance = true;
     this->impostazioniSalvate = true;
+
+    this->currentTick = 0;
+    this->timeForTick = 0.05;
 }
 
 void GameData::startUp() {

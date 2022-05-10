@@ -8,16 +8,16 @@ Entita::Entita(){
     this->stampabile = NULL;
 }
 
-Entita::Entita(int y,int x, int dim_y, int dim_x, cchar_t ** stampa) {
+Entita::Entita(int life, int y,int x, int dim_y, int dim_x, cchar_t ** stampa) {
     (*this).y = y;
     (*this).x = x;
     (*this).dim_y = dim_y;
     (*this).dim_x = dim_x;
 
 
-    (*this).stampabile = (cchar_t **) calloc(dim_y, sizeof(cchar_t*));
+    (*this).stampabile = new cchar_t * [dim_y];
     for(int i = 0; i < dim_y; i++) {
-        (*this).stampabile[i] = (cchar_t *) calloc(dim_x, sizeof(cchar_t));
+        (*this).stampabile[i] =  new cchar_t [dim_x];
     }
     wchar_t temp_c [CCHARW_MAX];
     attr_t temp_a;
