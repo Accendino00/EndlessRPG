@@ -3,6 +3,11 @@
 
 #define MAX_TASTI_INSIEME 32
 
+#define DIRECTION_UP    0
+#define DIRECTION_RIGHT 1
+#define DIRECTION_DOWN  2
+#define DIRECTION_LEFT  3
+
 
 class GameData {
 private:

@@ -25,6 +25,7 @@ extern GameData * gd;
 //Inclusione degli header
 #include "../entita/Entita.hpp"
 #include "../entita/Player.hpp"
+#include "../entita/Proiettile.hpp"
 #include "../mappa/Stanza.hpp"
 #include "../mappa/Livello.hpp"
 
