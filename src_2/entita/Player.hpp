@@ -3,9 +3,9 @@
 
 class Player:public Entita{
     private:
-
+    int lastinput;
     public:
-    Player(int y, int x);
+    Player(int y, int x, int life);
 
     /*
     Da aggiungere un puntatore alla stanza come parametro di questi due metodi, 
@@ -14,7 +14,8 @@ class Player:public Entita{
     */
    
     void manageInput();
-    void movimento(int input);
+    void stampaHUDplayer(int danno);
+    void gestione_player(int input);
 
     void inventario();
 };
