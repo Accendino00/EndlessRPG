@@ -4,24 +4,20 @@
 class Livello {
     public:
     
+    /*
     struct Stanza_boss{
         Entita * boss;
         Stanza battaglia_boss;
         Livello * livello_successivo;
     };
+    */
 
-    struct Struttura_stanza{
-        Stanza stanza_corrente;
-        Stanza * nord;
-        Stanza * sud;
-        Stanza * est;
-        Stanza * ovest;
-    };
-
-    Stanza *** stanze;
+    Stanza *** matrice_livello;
 
     public:
     void genera_livello();
+    
+    void scegli_lato(Stanza *** matrice_livello , int * x, int *y);
 
     void stampa_livello();
 };
