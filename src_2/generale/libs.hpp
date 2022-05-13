@@ -16,7 +16,7 @@
 
 
 #include "../generale/Colors.hpp"
-#include "../generale/General.hpp"
+#include "../generale/GameData.hpp"
 
 // La dichiaro qui così dopo non ho problemi con le dipendenze, 
 // in quanto questa variabile è contenuta nel main e deve essere globale

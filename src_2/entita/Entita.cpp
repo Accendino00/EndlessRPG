@@ -109,6 +109,13 @@ bool Entita::controllaContatto(Entita * entita) {
     );
 }
 
+void Entita::updateTicks() {
+    if((gd->getCurrentTick() - this->lastTick) >= this->ticksForAction) {
+        this->passedActions += (gd->getCurrentTick() - this->lastTick) / this->ticksForAction;
+        this->lastTick = gd->getCurrentTick();
+    }
+}
+
 void Entita::modificaCoordinate(int new_y, int new_x) {
     (*this).y = new_y;
     (*this).x = new_x;

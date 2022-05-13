@@ -2,10 +2,11 @@
 #include "../generale/libs.hpp"
 
 class Player:public Entita{
-    private:
+private:
     int lastinput;
     int dashDistanceX, dashDistanceY;
-    public:
+
+public:
     Player(int y, int x, int life);
 
     /*

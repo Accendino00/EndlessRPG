@@ -14,7 +14,10 @@ GameData::GameData () {
     this->impostazioniSalvate = true;
 
     this->currentTick = 0;
-    this->timeForTick = 0.05;
+    // Devo usare chrono per avere meno cast. Ha il suo particolare 
+    // tipo di dato per misurare la durata del tempo
+    this->timeForTick = std::chrono::duration<double>(0.001);
+    this->last_clock = std::chrono::system_clock::now();
 }
 
 void GameData::startUp() {
@@ -99,6 +102,7 @@ void GameData::frameFinish() {
     if (this->showPerformance) {
         mvprintw(0,0,"FPS: %f", (1/elapsed_seconds.count()));
         mvprintw(1,0,"ms: %f",elapsed_seconds.count()*1000);
+        mvprintw(4,1,"tick: %ld",this->getCurrentTick());
     }
 }
 
@@ -137,6 +141,22 @@ void GameData::setCloseGame(bool closeGame) {
 
 bool GameData::getCloseGame() {
     return this->closeGame;
+}
+
+// Gestione tick
+
+void GameData::manageTicks() {
+    std::chrono::_V2::system_clock::time_point nowTime = std::chrono::system_clock::now();
+    std::chrono::duration<double> passedTime = (nowTime - this->last_clock);
+    if(passedTime >= this->timeForTick) {
+        this->currentTick += (long int) (passedTime.count() / (this->timeForTick.count()));
+        mvprintw(5,2, "tickPerquesto ciclo: %ld", (long int) (passedTime.count() / (this->timeForTick.count())));
+        this->last_clock = nowTime;
+    }
+}
+
+long int GameData::getCurrentTick() {
+    return this->currentTick;
 }
 
 void GameData::salvaImpostazioni() {

@@ -13,6 +13,12 @@ public:
     // Matrice che contiene il contenuto da stampare per rappresentare l'entità
     cchar_t ** stampabile;
 
+    // Per poterlo animare e in generale fargli fare cose ogni n tempo
+    long long int lastTick;
+    long long int ticksForAction;
+
+    long long int passedActions; // Basato su ticksForAction
+
 public:
     Entita();
     Entita(int life, int y,int x, int dim_y, int dim_x, cchar_t ** stampa);
@@ -21,6 +27,8 @@ public:
     void stampa(int offsetY, int offsetX);
     
     bool controllaContatto(Entita * entita);
+
+    void updateTicks();
 
     void modificaCoordinate(int new_y, int new_x);
     void incrementaX(int amount);

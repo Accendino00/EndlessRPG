@@ -31,9 +31,10 @@ private:
     // for fps
     std::chrono::_V2::system_clock::time_point start, end;
 
+    // for logic ticks
+    std::chrono::duration<double> timeForTick;
     std::chrono::_V2::system_clock::time_point last_clock;
-    long int currentTick;
-    double timeForTick;
+    long long int currentTick;
 
 public:
     GameData ();
