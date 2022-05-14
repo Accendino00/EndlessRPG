@@ -63,7 +63,7 @@ void GameData::startUp() {
     this->caricaImpostazioni();
 
     initializeColors();
-    bkgd(COLOR_PAIR(MAIN_TITLE));
+    bkgd(COLOR_PAIR(MENU_NORMAL));
 }
 
 void GameData::getInput () {
@@ -100,9 +100,8 @@ void GameData::frameFinish() {
     elapsed_seconds = end - start;
 
     if (this->showPerformance) {
-        mvprintw(0,0,"FPS: %f", (1/elapsed_seconds.count()));
-        mvprintw(1,0,"ms: %f",elapsed_seconds.count()*1000);
-        mvprintw(4,1,"tick: %ld",this->getCurrentTick());
+        mvprintw(0,0,"FPS: %.0f", (1/elapsed_seconds.count()));
+        mvprintw(1,0,"ms: %.1f",elapsed_seconds.count()*1000);
     }
 }
 
@@ -150,13 +149,16 @@ void GameData::manageTicks() {
     std::chrono::duration<double> passedTime = (nowTime - this->last_clock);
     if(passedTime >= this->timeForTick) {
         this->currentTick += (long int) (passedTime.count() / (this->timeForTick.count()));
-        mvprintw(5,2, "tickPerquesto ciclo: %ld", (long int) (passedTime.count() / (this->timeForTick.count())));
         this->last_clock = nowTime;
     }
 }
 
 long int GameData::getCurrentTick() {
     return this->currentTick;
+}
+
+void GameData::resetTicks() {
+    this->currentTick = 0;
 }
 
 void GameData::salvaImpostazioni() {

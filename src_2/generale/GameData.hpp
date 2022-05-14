@@ -1,12 +1,19 @@
 #pragma once
 #include "../generale/libs.hpp"
 
+// Tasti che possono premere insieme 
 #define MAX_TASTI_INSIEME 32
 
-#define DIRECTION_UP    0
-#define DIRECTION_RIGHT 1
-#define DIRECTION_DOWN  2
-#define DIRECTION_LEFT  3
+// N vuol dire Nord (in alto), S vuol dire Sud (in basso), 
+// E vuol dire Est (a destra), O vuol dire Ovest (a sinistra) 
+#define DIRECTION_NN    0
+#define DIRECTION_NE    1
+#define DIRECTION_EE    2
+#define DIRECTION_SE    3
+#define DIRECTION_SS    4
+#define DIRECTION_SO    5
+#define DIRECTION_OO    6
+#define DIRECTION_NO    7
 
 
 class GameData {
@@ -61,6 +68,7 @@ public:
 
     void manageTicks();
     long int getCurrentTick();
+    void resetTicks();
 
     // Per i settings
     void salvaImpostazioni();

@@ -9,11 +9,13 @@ Proiettile::Proiettile(int y, int x, bool playerProjectile, int direction) {
     this->direction = direction;
     this->moveInDirection();
     
-    if(this->direction == DIRECTION_UP || this->direction == DIRECTION_DOWN) {
-        this->ticksForAction = 6;  
+    if(this->direction == DIRECTION_NN || this->direction == DIRECTION_SS) {
+        this->ticksForAction = 40;  
     }
-    else if(this->direction == DIRECTION_RIGHT || this->direction == DIRECTION_LEFT) {
-        this->ticksForAction = 3;  
+    else if(this->direction == DIRECTION_EE || this->direction == DIRECTION_OO) {
+        this->ticksForAction = 20;  
+    } else {
+        this->ticksForAction = 50;
     }
     
     this->stampabile = new cchar_t * [1];
@@ -21,17 +23,29 @@ Proiettile::Proiettile(int y, int x, bool playerProjectile, int direction) {
 
     short color = (playerProjectile) ? (PLAYER_BULLET_PAIR) : (ENEMY_BULLET_PAIR);
     switch(direction) {
-        case DIRECTION_UP:
-            setcchar(&(this->stampabile[0][0]), L"\u25B2", A_NORMAL, color, NULL);
+        case DIRECTION_NN:
+            setcchar(&(this->stampabile[0][0]), L"\u21D1", A_NORMAL, color, NULL);
             break;
-        case DIRECTION_DOWN:
-            setcchar(&(this->stampabile[0][0]), L"\u25BC", A_NORMAL, color, NULL);
+        case DIRECTION_SS:
+            setcchar(&(this->stampabile[0][0]), L"\u21D3", A_NORMAL, color, NULL);
             break;
-        case DIRECTION_RIGHT:
-            setcchar(&(this->stampabile[0][0]), L"\u25B6", A_NORMAL, color, NULL);
+        case DIRECTION_EE:
+            setcchar(&(this->stampabile[0][0]), L"\u21D2", A_NORMAL, color, NULL);
             break;
-        case DIRECTION_LEFT:
-            setcchar(&(this->stampabile[0][0]), L"\u25C0", A_NORMAL, color, NULL);
+        case DIRECTION_OO:
+            setcchar(&(this->stampabile[0][0]), L"\u21D0", A_NORMAL, color, NULL);
+            break;
+        case DIRECTION_NE:
+            setcchar(&(this->stampabile[0][0]), L"\u21D7", A_NORMAL, color, NULL);
+            break;
+        case DIRECTION_SE:
+            setcchar(&(this->stampabile[0][0]), L"\u21D8", A_NORMAL, color, NULL);
+            break;
+        case DIRECTION_SO:
+            setcchar(&(this->stampabile[0][0]), L"\u21D9", A_NORMAL, color, NULL);
+            break;
+        case DIRECTION_NO:
+            setcchar(&(this->stampabile[0][0]), L"\u21D6", A_NORMAL, color, NULL);
             break;
     }
 }
@@ -46,16 +60,32 @@ void Proiettile::updateProjectile(/*dati sulla mappa e sui nemici da controllare
 
 void Proiettile::moveInDirection() {
     switch(this->direction) {
-        case DIRECTION_UP:
+        case DIRECTION_NN:
             this->incrementaY(1);
             break;
-        case DIRECTION_DOWN:
+        case DIRECTION_SS:
             this->incrementaY(-1);
             break;
-        case DIRECTION_RIGHT:
+        case DIRECTION_EE:
             this->incrementaX(1);
             break;
-        case DIRECTION_LEFT:
+        case DIRECTION_OO:
+            this->incrementaX(-1);
+            break;
+        case DIRECTION_NE:
+            this->incrementaY(1);
+            this->incrementaX(1);
+            break;
+        case DIRECTION_SE:
+            this->incrementaY(-1);
+            this->incrementaX(1);
+            break;
+        case DIRECTION_SO:
+            this->incrementaY(-1);
+            this->incrementaX(-1);
+            break;
+        case DIRECTION_NO:
+            this->incrementaY(1);
             this->incrementaX(-1);
             break;
     }

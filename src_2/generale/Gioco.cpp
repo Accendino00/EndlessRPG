@@ -7,6 +7,7 @@ Gioco::Gioco(){
 void Gioco::gameLoop() {
     bool gameOver = false;
     Proiettile * pr = NULL;
+    gd->resetTicks();
     do {
         gd->frameStart();
 
@@ -29,16 +30,28 @@ void Gioco::gameLoop() {
         }
 
         if(gd->checkInput(KEY_RIGHT)) {
-            pr = new Proiettile(this->player->y, this->player->x,true,DIRECTION_RIGHT);
+            pr = new Proiettile(this->player->y, this->player->x,true,DIRECTION_EE);
         }
         if(gd->checkInput(KEY_DOWN)) {
-            pr = new Proiettile(this->player->y, this->player->x,true,DIRECTION_DOWN);
+            pr = new Proiettile(this->player->y, this->player->x,true,DIRECTION_SS);
         }
         if(gd->checkInput(KEY_LEFT)) {
-            pr = new Proiettile(this->player->y, this->player->x,true,DIRECTION_LEFT);
+            pr = new Proiettile(this->player->y, this->player->x,true,DIRECTION_OO);
         }
         if(gd->checkInput(KEY_UP)) {
-            pr = new Proiettile(this->player->y, this->player->x,true,DIRECTION_UP);
+            pr = new Proiettile(this->player->y, this->player->x,true,DIRECTION_NN);
+        }
+        if(gd->checkInput('i')) {
+            pr = new Proiettile(this->player->y, this->player->x,true,DIRECTION_NE);
+        }
+        if(gd->checkInput('k')) {
+            pr = new Proiettile(this->player->y, this->player->x,true,DIRECTION_SE);
+        }
+        if(gd->checkInput('j')) {
+            pr = new Proiettile(this->player->y, this->player->x,true,DIRECTION_SO);
+        }
+        if(gd->checkInput('u')) {
+            pr = new Proiettile(this->player->y, this->player->x,true,DIRECTION_NO);
         }
         
         gd->manageTicks();
