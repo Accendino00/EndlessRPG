@@ -58,12 +58,13 @@ Livello::Livello(){
     while(stanza_counter < 16) {
         if(matrice_livello [current_y] [current_x] != NULL){
             scegli_lato(matrice_livello , &current_y, &current_x);
-        } else if (stanza_counter == 8 || stanza_counter == 16){
-            matrice_livello [current_y] [current_y] = new Stanza(1);
-            stanza_counter++;            
+        //} else if (stanza_counter == 8 || stanza_counter == 16){
+        //  matrice_livello [current_y] [current_y] = new Stanza(1);
+        //    stanza_counter++;            
         } else{
             matrice_livello [current_y] [current_y] = new Stanza(0);
             stanza_counter++;
+            matrice_livello [current_y] [current_y]->scegli_stanza();
         }
     }
 }

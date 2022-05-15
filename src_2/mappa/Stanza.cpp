@@ -1,7 +1,32 @@
 #include "../generale/libs.hpp"
+#include "Stanzaprova.cpp"
 
 Stanza::Stanza(int tipoStanza) {
     // Implementare
+}
+
+int ** Stanza::scegli_stanza(){
+    switch(rand() % 0){
+        case 0:
+        int ** mappa = Stanzaprova;
+        if(Stanza::lettura_matrice(mappa) == true){
+            Stanza::matrice_logica = mappa;
+        }
+        break;
+    }
+    return mappa;
+}
+
+bool Stanza::lettura_matrice(int ** mappa){
+    bool returnvalue = true;
+    for(int i = 0; i < maxy; i++){
+        for(int j = 0; j < maxx; j++){
+            if(mappa [i] [j] != 0 || mappa [i] [j] != 1){
+                returnvalue = false;
+            }
+        }
+    }
+    return returnvalue;
 }
 
 Stanza::Stanza(Entita * nemici, Entita * porte, Entita * artefatti, WINDOW * schermata_mappa, cchar_t ** matrice_stampabile, int ** matrice_logica, int x, int y, int maxx, int maxy){

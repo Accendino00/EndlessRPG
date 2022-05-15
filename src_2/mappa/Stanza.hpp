@@ -41,5 +41,9 @@ class Stanza {
         void creazione_porte();
 
         bool accessibile(int ** mappa, int x, int y);
+        
+        int ** Stanza::scegli_stanza();
+        
+        bool Stanza::lettura_matrice(int ** mappa);
 };
 
