@@ -8,6 +8,9 @@ void Gioco::gameLoop() {
     bool gameOver = false;
     Proiettile * pr = NULL;
     gd->resetTicks();
+
+    Stanza * lamammadiPetru = new Stanza();
+
     do {
         gd->frameStart();
 
@@ -20,7 +23,7 @@ void Gioco::gameLoop() {
 
         this->player->manageInput();
 
-
+        lamammadiPetru -> stampa_stanza();
 
         this->player->stampa(gd->getTerminalY()/2, gd->getTerminalX()/2);
         this->player->stampaHUDplayer();

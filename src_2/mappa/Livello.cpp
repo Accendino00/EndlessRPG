@@ -32,7 +32,7 @@ Devi far si che sia possibile fare
 
   Dopo che vengono implementate altre entità, devi poter andare anche a fare tipo "livello.controllaNemici(player, entita)" -> dentro, per ogni entita, si controlla se player.contatto(entita[i])
 ```
-*/
+
 
 void Livello::scegli_lato(Stanza *** matrice_livello , int * x, int *y){ 
     switch(rand() % 4){
@@ -68,3 +68,4 @@ Livello::Livello(){
         }
     }
 }
+*/

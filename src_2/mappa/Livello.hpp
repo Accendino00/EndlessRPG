@@ -10,7 +10,7 @@ class Livello {
         Stanza battaglia_boss;
         Livello * livello_successivo;
     };
-    */
+    
 
     Stanza *** matrice_livello;
 
@@ -22,4 +22,5 @@ class Livello {
     void scegli_lato(Stanza *** matrice_livello , int * x, int *y);
 
     void stampa_livello();
+    */
 };
