@@ -1,9 +1,11 @@
 #include "../generale/libs.hpp"
-#include "Stanzaprova.cpp"
+//#include "Stanzaprova.cpp"
+/*
 
 Stanza::Stanza(int tipoStanza) {
     // Implementare
 }
+
 
 int ** Stanza::scegli_stanza(){
     switch(rand() % 0){
@@ -84,4 +86,56 @@ void Stanza::stampa_stanza(WINDOW * window_one, cchar_t ** mappa_stampabile, int
         }
     }
 }
+    sprintf
 
+    char ciao [20];
+    sprintf(ciao, "mappa%d.map", idMappa1)  
+
+
+    //EOF endodfile
+*/
+
+
+Stanza::Stanza(){
+    FILE * fin;
+    char mappa_da_scegliere [100];
+    int idMappa = (rand() % 1 )+ 1;
+    sprintf(mappa_da_scegliere, "./mappa/matrici_mappe/mappa%d.map", idMappa);
+    fin = fopen( mappa_da_scegliere , "r");
+    
+    
+    //come aprire un file
+
+    this -> matrice_logica = new int* [DIM_STANZA_Y];
+    for(int i=0; i < DIM_STANZA_Y; i++ ){
+        this -> matrice_logica [i] = new int [DIM_STANZA_X];
+    }
+    
+    
+    
+    //alloco memoria per la matrice
+
+    for(int i= 0; i < DIM_STANZA_Y; i++){
+        for(int j = 0; j < DIM_STANZA_X; j++){
+            matrice_logica [i][j] = fgetc(fin) -48 ;
+        }
+        fgetc(fin);
+    }
+    fclose(fin);
+    
+    //leggo il file
+
+
+
+};
+
+void Stanza::stampa_stanza(){
+    int offsetx = ((gd -> getTerminalX()) - DIM_STANZA_X)/2;
+    int offsety = ((gd -> getTerminalY()) - DIM_STANZA_Y)/2;
+    for(int i = 0; i < DIM_STANZA_Y; i++){
+        for(int j = 0; j < DIM_STANZA_X; j++){
+            mvprintw(offsety+i , offsetx+j , "%d", matrice_logica[i][j]);
+        }
+    }
+    
+}

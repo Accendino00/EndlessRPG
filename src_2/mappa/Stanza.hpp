@@ -1,8 +1,10 @@
 #pragma once
 #include "../generale/libs.hpp"
 
-
+#define DIM_STANZA_X 50
+#define DIM_STANZA_Y 30
 class Stanza {
+    /*
     public:
         Entita * nemici; 
             /*
@@ -16,7 +18,7 @@ class Stanza {
                 I nemici si possono muovere e a intervalli regolari sparano
                 Proiettili è una struttura dati che contiene proiettili
 
-            */ 
+            
         Entita * porte;
 
         Entita * artefatti; //pick me up soon
@@ -45,5 +47,12 @@ class Stanza {
         int ** Stanza::scegli_stanza();
         
         bool Stanza::lettura_matrice(int ** mappa);
-};
+        */
+       public:
+        int ** matrice_logica;
+        void stampa_stanza();
+        Stanza();
+       };
+
+
 
