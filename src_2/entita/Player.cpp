@@ -77,3 +77,13 @@ void Player::gestione_player(int input){
 
 void Player::inventario(){
 }
+
+
+
+
+
+
+
+
+
+
