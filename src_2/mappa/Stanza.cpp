@@ -170,3 +170,59 @@ void Stanza::stampa_stanza(){
     }
     
 }
+
+/*
+Stanza::Stanza(int id){
+    FILE * fin;
+    char mappa_da_scegliere [100];
+    int idMappa = (rand() % 1 )+ 1;
+    int dimY;
+    int dimX;
+
+    if(id == 0 || id == 1){
+        dimY = DIM_STANZA_Y;
+        dimX = DIM_STANZA_BOSS_X;
+    } else if(id == 2){
+        dimY = DIM_STANZA_BOSS_Y;
+        dimX = DIM_STANZA_BOSS_X;
+    }
+
+    sprintf(mappa_da_scegliere, "./mappa/matrici_mappe/mappa%s%d.map", idMappa);
+    fin = fopen( mappa_da_scegliere , "r");
+    
+    
+    //come aprire un file
+
+    this -> matrice_logica = new int* [dimY];
+    for(int i=0; i < dimY; i++ ){
+        this -> matrice_logica [i] = new int [dimX];
+    }
+        
+    
+    //alloco memoria per la matrice
+
+    for(int i= 0; i < dimY; i++){
+        for(int j = 0; j < dimX; j++){
+            matrice_logica [i][j] = fgetc(fin) -48 ;
+        }
+        fgetc(fin);
+    }
+    fclose(fin);
+    
+    //leggo il file
+
+    void Stanza::stampa_stanza(){
+    int offsetx = ((gd -> getTerminalX()) - dimX)/2;
+    int offsety = ((gd -> getTerminalY()) - dimY)/2;
+    for(int i = 0; i < dimY; i++){
+        for(int j = 0; j < dimX; j++){
+            mvprintw(offsety+i , offsetx+j , "%d", matrice_logica[i][j]);
+        }
+    }
+    
+}
+
+
+};
+
+*/ //Generalizzazione
