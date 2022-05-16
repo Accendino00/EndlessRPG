@@ -96,7 +96,7 @@ void Stanza::stampa_stanza(WINDOW * window_one, cchar_t ** mappa_stampabile, int
 */
 
 
-Stanza::Stanza(){
+Stanza::Stanza(int a){
     FILE * fin;
     char mappa_da_scegliere [100];
     int idMappa = (rand() % 1 )+ 1;
@@ -110,8 +110,39 @@ Stanza::Stanza(){
     for(int i=0; i < DIM_STANZA_Y; i++ ){
         this -> matrice_logica [i] = new int [DIM_STANZA_X];
     }
+        
+    
+    //alloco memoria per la matrice
+
+    for(int i= 0; i < DIM_STANZA_Y; i++){
+        for(int j = 0; j < DIM_STANZA_X; j++){
+            matrice_logica [i][j] = fgetc(fin) -48 ;
+        }
+        fgetc(fin);
+    }
+    fclose(fin);
+    
+    //leggo il file
+
+
+
+};
+
+Stanza::Stanza(int a){
+    FILE * fin;
+    char mappa_da_scegliere [100];
+    int idMappa = (rand() % 1 )+ 1;
+    sprintf(mappa_da_scegliere, "./mappa/matrici_mappe/mappaBoss%d.map", idMappa);
+    fin = fopen( mappa_da_scegliere , "r");
     
     
+    //come aprire un file
+
+    this -> matrice_logica = new int* [DIM_STANZA_BOSS_Y];
+    for(int i=0; i < DIM_STANZA_BOSS_Y; i++ ){
+        this -> matrice_logica [i] = new int [DIM_STANZA_BOSS_X];
+    }
+        
     
     //alloco memoria per la matrice
 

@@ -69,3 +69,58 @@ Livello::Livello(){
     }
 }
 */
+
+Livello::Livello(){
+  int current_x = 2;
+  int current_y = 2;
+  int stanza_counter = 0;
+  //while(stanza_counter < 16){
+  //  
+  //    for(int j=0; j < DIM_MATRICE_LIVELLO_X; j++){
+  //      this ->matrice_livello [i][j] = new Stanza();
+  //    }
+  //  }
+  //}
+
+  this -> matrice_livello = new Stanza ** [DIM_MATRICE_LIVELLO_Y];
+  for(int i=0; i < DIM_MATRICE_LIVELLO_Y; i++){
+    this -> matrice_livello [i] = new Stanza * [DIM_MATRICE_LIVELLO_X];
+    for(int j=0; j < DIM_MATRICE_LIVELLO_X; j++){
+      this ->matrice_livello [i][j] = NULL; //da vedere
+    }
+  }
+
+  //alloco memoria per la matrice di livello
+
+  while(stanza_counter < 16){
+    if(matrice_livello [current_y] [current_x] != NULL){
+      scegli_lato(matrice_livello , &current_y, &current_x);
+      } else if (stanza_counter == 8 || stanza_counter == 16){
+          matrice_livello [current_y] [current_x] = new Stanza(1);
+          stanza_counter++;            
+      } else{
+        matrice_livello [current_y] [current_x] = new Stanza(0);
+        stanza_counter++;
+      }
+  }
+
+  //pensa se funziona
+
+}
+
+void Livello::scegli_lato(Stanza *** matrice_livello , int * x, int *y){ 
+    switch(rand() % 4){
+        case 0:
+        y++;
+        break;
+        case 1:
+        x++;
+        break;
+        case 2:
+        y--;
+        break;
+        case 3:
+        x--;
+        break;
+    }
+}

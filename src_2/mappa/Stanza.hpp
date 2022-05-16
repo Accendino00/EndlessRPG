@@ -3,6 +3,9 @@
 
 #define DIM_STANZA_X 50
 #define DIM_STANZA_Y 30
+#define DIM_STANZA_BOSS_X 50
+#define DIM_STANZA_BOSS_Y 30
+
 class Stanza {
     /*
     public:
@@ -51,7 +54,7 @@ class Stanza {
        public:
         int ** matrice_logica;
         void stampa_stanza();
-        Stanza();
+        Stanza(int a);
        };
 
 
