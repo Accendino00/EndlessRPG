@@ -124,6 +124,10 @@ Stanza::Stanza(int a){
     
     //leggo il file
 
+    this -> nord = false;
+    this -> sud = false;
+    this -> est = false;
+    this -> ovest = false;
 
 
 };
@@ -155,6 +159,11 @@ Stanza::Stanza(int a){
     fclose(fin);
     
     //leggo il file
+
+    this -> nord = false;
+    this -> sud = false;
+    this -> est = false;
+    this -> ovest = false;
 
 
 

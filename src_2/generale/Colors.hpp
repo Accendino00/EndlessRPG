@@ -32,4 +32,7 @@
 #define ENEMY_BULLET_PAIR       6
 #define HEARTS_PAIR             7
 
+#define WALLS_COLOR             20
+#define FLOOR_COLOR             21
+
 void initializeColors();

@@ -92,6 +92,7 @@ Livello::Livello(){
 
   //alloco memoria per la matrice di livello
 
+  /*
   while(stanza_counter < 16){
     if(matrice_livello [current_y] [current_x] != NULL){
       scegli_lato(matrice_livello , &current_y, &current_x);
@@ -103,10 +104,56 @@ Livello::Livello(){
         stanza_counter++;
       }
   }
-
+  */
   //pensa se funziona
 
+  matrice_livello [2] [2] = new Stanza(0);
+  matrice_livello [2] [3] = new Stanza(0);
+  matrice_livello [3] [3] = new Stanza(0);
+  matrice_livello [3] [2] = new Stanza(1);
+
 }
+
+void crea_porte(){
+  for(int i = 0; i < DIM_MATRICE_LIVELLO_Y; i++){
+    for(int j = 0; j < DIM_MATRICE_LIVELLO_X; j++){
+      if(Livello::matrice_livello [i] [j] != NULL){
+        if(Livello::matrice_livello [i + 1] [j] != NULL){
+          Stanza::nord = true;
+          Stanza::matrice_logica [0] [23] = 0;
+          Stanza::matrice_logica [0] [24] = 0;
+          Stanza::matrice_logica [0] [25] = 0;
+          Stanza::matrice_logica [0] [26] = 0;
+          Stanza::matrice_logica [0] [27] = 0;
+        }
+        if (Livello::matrice_livello [i - 1] [j] != NULL){
+          Stanza::sud = true;
+          Stanza::matrice_logica [30] [23] = 0;
+          Stanza::matrice_logica [30] [24] = 0;
+          Stanza::matrice_logica [30] [25] = 0;
+          Stanza::matrice_logica [30] [26] = 0;
+          Stanza::matrice_logica [30] [27] = 0;
+        }
+        if(Livello::matrice_livello [i] [j + 1] != NULL){
+          Stanza::est = true;
+          Stanza::matrice_logica [13] [30] = 0;
+          Stanza::matrice_logica [14] [30] = 0;
+          Stanza::matrice_logica [15] [30] = 0;
+          Stanza::matrice_logica [16] [30] = 0;
+          Stanza::matrice_logica [17] [30] = 0;
+        }
+        if (Livello::matrice_livello [i] [j - 1] != NULL){
+          Stanza::ovest = true;
+          Stanza::matrice_logica [13] [0] = 0;
+          Stanza::matrice_logica [14] [0] = 0;
+          Stanza::matrice_logica [15] [0] = 0;
+          Stanza::matrice_logica [16] [0] = 0;
+          Stanza::matrice_logica [17] [0] = 0;
+        }
+      }
+    }
+  }
+};
 
 void Livello::scegli_lato(Stanza *** matrice_livello , int * x, int *y){ 
     switch(rand() % 4){

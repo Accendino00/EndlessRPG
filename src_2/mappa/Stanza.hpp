@@ -54,7 +54,11 @@ class Stanza {
        public:
         int ** matrice_logica;
         void stampa_stanza();
-        Stanza(int a);
+        Stanza(int id);
+        bool nord;
+        bool sud;
+        bool est;
+        bool ovest;
        };
 
 
