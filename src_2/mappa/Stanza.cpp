@@ -93,7 +93,7 @@ void Stanza::stampa_stanza(WINDOW * window_one, cchar_t ** mappa_stampabile, int
 
 
     //EOF endodfile
-*/
+
 
 
 Stanza::Stanza(int a){
@@ -160,6 +160,54 @@ Stanza::Stanza(int a){
 
 
 };
+*/
+
+Stanza::Stanza(int id){
+    FILE * fin;
+    char mappa_da_scegliere [100];
+    int idMappa = (rand() % 1 )+ 1;
+
+    if(id == ID_STANZA_SPAWN || id == ID_STANZA_NORMALE){
+        this->dim_y = DIM_STANZA_Y;
+        this->dim_x = DIM_STANZA_X;
+        if (id == ID_STANZA_SPAWN) {
+            idMappa = 0;
+        }
+    } else if(id == ID_STANZA_BOSS){
+        this->dim_y = DIM_STANZA_BOSS_Y;
+        this->dim_x = DIM_STANZA_BOSS_X;
+    }
+
+    sprintf(mappa_da_scegliere, "./mappa/matrici_mappe/mappa%s%d.map", (id == ID_STANZA_BOSS)?("boss"):(""), idMappa);
+    fin = fopen( mappa_da_scegliere , "r");
+    
+    
+    //come aprire un file
+
+    this -> matrice_logica = new int* [this->dim_y];
+    for(int i=0; i < this->dim_y; i++ ){
+        this -> matrice_logica [i] = new int [this->dim_x];
+    }
+        
+    
+    //alloco memoria per la matrice
+
+    for(int i= 0; i < this->dim_y; i++){
+        for(int j = 0; j < this->dim_x; j++){
+            matrice_logica [i][j] = fgetc(fin) -48 ;
+        }
+        fgetc(fin);
+    }
+    fclose(fin);
+
+    this -> matrice_stampabile = new cchar_t * [dim_y];
+    for(int i = 0; i < dim_y; i++){
+        this -> matrice_stampabile [i] = new cchar_t [dim_x];
+    }
+
+};
+
+ //Generalizzazione
 
 void Stanza::stampa_stanza(){
     int offsetx = ((gd -> getTerminalX()) - DIM_STANZA_X)/2;
@@ -215,56 +263,23 @@ void Stanza::imposta_porte(bool nord, bool sud, bool est, bool ovest){
 
 
 void Stanza::da_logica_a_stampabile(){
-    
-
+    for(int i = 0; i < dim_y; i++){
+        for(int j = 0; j < dim_x; j++){
+            switch(matrice_logica [i] [j]){
+                case 0:
+                setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, FLOOR_COLOR, NULL);
+                break;
+                case 1:
+                setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, WALLS_COLOR, NULL);
+                break;
+            }
+        }
+    }
 }
 
 
-/*
-Stanza::Stanza(int id){
-    FILE * fin;
-    char mappa_da_scegliere [100];
-    int idMappa = (rand() % 1 )+ 1;
-
-    if(id == ID_STANZA_SPAWN || id == ID_STANZA_NORMALE){
-        this->dim_y = DIM_STANZA_Y;
-        this->dim_x = DIM_STANZA_X;
-        if (id == ID_STANZA_SPAWN) {
-            idMappa = 0;
-        }
-    } else if(id == ID_STANZA_BOSS){
-        this->dim_y = DIM_STANZA_BOSS_Y;
-        this->dim_x = DIM_STANZA_BOSS_X;
-    }
-
-    sprintf(mappa_da_scegliere, "./mappa/matrici_mappe/mappa%s%d.map", (id == ID_STANZA_BOSS)?("boss"):(""), idMappa);
-    fin = fopen( mappa_da_scegliere , "r");
-    
-    
-    //come aprire un file
-
-    this -> matrice_logica = new int* [this->dim_y];
-    for(int i=0; i < this->dim_y; i++ ){
-        this -> matrice_logica [i] = new int [this->dim_x];
-    }
-        
-    
-    //alloco memoria per la matrice
-
-    for(int i= 0; i < this->dim_y; i++){
-        for(int j = 0; j < this->dim_x; j++){
-            matrice_logica [i][j] = fgetc(fin) -48 ;
-        }
-        fgetc(fin);
-    }
-    fclose(fin);
-};
-
-*/ //Generalizzazione
 
 
 
-this -> matrice_stampabile = new cchar_t * [DIM_STANZA_Y];
-for(int i = 0; i < DIM_STANZA_Y; i++){
-    this -> matrice_stampabile [i] = cchar_t [DIM_STANZA_X];
-}
+
+

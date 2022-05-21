@@ -70,6 +70,8 @@ class Stanza {
         Stanza(int id);
         void imposta_porte(bool nord, bool sud, bool est, bool ovest);
         void da_logica_a_stampabile();
+        int dim_y;
+        int dim_x;
        };
 
 
