@@ -9,7 +9,7 @@ void Gioco::gameLoop() {
     Proiettile * pr = NULL;
     gd->resetTicks();
 
-    Stanza * lamammadiPetru = new Stanza();
+    Stanza * lamammadiPetru = new Stanza(ID_STANZA_NORMALE);
 
     do {
         gd->frameStart();

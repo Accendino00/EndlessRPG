@@ -7,6 +7,7 @@ Proiettile::Proiettile(int y, int x, bool playerProjectile, int direction) {
     this->dim_x = 1;
     this->dim_y = 1;
     this->direction = direction;
+    this->passedActions = 0;
     this->moveInDirection();
     
     if(this->direction == DIRECTION_NN || this->direction == DIRECTION_SS) {

@@ -6,6 +6,10 @@
 #define DIM_STANZA_BOSS_X 50
 #define DIM_STANZA_BOSS_Y 30
 
+#define ID_STANZA_SPAWN 0
+#define ID_STANZA_NORMALE 1
+#define ID_STANZA_BOSS 2
+
 class Stanza {
     /*
     public:

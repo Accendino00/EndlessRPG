@@ -8,6 +8,10 @@ Entita::Entita(){
     this->stampabile = NULL;
     this->current_life = 1;
     this->life = 1;
+
+    this->passedActions = 0;
+    this->ticksForAction = 0;
+    this->lastTick = gd->getCurrentTick();
 }
 
 Entita::Entita(int life, int y,int x, int dim_y, int dim_x, cchar_t ** stampa) {

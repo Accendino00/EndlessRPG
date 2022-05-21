@@ -172,66 +172,49 @@ Stanza::Stanza(int a){
 void Stanza::stampa_stanza(){
     int offsetx = ((gd -> getTerminalX()) - DIM_STANZA_X)/2;
     int offsety = ((gd -> getTerminalY()) - DIM_STANZA_Y)/2;
-    for(int i = 0; i < DIM_STANZA_Y; i++){
-        for(int j = 0; j < DIM_STANZA_X; j++){
+    for(int i = 0; i < this->dim_y; i++){
+        for(int j = 0; j < this->dim_x; j++){
             mvprintw(offsety+i , offsetx+j , "%d", matrice_logica[i][j]);
         }
     }
     
 }
 
-/*
 Stanza::Stanza(int id){
     FILE * fin;
     char mappa_da_scegliere [100];
     int idMappa = (rand() % 1 )+ 1;
-    int dimY;
-    int dimX;
 
-    if(id == 0 || id == 1){
-        dimY = DIM_STANZA_Y;
-        dimX = DIM_STANZA_BOSS_X;
-    } else if(id == 2){
-        dimY = DIM_STANZA_BOSS_Y;
-        dimX = DIM_STANZA_BOSS_X;
+    if(id == ID_STANZA_SPAWN || id == ID_STANZA_NORMALE){
+        this->dim_y = DIM_STANZA_Y;
+        this->dim_x = DIM_STANZA_X;
+        if (id == ID_STANZA_SPAWN) {
+            idMappa = 0;
+        }
+    } else if(id == ID_STANZA_BOSS){
+        this->dim_y = DIM_STANZA_BOSS_Y;
+        this->dim_x = DIM_STANZA_BOSS_X;
     }
 
-    sprintf(mappa_da_scegliere, "./mappa/matrici_mappe/mappa%s%d.map", idMappa);
+    sprintf(mappa_da_scegliere, "./mappa/matrici_mappe/mappa%s%d.map", (id == ID_STANZA_BOSS)?("boss"):(""), idMappa);
     fin = fopen( mappa_da_scegliere , "r");
     
     
     //come aprire un file
 
-    this -> matrice_logica = new int* [dimY];
-    for(int i=0; i < dimY; i++ ){
-        this -> matrice_logica [i] = new int [dimX];
+    this -> matrice_logica = new int* [this->dim_y];
+    for(int i=0; i < this->dim_y; i++ ){
+        this -> matrice_logica [i] = new int [this->dim_x];
     }
         
     
     //alloco memoria per la matrice
 
-    for(int i= 0; i < dimY; i++){
-        for(int j = 0; j < dimX; j++){
+    for(int i= 0; i < this->dim_y; i++){
+        for(int j = 0; j < this->dim_x; j++){
             matrice_logica [i][j] = fgetc(fin) -48 ;
         }
         fgetc(fin);
     }
     fclose(fin);
-    
-    //leggo il file
-
-    void Stanza::stampa_stanza(){
-    int offsetx = ((gd -> getTerminalX()) - dimX)/2;
-    int offsety = ((gd -> getTerminalY()) - dimY)/2;
-    for(int i = 0; i < dimY; i++){
-        for(int j = 0; j < dimX; j++){
-            mvprintw(offsety+i , offsetx+j , "%d", matrice_logica[i][j]);
-        }
-    }
-    
-}
-
-
 };
-
-*/ //Generalizzazione
