@@ -17,7 +17,7 @@ class Livello {
     */
     Stanza *** matrice_livello;
     Livello();
-    void Livello::scegli_lato(Stanza *** matrice_livello , int * x, int *y);
+    void scegli_lato(Stanza *** matrice_livello , int * x, int *y);
     void crea_porte();
     /*
     public:

@@ -23,6 +23,8 @@ void Gioco::gameLoop() {
 
         this->player->manageInput();
 
+        lamammadiPetru -> da_logica_a_stampabile();
+
         lamammadiPetru -> stampa_stanza();
 
         this->player->stampa(gd->getTerminalY()/2, gd->getTerminalX()/2);

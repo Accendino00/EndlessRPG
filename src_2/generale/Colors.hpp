@@ -16,7 +16,7 @@
 #define MAIN_TITLE_TEXT         12
 #define MAIN_TITLE_BACKGROUND   13
 
-#define MAP_BACKGROUND          14
+#define GAME_BACKGROUND         14
 #define PLAYER_COLOR            15
 #define PLAYER_BULLET_COLOR     16
 #define ENEMY_BULLET_COLOR      17
@@ -32,8 +32,16 @@
 #define ENEMY_BULLET_PAIR       6
 #define HEARTS_PAIR             7
 
-#define WALLS_COLOR             20
-#define FLOOR_COLOR             21
-#define DOOR_COLOR              22
+#define WALL_BACKGROUND         20
+#define FLOOR_BACKGROUND        21
+#define DOOR_BACKGROUND         22
+
+#define WALL_FOREGROUND         23
+#define FLOOR_FOREGROUND        24
+#define DOOR_FOREGROUND         25
+
+#define WALL_PAIR               8
+#define FLOOR_PAIR              9
+#define DOOR_PAIR               10
 
 void initializeColors();

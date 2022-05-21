@@ -210,11 +210,11 @@ Stanza::Stanza(int id){
  //Generalizzazione
 
 void Stanza::stampa_stanza(){
-    int offsetx = ((gd -> getTerminalX()) - DIM_STANZA_X)/2;
-    int offsety = ((gd -> getTerminalY()) - DIM_STANZA_Y)/2;
+    int offsetx = ((gd -> getTerminalX()) - dim_y)/2;
+    int offsety = ((gd -> getTerminalY()) - dim_x)/2;
     for(int i = 0; i < this->dim_y; i++){
         for(int j = 0; j < this->dim_x; j++){
-            mvprintw(offsety+i , offsetx+j , "%d", matrice_logica[i][j]);
+            mvadd_wch(offsety+i , offsetx+j, &(matrice_stampabile[i][j]));
         }
     }
     
@@ -227,12 +227,12 @@ void Stanza::imposta_porte(bool nord, bool sud, bool est, bool ovest){
     cchar_t ** portaOrizzontale = new cchar_t * [1];
     portaOrizzontale[0] = new cchar_t [DIMENSIONE_PORTA];
     for(int i = 0; i < DIMENSIONE_PORTA; i ++) {
-        setcchar(&(portaOrizzontale[0][i]), L" ", A_NORMAL, DOOR_COLOR, NULL);
+        setcchar(&(portaOrizzontale[0][i]), L" ", A_NORMAL, DOOR_BACKGROUND, NULL);
     }
     cchar_t ** portaVerticale = new cchar_t * [DIMENSIONE_PORTA];
     for(int i = 0; i < DIMENSIONE_PORTA; i ++) {
         portaVerticale[i]  = new cchar_t [DIMENSIONE_PORTA];
-        setcchar(&(portaVerticale[i][0]), L" ", A_NORMAL, DOOR_COLOR, NULL);
+        setcchar(&(portaVerticale[i][0]), L" ", A_NORMAL, DOOR_BACKGROUND, NULL);
     }
     if(nord == true){
         for(int i = 0; i < DIMENSIONE_PORTA; i++){
@@ -267,10 +267,10 @@ void Stanza::da_logica_a_stampabile(){
         for(int j = 0; j < dim_x; j++){
             switch(matrice_logica [i] [j]){
                 case 0:
-                setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, FLOOR_COLOR, NULL);
+                setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, FLOOR_PAIR, NULL);
                 break;
                 case 1:
-                setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, WALLS_COLOR, NULL);
+                setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, WALL_PAIR, NULL);
                 break;
             }
         }

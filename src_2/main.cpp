@@ -58,7 +58,7 @@ int main () {
             setcchar(&(player_graphical[i][j]), (r==0)?(prova1):((r==1)?(prova2):(prova3)) , A_BOLD, 1, NULL);
         }
     }
-    Entita * player = new Entita(yMax/2, xMax/2, dimy, dimx, player_graphical); 
+    Entita * player = new Entita(10, yMax/2, xMax/2, dimy, dimx, player_graphical); 
 	int cordx=player->x,cordy=player->y;
 
 	int input = L'a';
@@ -109,7 +109,7 @@ int main () {
 				break;
 		}
         player->modificaCoordinate(cordy,cordx);
-        player->stampa(stdscr, 0, 0);
+        player->stampa( 0, 0);
 
 
 		move(10,2);
