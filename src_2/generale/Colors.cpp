@@ -20,7 +20,7 @@ void initializeColors() {
 
     init_color(WALLS_COLOR,             96  * CC,   46  * CC,   199 * CC);
     init_color(FLOOR_COLOR,             51  * CC,   19  * CC,   92  * CC);
-    
+    init_color(DOOR_COLOR,              222 * CC,   56  * CC,   200 * CC);
 
     init_pair(MENU_NORMAL,          MENU_TEXT,              MENU_BACKGROUND);
     init_pair(MENU_HIGHLIGHT,       MENU_HL_TEXT,           MENU_HL_BACKGROUND);

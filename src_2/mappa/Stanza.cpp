@@ -124,11 +124,6 @@ Stanza::Stanza(int a){
     
     //leggo il file
 
-    this -> nord = false;
-    this -> sud = false;
-    this -> est = false;
-    this -> ovest = false;
-
 
 };
 
@@ -142,7 +137,7 @@ Stanza::Stanza(int a){
     
     //come aprire un file
 
-    this -> matrice_logica = new int* [DIM_STANZA_BOSS_Y];
+    this -> matrice_logica = new int * [DIM_STANZA_BOSS_Y];
     for(int i=0; i < DIM_STANZA_BOSS_Y; i++ ){
         this -> matrice_logica [i] = new int [DIM_STANZA_BOSS_X];
     }
@@ -160,10 +155,7 @@ Stanza::Stanza(int a){
     
     //leggo il file
 
-    this -> nord = false;
-    this -> sud = false;
-    this -> est = false;
-    this -> ovest = false;
+    
 
 
 
@@ -180,6 +172,55 @@ void Stanza::stampa_stanza(){
     
 }
 
+
+
+
+void Stanza::imposta_porte(bool nord, bool sud, bool est, bool ovest){
+    cchar_t ** portaOrizzontale = new cchar_t * [1];
+    portaOrizzontale[0] = new cchar_t [DIMENSIONE_PORTA];
+    for(int i = 0; i < DIMENSIONE_PORTA; i ++) {
+        setcchar(&(portaOrizzontale[0][i]), L" ", A_NORMAL, DOOR_COLOR, NULL);
+    }
+    cchar_t ** portaVerticale = new cchar_t * [DIMENSIONE_PORTA];
+    for(int i = 0; i < DIMENSIONE_PORTA; i ++) {
+        portaVerticale[i]  = new cchar_t [DIMENSIONE_PORTA];
+        setcchar(&(portaVerticale[i][0]), L" ", A_NORMAL, DOOR_COLOR, NULL);
+    }
+    if(nord == true){
+        for(int i = 0; i < DIMENSIONE_PORTA; i++){
+            matrice_logica [0] [i + (int)((LARGHEZZA_STANZA - DIMENSIONE_PORTA)/2)] = 0;
+        }
+        
+        this -> porte[PORTA_NORD] = new Entita(1, 0,(int)((LARGHEZZA_STANZA - DIMENSIONE_PORTA)/2), 1 , DIMENSIONE_PORTA,portaOrizzontale); 
+    }
+    if(sud == true){
+        for(int i = 0; i < DIMENSIONE_PORTA; i++){
+            matrice_logica [ALTEZZA_STANZA] [i + (int)((LARGHEZZA_STANZA - DIMENSIONE_PORTA)/2)] = 0;
+        }
+        this -> porte[PORTA_SUD] = new Entita(1, ALTEZZA_STANZA,(int)((LARGHEZZA_STANZA - DIMENSIONE_PORTA)/2), 1 , DIMENSIONE_PORTA, portaOrizzontale); 
+    }
+    if(est == true){
+        for(int i = 0; i < DIMENSIONE_PORTA; i++){
+            matrice_logica [LARGHEZZA_STANZA] [i + (int)((ALTEZZA_STANZA - DIMENSIONE_PORTA)/2)] = 0;
+        }
+        this -> porte[PORTA_EST] = new Entita(1, LARGHEZZA_STANZA,(int)((ALTEZZA_STANZA - DIMENSIONE_PORTA)/2), DIMENSIONE_PORTA , 1 , portaVerticale);
+    }
+    if(ovest == true){
+        for(int i = 0; i < DIMENSIONE_PORTA; i++){
+            matrice_logica [0] [i + (int)((ALTEZZA_STANZA - DIMENSIONE_PORTA)/2)] = 0;
+        }
+        this -> porte[PORTA_OVEST] = new Entita(1, 0,(int)((ALTEZZA_STANZA - DIMENSIONE_PORTA)/2), DIMENSIONE_PORTA , 1, portaVerticale);
+    }
+}
+
+
+void Stanza::da_logica_a_stampabile(){
+    
+
+}
+
+
+/*
 Stanza::Stanza(int id){
     FILE * fin;
     char mappa_da_scegliere [100];
@@ -218,3 +259,12 @@ Stanza::Stanza(int id){
     }
     fclose(fin);
 };
+
+*/ //Generalizzazione
+
+
+
+this -> matrice_stampabile = new cchar_t * [DIM_STANZA_Y];
+for(int i = 0; i < DIM_STANZA_Y; i++){
+    this -> matrice_stampabile [i] = cchar_t [DIM_STANZA_X];
+}

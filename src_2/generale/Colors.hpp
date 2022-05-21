@@ -34,5 +34,6 @@
 
 #define WALLS_COLOR             20
 #define FLOOR_COLOR             21
+#define DOOR_COLOR              22
 
 void initializeColors();

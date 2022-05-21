@@ -114,42 +114,27 @@ Livello::Livello(){
 
 }
 
-void crea_porte(){
+void Livello::crea_porte(){
+  bool nord = false;
+  bool sud = false;
+  bool est = false;
+  bool ovest = false;
   for(int i = 0; i < DIM_MATRICE_LIVELLO_Y; i++){
     for(int j = 0; j < DIM_MATRICE_LIVELLO_X; j++){
-      if(Livello::matrice_livello [i] [j] != NULL){
-        if(Livello::matrice_livello [i + 1] [j] != NULL){
-          Stanza::nord = true;
-          Stanza::matrice_logica [0] [23] = 0;
-          Stanza::matrice_logica [0] [24] = 0;
-          Stanza::matrice_logica [0] [25] = 0;
-          Stanza::matrice_logica [0] [26] = 0;
-          Stanza::matrice_logica [0] [27] = 0;
+      if(this -> matrice_livello [i] [j] != NULL){
+        if(this -> matrice_livello [i + 1] [j] != NULL){
+          nord = true;
         }
-        if (Livello::matrice_livello [i - 1] [j] != NULL){
-          Stanza::sud = true;
-          Stanza::matrice_logica [30] [23] = 0;
-          Stanza::matrice_logica [30] [24] = 0;
-          Stanza::matrice_logica [30] [25] = 0;
-          Stanza::matrice_logica [30] [26] = 0;
-          Stanza::matrice_logica [30] [27] = 0;
+        if (this -> matrice_livello [i - 1] [j] != NULL){
+          sud = true;
         }
-        if(Livello::matrice_livello [i] [j + 1] != NULL){
-          Stanza::est = true;
-          Stanza::matrice_logica [13] [30] = 0;
-          Stanza::matrice_logica [14] [30] = 0;
-          Stanza::matrice_logica [15] [30] = 0;
-          Stanza::matrice_logica [16] [30] = 0;
-          Stanza::matrice_logica [17] [30] = 0;
+        if(this -> matrice_livello [i] [j + 1] != NULL){
+          est = true;
         }
-        if (Livello::matrice_livello [i] [j - 1] != NULL){
-          Stanza::ovest = true;
-          Stanza::matrice_logica [13] [0] = 0;
-          Stanza::matrice_logica [14] [0] = 0;
-          Stanza::matrice_logica [15] [0] = 0;
-          Stanza::matrice_logica [16] [0] = 0;
-          Stanza::matrice_logica [17] [0] = 0;
+        if (this -> matrice_livello [i] [j - 1] != NULL){
+          ovest = true;
         }
+        this -> matrice_livello [i] [j] -> imposta_porte(nord, sud, est, ovest);
       }
     }
   }
