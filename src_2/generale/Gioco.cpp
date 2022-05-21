@@ -10,6 +10,8 @@ void Gioco::gameLoop() {
     gd->resetTicks();
 
     Stanza * lamammadiPetru = new Stanza(ID_STANZA_NORMALE);
+    lamammadiPetru ->imposta_porte(true, false, false, true);
+    lamammadiPetru -> da_logica_a_stampabile();
 
     do {
         gd->frameStart();
@@ -23,7 +25,6 @@ void Gioco::gameLoop() {
 
         this->player->manageInput();
 
-        lamammadiPetru -> da_logica_a_stampabile();
 
         lamammadiPetru -> stampa_stanza();
 

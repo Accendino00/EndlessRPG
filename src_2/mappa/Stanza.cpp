@@ -209,9 +209,9 @@ Stanza::Stanza(int id){
 
  //Generalizzazione
 
-void Stanza::stampa_stanza(){
-    int offsetx = ((gd -> getTerminalX()) - dim_y)/2;
-    int offsety = ((gd -> getTerminalY()) - dim_x)/2;
+void Stanza::stampa_stanza(){ 
+    int offsetx = ((gd -> getTerminalX()) - this -> dim_x)/2;
+    int offsety = ((gd -> getTerminalY()) - this -> dim_y)/2;
     for(int i = 0; i < this->dim_y; i++){
         for(int j = 0; j < this->dim_x; j++){
             mvadd_wch(offsety+i , offsetx+j, &(matrice_stampabile[i][j]));
@@ -231,7 +231,7 @@ void Stanza::imposta_porte(bool nord, bool sud, bool est, bool ovest){
     }
     cchar_t ** portaVerticale = new cchar_t * [DIMENSIONE_PORTA];
     for(int i = 0; i < DIMENSIONE_PORTA; i ++) {
-        portaVerticale[i]  = new cchar_t [DIMENSIONE_PORTA];
+        portaVerticale[i]  = new cchar_t [1];
         setcchar(&(portaVerticale[i][0]), L" ", A_NORMAL, DOOR_BACKGROUND, NULL);
     }
     if(nord == true){
@@ -249,13 +249,13 @@ void Stanza::imposta_porte(bool nord, bool sud, bool est, bool ovest){
     }
     if(est == true){
         for(int i = 0; i < DIMENSIONE_PORTA; i++){
-            matrice_logica [LARGHEZZA_STANZA] [i + (int)((ALTEZZA_STANZA - DIMENSIONE_PORTA)/2)] = 0;
+            matrice_logica [i + (int)((ALTEZZA_STANZA - DIMENSIONE_PORTA)/2)] [LARGHEZZA_STANZA] = 0;
         }
         this -> porte[PORTA_EST] = new Entita(1, LARGHEZZA_STANZA,(int)((ALTEZZA_STANZA - DIMENSIONE_PORTA)/2), DIMENSIONE_PORTA , 1 , portaVerticale);
     }
     if(ovest == true){
         for(int i = 0; i < DIMENSIONE_PORTA; i++){
-            matrice_logica [0] [i + (int)((ALTEZZA_STANZA - DIMENSIONE_PORTA)/2)] = 0;
+            matrice_logica [i + (int)((ALTEZZA_STANZA - DIMENSIONE_PORTA)/2)] [0] = 0;
         }
         this -> porte[PORTA_OVEST] = new Entita(1, 0,(int)((ALTEZZA_STANZA - DIMENSIONE_PORTA)/2), DIMENSIONE_PORTA , 1, portaVerticale);
     }
