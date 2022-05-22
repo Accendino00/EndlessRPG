@@ -72,6 +72,7 @@ class Stanza {
         void da_logica_a_stampabile();
         int dim_y;
         int dim_x;
+        bool accessibile(int y_entity, int x_entity);
        };
 
 

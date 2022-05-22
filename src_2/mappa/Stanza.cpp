@@ -277,6 +277,17 @@ void Stanza::da_logica_a_stampabile(){
     }
 }
 
+bool Stanza::accessibile(int y_entity, int x_entity){
+    //int offsetx = ((gd -> getTerminalX()) - this -> dim_x)/2;
+    //int offsety = ((gd -> getTerminalY()) - this -> dim_y)/2;
+    //int halfx = dim_x/2;
+    //int halfy = dim_y/2;
+    int returnbool = false;
+    if(x_entity >= 0 && x_entity < this -> dim_x && y_entity > 0 && y_entity < this -> dim_y && this -> matrice_logica [y_entity] [x_entity] != 1){
+        returnbool = true;
+    } return returnbool;
+}
+
 
 
 

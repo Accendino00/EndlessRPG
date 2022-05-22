@@ -28,7 +28,10 @@ void Gioco::gameLoop() {
 
         lamammadiPetru -> stampa_stanza();
 
-        this->player->stampa(gd->getTerminalY()/2, gd->getTerminalX()/2);
+        if(lamammadiPetru -> accessibile(this -> player -> y, this -> player -> x)){
+            this->player->stampa(gd->getTerminalY()/2, gd->getTerminalX()/2);
+        }
+
         this->player->stampaHUDplayer();
 
         if(gd->checkInput('q')) {
@@ -63,7 +66,9 @@ void Gioco::gameLoop() {
         gd->manageTicks();
 
         if(pr != NULL) {
+            //if(lamammadiPetru -> accessibile(this -> . . . -> y, this -> . . . -> x)){
             pr->stampa(gd->getTerminalY()/2, gd->getTerminalX()/2);
+            //}
             pr->updateProjectile();
         }
 
