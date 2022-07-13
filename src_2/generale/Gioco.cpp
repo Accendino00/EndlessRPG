@@ -10,7 +10,7 @@ void Gioco::gameLoop() {
     gd->resetTicks();
 
     Stanza * lamammadiPetru = new Stanza(ID_STANZA_NORMALE);
-    lamammadiPetru ->imposta_porte(true, false, false, true);
+    lamammadiPetru -> imposta_porte(true, false, false, true);
     lamammadiPetru -> da_logica_a_stampabile();
 
     do {
@@ -28,9 +28,9 @@ void Gioco::gameLoop() {
 
         lamammadiPetru -> stampa_stanza();
 
-        if(lamammadiPetru -> accessibile(this -> player -> y, this -> player -> x)){
-            this->player->stampa(gd->getTerminalY()/2, gd->getTerminalX()/2);
-        }
+        //if(lamammadiPetru -> accessibile(this -> player -> y, this -> player -> x)){
+        //    this->player->stampa(gd->getTerminalY()/2, gd->getTerminalX()/2);
+        //}
 
         this->player->stampaHUDplayer();
 
