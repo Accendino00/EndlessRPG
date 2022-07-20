@@ -225,8 +225,8 @@ void Stanza::stampa_stanza(){
 
 void Stanza::imposta_porte(bool nord, bool sud, bool est, bool ovest){
     cchar_t ** portaOrizzontale = new cchar_t * [1];
-    portaOrizzontale[0] = new cchar_t [DIMENSIONE_PORTA * 2];
-    for(int i = 0; i < DIMENSIONE_PORTA * 2; i ++) {
+    portaOrizzontale[0] = new cchar_t [DIMENSIONE_PORTA_ORIZZONTALE];
+    for(int i = 0; i < DIMENSIONE_PORTA_ORIZZONTALE; i ++) {
         setcchar(&(portaOrizzontale[0][i]), L" ", A_NORMAL, DOOR_BACKGROUND, NULL);
     }
     cchar_t ** portaVerticale = new cchar_t * [DIMENSIONE_PORTA];
@@ -235,17 +235,17 @@ void Stanza::imposta_porte(bool nord, bool sud, bool est, bool ovest){
         setcchar(&(portaVerticale[i][0]), L" ", A_NORMAL, DOOR_BACKGROUND, NULL);
     }
     if(nord == true){
-        for(int i = 0; i < DIMENSIONE_PORTA; i++){
-            matrice_logica [0] [i + (int)((LARGHEZZA_STANZA - DIMENSIONE_PORTA)/2)] = 0;
+        for(int i = 0; i < DIMENSIONE_PORTA_ORIZZONTALE; i++){
+            matrice_logica [0] [i + (int)((LARGHEZZA_STANZA - DIMENSIONE_PORTA_ORIZZONTALE)/2)] = 0;
         }
         
-        this -> porte[PORTA_NORD] = new Entita(1, 0,(int)((LARGHEZZA_STANZA - DIMENSIONE_PORTA)/2), 1 , DIMENSIONE_PORTA * 2, portaOrizzontale); 
+        this -> porte[PORTA_NORD] = new Entita(1, 0,(int)((LARGHEZZA_STANZA - DIMENSIONE_PORTA_ORIZZONTALE)/2), 1 , DIMENSIONE_PORTA_ORIZZONTALE, portaOrizzontale); 
     }
     if(sud == true){
-        for(int i = 0; i < DIMENSIONE_PORTA; i++){
-            matrice_logica [ALTEZZA_STANZA] [i + (int)((LARGHEZZA_STANZA - DIMENSIONE_PORTA)/2)] = 0;
+        for(int i = 0; i < DIMENSIONE_PORTA_ORIZZONTALE; i++){
+            matrice_logica [ALTEZZA_STANZA] [i + (int)((LARGHEZZA_STANZA - DIMENSIONE_PORTA_ORIZZONTALE)/2)] = 0;
         }
-        this -> porte[PORTA_SUD] = new Entita(1, ALTEZZA_STANZA,(int)((LARGHEZZA_STANZA - DIMENSIONE_PORTA)/2), 1 , DIMENSIONE_PORTA * 2, portaOrizzontale); 
+        this -> porte[PORTA_SUD] = new Entita(1, ALTEZZA_STANZA,(int)((LARGHEZZA_STANZA - DIMENSIONE_PORTA_ORIZZONTALE)/2), 1 , DIMENSIONE_PORTA * 2, portaOrizzontale); 
     }
     if(est == true){
         for(int i = 0; i < DIMENSIONE_PORTA; i++){

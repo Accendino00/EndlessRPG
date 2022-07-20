@@ -29,7 +29,7 @@ void Gioco::gameLoop() {
         lamammadiPetru -> stampa_stanza();
 
         //if(lamammadiPetru -> accessibile(this -> player -> y, this -> player -> x)){
-        //    this->player->stampa(gd->getTerminalY()/2, gd->getTerminalX()/2);
+        this->player->stampa(gd->getTerminalY()/2, gd->getTerminalX()/2);
         //}
 
         this->player->stampaHUDplayer();
