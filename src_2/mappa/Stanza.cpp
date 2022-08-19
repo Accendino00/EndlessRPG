@@ -162,11 +162,19 @@ Stanza::Stanza(int a){
 };
 */
 
+/**
+ * @brief Costruttore di Stanza. Usando l'id capisce che tipo di stanza creare. 
+ * Viene scelta una stanza casuale tra quelle presenti nei file, viene letta
+ * e viene impostata.
+ * 
+ * @param id Può essere "ID_STANZA_SPAWN", "ID_STANZA_NORMALE" oppure "ID_STANZA_BOSS" 
+ */
 Stanza::Stanza(int id){
     FILE * fin;
-    char mappa_da_scegliere [100];
-    int idMappa = (rand() % 1 )+ 1;
+    char mappa_da_scegliere [100];  // Stringa contenente il nome del file della mappa
+    int idMappa = (rand() % 1 )+ 1; // Impostazione dell'id casuale della mappa
 
+    // Scelta del tipo di mappa usando il parametro "id"
     if(id == ID_STANZA_SPAWN || id == ID_STANZA_NORMALE){
         this->dim_y = DIM_STANZA_Y;
         this->dim_x = DIM_STANZA_X;
@@ -178,28 +186,28 @@ Stanza::Stanza(int id){
         this->dim_x = DIM_STANZA_BOSS_X;
     }
 
+    // Creazione della stringa che contiene il percorso al file della mappa scelta
     sprintf(mappa_da_scegliere, "./mappa/matrici_mappe/mappa%s%d.map", (id == ID_STANZA_BOSS)?("boss"):(""), idMappa);
     fin = fopen( mappa_da_scegliere , "r");
     
     
-    //come aprire un file
-
+    // Allocazione della matrice logica della mappa
     this -> matrice_logica = new int* [this->dim_y];
     for(int i=0; i < this->dim_y; i++ ){
         this -> matrice_logica [i] = new int [this->dim_x];
     }
         
-    
-    //alloco memoria per la matrice
-
+    // Impostazione della matrice logica
     for(int i= 0; i < this->dim_y; i++){
         for(int j = 0; j < this->dim_x; j++){
-            matrice_logica [i][j] = fgetc(fin) -48 ;
+            matrice_logica [i][j] = fgetc(fin) - (int)'0'; // Traduco i numeri ascii in interi
         }
         fgetc(fin);
     }
     fclose(fin);
 
+
+    // Allocazione della matrice stampabile
     this -> matrice_stampabile = new cchar_t * [dim_y];
     for(int i = 0; i < dim_y; i++){
         this -> matrice_stampabile [i] = new cchar_t [dim_x];
@@ -207,8 +215,12 @@ Stanza::Stanza(int id){
 
 };
 
- //Generalizzazione
-
+/**
+ * @brief Stampa la stanza. Deve essere chiamato dopo il metodo "da_logica_a_stampabile"
+ * 
+ * Utilizzando la matrice "matrice_stampabile", ne stampa i vari caratteri usando
+ * il metodo specifico "mvadd_wch".
+ */
 void Stanza::stampa_stanza(){ 
     int offsetx = ((gd -> getTerminalX()) - this -> dim_x)/2;
     int offsety = ((gd -> getTerminalY()) - this -> dim_y)/2;
@@ -221,24 +233,44 @@ void Stanza::stampa_stanza(){
 }
 
 
-
-
+/**
+ * @brief Imposta la presenza di porte nella matrice logica della stanza.
+ * 
+ * Se il booleano della porta corrispondente è vero, allora la porta che si trova
+ * in quella direzione nella stanza viene impostata come esistente. 
+ * Ovvero i valori della matrice logica che si trovano nelle posizioni corrette vengono
+ * sostituiti da caselle vuote.
+ * 
+ * Vengono anche impostate le entità "porta" della stanza. 
+ * 
+ * @param nord 
+ * @param sud 
+ * @param est 
+ * @param ovest 
+ */
 void Stanza::imposta_porte(bool nord, bool sud, bool est, bool ovest){
-    cchar_t ** portaOrizzontale = new cchar_t * [1];
-    portaOrizzontale[0] = new cchar_t [DIMENSIONE_PORTA_ORIZZONTALE];
-    for(int i = 0; i < DIMENSIONE_PORTA_ORIZZONTALE; i ++) {
-        setcchar(&(portaOrizzontale[0][i]), L" ", A_NORMAL, DOOR_BACKGROUND, NULL);
+    // Impostazione delle matrici di caratterio stampabili che vengono usate per le entità delle porte
+    cchar_t **portaOrizzontale, **portaVerticale;
+    if(nord || sud) {
+        portaOrizzontale = new cchar_t * [1];
+        portaOrizzontale[0] = new cchar_t [DIMENSIONE_PORTA_ORIZZONTALE];
+        for(int i = 0; i < DIMENSIONE_PORTA_ORIZZONTALE; i ++) {
+            setcchar(&(portaOrizzontale[0][i]), L" ", A_NORMAL, DOOR_BACKGROUND, NULL);
+        }
     }
-    cchar_t ** portaVerticale = new cchar_t * [DIMENSIONE_PORTA];
-    for(int i = 0; i < DIMENSIONE_PORTA ; i ++) {
-        portaVerticale[i]  = new cchar_t [1];
-        setcchar(&(portaVerticale[i][0]), L" ", A_NORMAL, DOOR_BACKGROUND, NULL);
+    if (est || ovest) {
+        portaVerticale = new cchar_t * [DIMENSIONE_PORTA];
+        for(int i = 0; i < DIMENSIONE_PORTA ; i ++) {
+            portaVerticale[i]  = new cchar_t [1];
+            setcchar(&(portaVerticale[i][0]), L" ", A_NORMAL, DOOR_BACKGROUND, NULL);
+        }
     }
+
+    // Imposto le porte della matrice logica e poi creo le entità
     if(nord == true){
         for(int i = 0; i < DIMENSIONE_PORTA_ORIZZONTALE; i++){
             matrice_logica [0] [i + (int)((LARGHEZZA_STANZA - DIMENSIONE_PORTA_ORIZZONTALE)/2)] = 0;
         }
-        
         this -> porte[PORTA_NORD] = new Entita(1, 0,(int)((LARGHEZZA_STANZA - DIMENSIONE_PORTA_ORIZZONTALE)/2), 1 , DIMENSIONE_PORTA_ORIZZONTALE, portaOrizzontale); 
     }
     if(sud == true){
@@ -261,7 +293,10 @@ void Stanza::imposta_porte(bool nord, bool sud, bool est, bool ovest){
     }
 }
 
-
+/**
+ * @brief Trasforma la matrice logica in matrice stampabile. 
+ * Dopo di questo, la stanza può essere stampata, ovvero il metodo "stampa_stanza" funziona come previsto.
+ */
 void Stanza::da_logica_a_stampabile(){
     for(int i = 0; i < dim_y; i++){
         for(int j = 0; j < dim_x; j++){
@@ -277,20 +312,41 @@ void Stanza::da_logica_a_stampabile(){
     }
 }
 
+
+// Da rivedere
 bool Stanza::accessibile(int y_entity, int x_entity){
     //int offsetx = ((gd -> getTerminalX()) - this -> dim_x)/2;
     //int offsety = ((gd -> getTerminalY()) - this -> dim_y)/2;
     //int halfx = dim_x/2;
     //int halfy = dim_y/2;
     int returnbool = false;
-    if(x_entity >= 0 && x_entity < this -> dim_x && y_entity > 0 && y_entity < this -> dim_y && this -> matrice_logica [y_entity] [x_entity] != 1){
+    if(
+        x_entity >= 0 && 
+        x_entity < this -> dim_x && 
+        y_entity > 0 && 
+        y_entity < this -> dim_y && 
+        this -> matrice_logica [y_entity] [x_entity] != 1
+    ){
         returnbool = true;
     } return returnbool;
 }
 
 
+/* ANCORA DA FARE::
 
+    Pulire il codice
+    Impostare lo spawn dei nemici 
+        (in attesa di petru, ma puoi già pensare a come 
+        fare impostanto di punti di spawn e usando entità 
+        placeholder)
 
+    Fare un metodo che ha come parametri "x" e "y" 
+    e ritorna true se è una casella della mappa libera
+    o false se vi è un muro, interno o esterno, 
+    oppure se è fuori dai bounds della mappa.
+        -(Sostituto di accessibile)
+
+*/
 
 
 

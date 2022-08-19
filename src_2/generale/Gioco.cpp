@@ -19,7 +19,7 @@ void Gioco::gameLoop() {
         // SCHERMATA INIZIALE
         // Il menu principale
         gd->getInput();
-        erase();
+        erase(); 
         
         // Calcola logica
 

@@ -16,6 +16,7 @@ class Livello {
     
     */
     Stanza *** matrice_livello;
+    // Dovrebbe anche esserci "stanza attuale", che dovrebbero essere delle cooridnate x e y che indicano il punto della matrice dove si trovano
     Livello();
     void scegli_lato(Stanza *** matrice_livello , int * x, int *y);
     void crea_porte();

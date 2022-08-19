@@ -1,7 +1,23 @@
 #include "../generale/libs.hpp"
 //Generazione 
 
-/* Livello -> 5x5
+/* 
+
+Crea dei file .lvl con dei bei layout.
+0, ovvero lo spawn non deve essere al centro.
+  Il posto dove si spawna viene deciso *in base* allo 0, non viceversa
+
+tutte le stanze devono essere contigue e non diagonali, ricordati come sono fatte le porte
+
+
+
+
+
+
+IGNORA TUTTO QUESTO
+VVVVVVVVVVVVVVVVVVV
+
+Livello -> 5x5
 Generazione di un livello standard:
   Quindi generi un livello con 4 stanze tutte collegate
    
