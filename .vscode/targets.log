@@ -1,4 +1,6 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+make: *** No rule to make target 'all'.  Stop.
+
 # GNU Make 4.3
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2020 Free Software Foundation, Inc.
@@ -6,7 +8,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Wed Jul 20 10:57:16 2022
+# Make data base, printed on Fri Aug 19 13:27:19 2022
 
 # Variables
 
@@ -19,15 +21,13 @@ GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
 SSH_AGENT_LAUNCHER = gnome-keyring
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-bc03d67a-5783-4885-8f80-eafe1f923011.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-211c4ae4-9990-4215-9a51-e070edb37b7c.sock
 # environment
 LC_NAME = it_IT.UTF-8
 # environment
 LC_NUMERIC = it_IT.UTF-8
 # environment
 VSCODE_CWD = /home/tucano/gioco_UNIBO-Programmazione/src_2
-# environment
-WINDOWPATH = 2
 # environment
 LC_ADDRESS = it_IT.UTF-8
 # default
@@ -45,7 +45,7 @@ PWD = /home/tucano/gioco_UNIBO-Programmazione
 # automatic
 %D = $(patsubst %/,%,$(dir $%))
 # environment
-XDG_DATA_DIRS = /usr/share/ubuntu:/usr/share/gnome:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
+XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
 # environment
 OLDPWD = /home/tucano
 # automatic
@@ -59,13 +59,13 @@ VSCODE_CODE_CACHE_PATH = /home/tucano/.config/Code/CachedData/da15b6fd3ef856477b
 # environment
 LANG = C
 # environment
-XAUTHORITY = /run/user/1000/gdm/Xauthority
+XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.8C5ZQ1
 # default
 .LOADED := 
 # default
 .INCLUDE_DIRS = /usr/local/include /usr/include /usr/include
 # environment
-GNOME_TERMINAL_SERVICE = :1.92
+GNOME_TERMINAL_SERVICE = :1.108
 # makefile
 MAKEFLAGS = pqrR
 # makefile
@@ -85,6 +85,8 @@ SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # default
 .SHELLFLAGS := -c
 # environment
+WAYLAND_DISPLAY = wayland-0
+# environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # automatic
 +D = $(patsubst %/,%,$(dir $+))
@@ -97,13 +99,13 @@ MAKEFILE_LIST :=
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 4383
+VSCODE_PID = 11468
 # environment
-XDG_SESSION_TYPE = x11
+XDG_SESSION_TYPE = wayland
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
-SESSION_MANAGER = local/tucano-HP-Laptop-15-dw0xxx:@/tmp/.ICE-unix/2265,unix/tucano-HP-Laptop-15-dw0xxx:/tmp/.ICE-unix/2265
+SESSION_MANAGER = local/tucano-HP-Laptop-15-dw0xxx:@/tmp/.ICE-unix/1753,unix/tucano-HP-Laptop-15-dw0xxx:/tmp/.ICE-unix/1753
 # automatic
 *F = $(notdir $*)
 # environment
@@ -127,7 +129,7 @@ XMODIFIERS = @im=ibus
 # environment
 SHLVL = 1
 # environment
-GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/1ac0fe37_0a4f_4560_84b3_28949146f81f
+GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/03b708c0_2b9a_4283_a39a_a041121bc8ca
 # environment
 MAKELEVEL := 0
 # default
@@ -146,6 +148,8 @@ LC_TIME = it_IT.UTF-8
 VSCODE_LOG_NATIVE = false
 # environment
 USERNAME = tucano
+# environment
+GNOME_SETUP_DISPLAY = :1
 # environment
 LC_TELEPHONE = it_IT.UTF-8
 # environment
@@ -169,9 +173,9 @@ LOGNAME = tucano
 # makefile
 .DEFAULT_GOAL := 
 # environment
-SYSTEMD_EXEC_PID = 2292
+SYSTEMD_EXEC_PID = 1785
 # environment
-DISPLAY = :1
+DISPLAY = :0
 # environment
 USER = tucano
 # environment
@@ -186,8 +190,6 @@ _ = /usr/bin/code
 LC_PAPER = it_IT.UTF-8
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
-# environment
-GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
 COLORTERM = truecolor
 # environment
@@ -204,6 +206,8 @@ ELECTRON_RUN_AS_NODE = 1
 VSCODE_IPC_HOOK = /run/user/1000/vscode-efa8915c-1.67.1-main.sock
 # environment
 TERM = xterm-256color
+# environment
+IM_CONFIG_PHASE = 1
 # default
 .RECIPEPREFIX := 
 # automatic
@@ -225,7 +229,7 @@ GDMSESSION = ubuntu
 # environment
 LC_IDENTIFICATION = it_IT.UTF-8
 # variable set hash-table stats:
-# Load=107/1024=10%, Rehash=0, Collisions=11/134=8%
+# Load=108/1024=11%, Rehash=0, Collisions=11/135=8%
 
 # Pattern-specific Variable Values
 
@@ -276,11 +280,9 @@ GNUmakefile:
 #  File does not exist.
 #  File has been updated.
 #  Failed to be updated.
+ 
 
 # files hash-table stats:
- 
-make: *** No rule to make target 'all'.  Stop.
-
 # Load=6/1024=1%, Rehash=0, Collisions=0/15=0%
 # VPATH Search Paths
 
@@ -294,6 +296,6 @@ make: *** No rule to make target 'all'.  Stop.
 # strcache performance: lookups = 23 / hit rate = 13%
 # hash-table stats:
 # Load=20/8192=0%, Rehash=0, Collisions=0/23=0%
-# Finished Make data base on Wed Jul 20 10:57:16 2022
+# Finished Make data base on Fri Aug 19 13:27:19 2022
 
  
