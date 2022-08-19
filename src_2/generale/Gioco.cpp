@@ -4,6 +4,10 @@ Gioco::Gioco(){
     this->player = new Player(0,0, 50);
 }
 
+Gioco::~Gioco() {
+    delete this->player;
+}
+
 void Gioco::gameLoop() {
     bool gameOver = false;
     Proiettile * pr = NULL;

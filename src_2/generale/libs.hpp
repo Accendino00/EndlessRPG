@@ -31,6 +31,7 @@ extern GameData * gd;
 #include "../mappa/Livello.hpp"
 
 //Menu
+#include "../menu/Menu.hpp"
 #include "../menu/MenuMain.hpp"
 #include "../menu/MenuOptions.hpp"
 #include "../menu/MenuCrediti.hpp"

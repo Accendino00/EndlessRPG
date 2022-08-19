@@ -75,7 +75,8 @@ void GameData::getInput () {
             getmaxyx(stdscr, this->terminalY, this->terminalX);  
         }
         this->num_PressedKeys++;
-	} while(this->pressedKeys[this->num_PressedKeys-1] != ERR);
+	} while(    this->num_PressedKeys < (MAX_TASTI_INSIEME-1) 
+            &&  this->pressedKeys[this->num_PressedKeys-1] != ERR);
 }
 
 bool GameData::checkInput (int inputToCheck) {

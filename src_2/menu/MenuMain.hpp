@@ -1,16 +1,11 @@
 #pragma once
 #include "../generale/libs.hpp"
 
-class MenuMain {
-private:
-    short selezione;
-
+class MenuMain : public Menu {
 public:
     MenuMain();
 
     void loopMenu();
-
-    void manageInput();
-    int getSelezione();
-    void print();
+    void printAll();
+    void printTitle();
 };

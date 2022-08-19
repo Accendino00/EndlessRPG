@@ -1,24 +1,26 @@
 #include "../generale/libs.hpp"
 
-MenuMain::MenuMain() {
-    selezione = 0;
-}
+MenuMain::MenuMain() : Menu(0, 4, 0) {}
 
 void MenuMain::loopMenu() {
-    // Loop generale del gioco
+
     MenuOptions * m_options;
     Gioco * gioco;
+
+    // Loop del menu principale del gioco
     do {
+        // Inizio del frame, lettura input e erase dello schermo
         gd->frameStart();
-
-        // SCHERMATA INIZIALE
-        // Il menu principale
         gd->getInput();
-        this->manageInput();
-
         erase();
 
 
+        /*** Gestione degli input ***/
+        
+        // Per cambiare la selezione
+        this->manageInput();
+
+        // Se viene fatta una selezione
         if(gd->checkInput(10)) {
             switch(this->getSelezione()) {
                 case 0:
@@ -31,50 +33,35 @@ void MenuMain::loopMenu() {
                     // Score
                     break;
                 case 2:    
+                    // Options
                     m_options = new MenuOptions();
                     m_options->loopMenu();
                     delete m_options;
                     break;
                 case 3:
+                    // Exit
                     gd->setCloseGame(true);
                     break;
             }
         }
 
-        this->print();
-
+        // Stampa, fine del frame e refresh dello schermo
+        this->printAll();
         gd->frameFinish();
         refresh();
     } while (! (gd->getCloseGame()) );
-
 }
 
-void MenuMain::manageInput() {
-    int i = 0;
-    int numOfOptions = 4;
-    while(i < gd->getNumOfPressedKeys()) {
-        switch(gd->getKey(i)) {
-            case KEY_UP:
-            case L'w':
-            case L'W':
-                selezione = (selezione -1 +numOfOptions) % numOfOptions;
-                break;
-            case KEY_DOWN:
-            case L's':
-            case L'S':
-                selezione = (selezione + 1) % numOfOptions;
-                break;
-        }
-        i++;
-    }
+void MenuMain::printAll() {
+    printTitle();
+
+    printLine("Gioca", 0);
+    printLine("Punteggi", 1);
+    printLine("Opzioni", 2);
+    printLine("Esci", 3);
 }
 
-int MenuMain::getSelezione() {
-    return this->selezione;
-}
-
-void MenuMain::print() {
-
+void MenuMain::printTitle() {
     int centerY = gd->getTerminalY()/2;
     int centerX = gd->getTerminalX()/2;
     attron(COLOR_PAIR(MAIN_TITLE));
@@ -91,52 +78,4 @@ void MenuMain::print() {
     mvprintw(centerY-3, centerX-15, " ╙▄,  `````╓▄▄▄#▀╙            ");
     mvprintw(centerY-2, centerX-15, "   `╙▀▀╙╙╙└`                  ");
     attroff(COLOR_PAIR(MAIN_TITLE));
-
-    attron(COLOR_PAIR(MENU_NORMAL));
-
-    // Stampa delle opzioni
-    if (this->getSelezione() == 0) {
-        attron(COLOR_PAIR(MENU_HIGHLIGHT));
-        mvprintw(centerY+2,centerX-4,">");
-    }
-    mvprintw(centerY+2,centerX-2,"Gioca");
-    if (this->getSelezione() == 0) {
-        attroff(COLOR_PAIR(MENU_HIGHLIGHT));
-        attron(COLOR_PAIR(MENU_NORMAL));
-    }
-
-    // Stampa delle opzioni
-    if (this->getSelezione() == 1) {
-        attron(COLOR_PAIR(MENU_HIGHLIGHT));
-        mvprintw(centerY+4,centerX-4,">");
-    }
-    mvprintw(centerY+4,centerX-2,"Punteggi");
-    if (this->getSelezione() == 1) {
-        attroff(COLOR_PAIR(MENU_HIGHLIGHT));
-        attron(COLOR_PAIR(MENU_NORMAL));
-    }
-
-    // Stampa delle opzioni
-    if (this->getSelezione() == 2) {
-        attron(COLOR_PAIR(MENU_HIGHLIGHT));
-        mvprintw(centerY+6,centerX-4,">");
-    }
-    mvprintw(centerY+6,centerX-2,"Opzioni");
-    if (this->getSelezione() == 2) {
-        attroff(COLOR_PAIR(MENU_HIGHLIGHT));
-        attron(COLOR_PAIR(MENU_NORMAL));
-    }
-
-    // Stampa delle opzioni
-    if (this->getSelezione() == 3) {
-        attron(COLOR_PAIR(MENU_HIGHLIGHT));
-        mvprintw(centerY+8,centerX-4,">");
-    }
-    mvprintw(centerY+8,centerX-2,"Esci");
-    if (this->getSelezione() == 3) {
-        attroff(COLOR_PAIR(MENU_HIGHLIGHT));
-        attron(COLOR_PAIR(MENU_NORMAL));
-    }
-
-    attroff(COLOR_PAIR(MENU_NORMAL));
-}
+};

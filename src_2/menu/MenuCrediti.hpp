@@ -1,12 +1,11 @@
 #pragma once
 #include "../generale/libs.hpp"
 
-class MenuCrediti {
-private:
-
+class MenuCrediti : public Menu{
 public:
     MenuCrediti();
 
     void loopMenu();
-    void print();
+    void printAll();
+    void printAuthors();
 };
