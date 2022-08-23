@@ -12,6 +12,7 @@ GameData::GameData () {
     this->difficulty = 1;
     this->showPerformance = true;
     this->impostazioniSalvate = true;
+    this->numLivello = 0;
 
     this->currentTick = 0;
     // Devo usare chrono per avere meno cast. Ha il suo particolare 
@@ -154,7 +155,7 @@ void GameData::manageTicks() {
     }
 }
 
-long int GameData::getCurrentTick() {
+long long int GameData::getCurrentTick() {
     return this->currentTick;
 }
 

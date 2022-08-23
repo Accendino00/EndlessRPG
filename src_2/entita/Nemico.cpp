@@ -1,57 +1,112 @@
-/*
-
-    Nemici:
-        - Si muovono
-            - In modo diverso da tipo a tipo
-        - Sparano
-            - Più o meno, in base al tipo
-        - Possono cambiare forma
-            - Per indicare che stanno per sparare
-        - Hanno dimensione e immagini diverse
-
-
-
-
-        - Per evitare di implementare nuove strutture dati, lo stampabile
-        sarà contenuto nello stampabile, ma offsettato di una certa dimensione
-
-        - La dimensione del nemico non cambierà dinamicamente, ma la sua forma sì,
-        in quanto si potrà scegliere che parte stampare in base al tempo.
-
-            - L'idea è un dato tipo:
-                short FrameAttuale
-            e nel for di stampabile, al x è j + (FrameAttuale*dim_x)
-
-            Per implementare delle routine
-            dovrei fare che ci sono delle cose che fa ogni n tick
-            tipo 
-            {spara, spara, spara, fermo, fermo, muovi, fermo, muovi, fermo} e poi quando 
-            arriva alla fine ripete la routine
-            quindi una serie di switch in base all'indice della cosa da fare adesso
-            in base al nemico ogni cosa ha una cosa diversa
-
-            ognuna di quelle cose è definita da dei define, tipo NEMICO_SPARA, NEMICO_FERMO, NEMICO_MUOVI, etc.
-
-            Potrei far sì che ognuna di quelle cose sia una lista di cose che deve fare, tipo
-            CAMBIA_ANIMAZIONE -> MUOVITI
-
-
-
-            PER CAPIRE DOVE SPARARE:
-                - Tra i due punti si forma un angolo, dove la distanza x è il
-                raggio dell'angolo, l'altezza y è il valore della tangente dell'angolo
-                
-                - Per trovare l'angolo bisogna quindi fare arctan(y/x)
-
-                In base all'angolo (se si trova in una di 3 sezioni per capire se in alto, diagonale, o di lato),
-                e se la x di uno è maggiore dell'altro
-                e se la y di uno è maggiore dell'altro
-                si spara il proiettile
-*/
-
 #include "../generale/libs.hpp"
 
+Nemico::Nemico (int type) {
 
-class Nemico : public Entita {
+    // Impostazione dell'hitbox e della dimensione dello stampabile. 
+    // Inoltre il giocatore ha 1 solo frame di stampa
+    (*this).h_dimy = 1;
+    (*this).h_dimx = 1;
+    (*this).s_dimy = 1;
+    (*this).s_dimx = 1;
+    (*this).currentFrame = 0;
 
-};
+    this->maxLife=100;
+    this->currentLife = this->maxLife;
+	
+    this->stampabile = new cchar_t * [1];
+    this->stampabile[0] = new cchar_t [1];
+   
+    setcchar(&(this->stampabile[0][0]), L"N", A_NORMAL, PLAYER_COLOR_PAIR, NULL);
+    
+    this->y = 20;
+    this->x = 20;
+
+    this->ticksForAction = 500;
+    this->currentAction = 0;
+    this->numActions = 4;
+    this->actions = new int[4];
+    actions[0] = MUOVI_DIREZIONE | DIRECTION_EE;
+    actions[1] = MUOVI_DIREZIONE | DIRECTION_NN;
+    actions[2] = MUOVI_DIREZIONE | DIRECTION_OO;
+    actions[3] = MUOVI_DIREZIONE | DIRECTION_SS;
+
+
+    /*if(type == NORMAL_ENEMY) {
+        int idNemico = ( rand() % 5 );
+        switch(idNemico) {
+            case 0:
+
+            break;
+            case 1:
+
+            break;
+            case 2:
+
+            break;
+            case 3:
+
+            break;
+            case 4:
+
+            break;
+        }
+    } else if (type == BOSS_ENEMY) {
+        int idNemico = ( rand() % 3 );
+        switch(idNemico) {
+            case 0:
+
+            break;
+            case 1:
+
+            break;
+            case 2:
+
+            break;
+        }
+    }*/
+}
+
+void Nemico::updateNemico(Player * player /*e altri dati sulla mappa e sui nemici da controllare*/) {
+    this->updateTicks();
+    while (this->passedActions > 0) {
+        int azione = this->actions[this->currentAction];
+        // Gestione del movimento con direzione
+        if( (azione & MUOVI_DIREZIONE) == MUOVI_DIREZIONE ) {
+            switch(azione & DIRECTION_MASK) {
+                case DIRECTION_EE:
+                    this->incrementaX(1);
+                break;
+                case DIRECTION_OO:
+                    this->incrementaX(-1);
+                break;
+                case DIRECTION_NN:
+                    this->incrementaY(-1);
+                break;
+                case DIRECTION_SS:
+                    this->incrementaY(1);
+                break;
+            }
+        }
+
+        // Gestione del movimento pattern 
+        else if( (azione & MUOVI_PATTERN) == MUOVI_PATTERN ) {
+            switch(patternDirezione) {
+                case DIRECTION_EE:
+                    // if can't move, change direction
+                    this->incrementaX(1);
+                break;
+                case DIRECTION_OO:
+                    this->incrementaX(-1);
+                break;
+                case DIRECTION_NN:
+                    this->incrementaY(-1);
+                break;
+                case DIRECTION_SS:
+                    this->incrementaY(1);
+                break;
+            }
+        }
+        this->currentAction = (this->currentAction + 1) % this->numActions;
+        this->passedActions--;
+    }
+}

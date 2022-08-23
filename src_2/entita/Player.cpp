@@ -2,14 +2,19 @@
 
 Player::Player(int y, int x, int life) {
     this->lastinput = L'd';
-	this->dim_x=1;
-	this->dim_y=1;
+    // Impostazione dell'hitbox e della dimensione dello stampabile. 
+    // Inoltre il giocatore ha 1 solo frame di stampa
+    (*this).h_dimy = 1;
+    (*this).h_dimx = 1;
+    (*this).s_dimy = 1;
+    (*this).s_dimx = 1;
+    (*this).currentFrame = 0;
 
 	this->dashDistanceY = 5;
 	this->dashDistanceX = this->dashDistanceY*2;
 
-    this->life=life;
-    this->current_life = this->life;
+    this->maxLife=life;
+    this->currentLife = this->maxLife;
 	
     this->stampabile = new cchar_t * [1];
     this->stampabile[0] = new cchar_t [1];
@@ -36,10 +41,10 @@ void Player::stampaHUDplayer(){
     mvprintw(coordy+2, coordx, "HP : ");
     attroff(COLOR_PAIR(0));
     attron(COLOR_PAIR(HEARTS_PAIR));
-    for(int i = current_life/10; i>0; i--){
+    for(int i = currentLife/10; i>0; i--){
         printw("\u2665");
     }
-    for(int i = (life-current_life)/10; i>0; i--){
+    for(int i = (maxLife-currentLife)/10; i>0; i--){
         printw("\u2661");
     }
     attroff(COLOR_PAIR(HEARTS_PAIR));

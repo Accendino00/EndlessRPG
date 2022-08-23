@@ -17,6 +17,8 @@ void Gioco::gameLoop() {
     lamammadiPetru -> imposta_porte(true, false, false, true);
     lamammadiPetru -> da_logica_a_stampabile();
 
+    Nemico * nemico = new Nemico(0);
+
     do {
         gd->frameStart();
 
@@ -68,6 +70,8 @@ void Gioco::gameLoop() {
         }
         
         gd->manageTicks();
+        nemico->updateNemico(this->player);
+        nemico->stampa(gd->getTerminalY()/2, gd->getTerminalX()/2);
 
         if(pr != NULL) {
             //if(lamammadiPetru -> accessibile(this -> . . . -> y, this -> . . . -> x)){
