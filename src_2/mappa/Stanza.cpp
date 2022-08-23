@@ -312,7 +312,7 @@ void Stanza::da_logica_a_stampabile(){
     }
 }
 
-
+/*
 // Da rivedere
 bool Stanza::accessibile(int y_entity, int x_entity){
     //int offsetx = ((gd -> getTerminalX()) - this -> dim_x)/2;
@@ -330,7 +330,7 @@ bool Stanza::accessibile(int y_entity, int x_entity){
         returnbool = true;
     } return returnbool;
 }
-
+*/
 
 /* ANCORA DA FARE::
 
@@ -348,5 +348,19 @@ bool Stanza::accessibile(int y_entity, int x_entity){
 
 */
 
-
+bool Stanza::accessibile(int y_entity, int x_entity){
+    bool returnvalue = false;
+    if(matrice_logica [y_entity] [x_entity] == 0){
+        returnvalue = true;
+    }
+    /*
+    if(y_entity < 0 || 
+       y_entity > dim_y ||
+       x_entity < 0 ||
+       x_entity > dim_x){
+         
+    }
+    */
+    return returnvalue;
+}
 

@@ -1,6 +1,4 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
-make: *** No rule to make target 'all'.  Stop.
-
 # GNU Make 4.3
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2020 Free Software Foundation, Inc.
@@ -8,7 +6,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri Aug 19 13:27:19 2022
+# Make data base, printed on Tue Aug 23 16:48:12 2022
 
 # Variables
 
@@ -21,7 +19,7 @@ GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
 SSH_AGENT_LAUNCHER = gnome-keyring
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-211c4ae4-9990-4215-9a51-e070edb37b7c.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-6e12cbe2-2995-4c10-a2e7-196b11d46724.sock
 # environment
 LC_NAME = it_IT.UTF-8
 # environment
@@ -59,13 +57,13 @@ VSCODE_CODE_CACHE_PATH = /home/tucano/.config/Code/CachedData/da15b6fd3ef856477b
 # environment
 LANG = C
 # environment
-XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.8C5ZQ1
+XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.MJS8Q1
 # default
 .LOADED := 
 # default
 .INCLUDE_DIRS = /usr/local/include /usr/include /usr/include
 # environment
-GNOME_TERMINAL_SERVICE = :1.108
+GNOME_TERMINAL_SERVICE = :1.101
 # makefile
 MAKEFLAGS = pqrR
 # makefile
@@ -99,13 +97,13 @@ MAKEFILE_LIST :=
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 11468
+VSCODE_PID = 3029
 # environment
 XDG_SESSION_TYPE = wayland
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
-SESSION_MANAGER = local/tucano-HP-Laptop-15-dw0xxx:@/tmp/.ICE-unix/1753,unix/tucano-HP-Laptop-15-dw0xxx:/tmp/.ICE-unix/1753
+SESSION_MANAGER = local/tucano-HP-Laptop-15-dw0xxx:@/tmp/.ICE-unix/1741,unix/tucano-HP-Laptop-15-dw0xxx:/tmp/.ICE-unix/1741
 # automatic
 *F = $(notdir $*)
 # environment
@@ -129,7 +127,7 @@ XMODIFIERS = @im=ibus
 # environment
 SHLVL = 1
 # environment
-GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/03b708c0_2b9a_4283_a39a_a041121bc8ca
+GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/f1ac2cc5_3c12_484b_8d79_b96a508166c5
 # environment
 MAKELEVEL := 0
 # default
@@ -173,7 +171,7 @@ LOGNAME = tucano
 # makefile
 .DEFAULT_GOAL := 
 # environment
-SYSTEMD_EXEC_PID = 1785
+SYSTEMD_EXEC_PID = 1774
 # environment
 DISPLAY = :0
 # environment
@@ -237,9 +235,9 @@ LC_IDENTIFICATION = it_IT.UTF-8
 
 # Directories
 
-# . (device 66308, inode 4195294): 12 files, no impossibilities.
+# . (device 66308, inode 4195294): 11 files, no impossibilities.
 
-# 12 files, no impossibilities in 1 directories.
+# 11 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -279,8 +277,10 @@ GNUmakefile:
 #  Implicit rule search has been done.
 #  File does not exist.
 #  File has been updated.
-#  Failed to be updated.
  
+make: *** No rule to make target 'all'.  Stop.
+
+#  Failed to be updated.
 
 # files hash-table stats:
 # Load=6/1024=1%, Rehash=0, Collisions=0/15=0%
@@ -290,12 +290,12 @@ GNUmakefile:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 20 / storage = 188 B / avg = 9 B
-# current buf: size = 8162 B / used = 188 B / count = 20 / avg = 9 B
+# strcache buffers: 1 (0) / strings = 19 / storage = 161 B / avg = 8 B
+# current buf: size = 8162 B / used = 161 B / count = 19 / avg = 8 B
 
-# strcache performance: lookups = 23 / hit rate = 13%
+# strcache performance: lookups = 22 / hit rate = 13%
 # hash-table stats:
-# Load=20/8192=0%, Rehash=0, Collisions=0/23=0%
-# Finished Make data base on Fri Aug 19 13:27:19 2022
+# Load=19/8192=0%, Rehash=0, Collisions=0/22=0%
+# Finished Make data base on Tue Aug 23 16:48:12 2022
 
  

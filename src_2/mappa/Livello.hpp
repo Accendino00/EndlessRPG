@@ -20,6 +20,7 @@ class Livello {
     Livello();
     void scegli_lato(Stanza *** matrice_livello , int * x, int *y);
     void crea_porte();
+    void stanza_corrente();
     /*
     public:
     Livello();

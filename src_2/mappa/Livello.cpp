@@ -87,8 +87,8 @@ Livello::Livello(){
 */
 
 Livello::Livello(){
-  int current_x = 2;
-  int current_y = 2;
+  int current_x = 0;
+  int current_y = 0;
   int stanza_counter = 0;
   //while(stanza_counter < 16){
   //  
@@ -102,7 +102,33 @@ Livello::Livello(){
   for(int i=0; i < DIM_MATRICE_LIVELLO_Y; i++){
     this -> matrice_livello [i] = new Stanza * [DIM_MATRICE_LIVELLO_X];
     for(int j=0; j < DIM_MATRICE_LIVELLO_X; j++){
-      this ->matrice_livello [i][j] = NULL; //da vedere
+      this -> matrice_livello [i][j] = NULL; //da vedere
+    }
+  }
+
+  FILE * fin;
+  char livello_da_scegliere [100];  // Stringa contenente il nome del file della mappa
+  //int idMappa = (rand() % 1 )+ 1; // Impostazione dell'id casuale della mappa
+
+  // Creazione della stringa che contiene il percorso al file del livello scelto
+  sprintf(livello_da_scegliere, "./mappa/matrici_livello/livello%s%d.lvl");
+  fin = fopen( livello_da_scegliere , "r");
+  
+  //Leggo il file e mi trascrivo i numeri in una matrice di interi temporanea
+  int matrice_numerica [5][5];
+  for(int i= 0; i < 5; i++){
+      for(int j = 0; j < 5; j++){
+          matrice_numerica [i][j] = fgetc(fin) - (int)'0'; // Traduco i numeri ascii in interi
+       }
+      fgetc(fin);
+  }
+  fclose(fin);
+  
+
+  //Imposto l'id della stanza da creare
+  for(int i = 0; i < DIM_MATRICE_LIVELLO_Y; i++){
+    for(int j = 0; j < DIM_MATRICE_LIVELLO_X; j++){
+      matrice_livello [i] [j] = new Stanza(matrice_numerica[i] [j]);
     }
   }
 
@@ -155,6 +181,10 @@ void Livello::crea_porte(){
     }
   }
 };
+
+void Livello::stanza_corrente(){
+  
+}
 
 void Livello::scegli_lato(Stanza *** matrice_livello , int * x, int *y){ 
     switch(rand() % 4){
