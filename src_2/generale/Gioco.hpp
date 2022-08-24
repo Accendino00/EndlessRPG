@@ -13,6 +13,7 @@ private:
 
 public:
     Gioco();
-    
+    ~Gioco();
+
     void gameLoop();
 };

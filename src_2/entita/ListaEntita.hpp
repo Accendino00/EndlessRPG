@@ -1,3 +1,4 @@
+#pragma once
 #include "../generale/libs.hpp"
 
 class ListaEntita:public Entita{

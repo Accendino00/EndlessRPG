@@ -4,9 +4,16 @@ Proiettile::Proiettile(int y, int x, bool playerProjectile, int direction) {
     this->lastTick = gd->getCurrentTick();
     this->x = x;
     this->y = y;
-    this->dim_x = 1;
-    this->dim_y = 1;
+    // Impostazione dell'hitbox e della dimensione dello stampabile. 
+    // Inoltre i proiettili hanno 1 solo frame di stampa
+    (*this).h_dimy = 1;
+    (*this).h_dimx = 1;
+    (*this).s_dimy = 1;
+    (*this).s_dimx = 1;
+    (*this).currentFrame = 0;
+
     this->direction = direction;
+    this->passedActions = 0;
     this->moveInDirection();
     
     if(this->direction == DIRECTION_NN || this->direction == DIRECTION_SS) {

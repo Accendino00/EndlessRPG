@@ -4,12 +4,19 @@
 class Entita {
 public:
     // Punti salute
-    int life;
-    int current_life;
-    // Coordinate
+    int maxLife;
+    int currentLife;
+
+    // Danno fatto con il tocco di questa entità
+    int damage;
+
+    // Coordinate dell'angolo in alto a sinistra del nemico
     int x, y;
-    // Dimensioni hitbox
-    int dim_x, dim_y;
+    
+    int h_dimx, h_dimy; // Dimensioni hitbox
+    int s_dimx, s_dimy; // Dimensioni stampabile
+    int currentFrame; // Lo stampabile che viene mostrato in un determinato momento
+
     // Matrice che contiene il contenuto da stampare per rappresentare l'entità
     cchar_t ** stampabile;
 
@@ -29,6 +36,15 @@ public:
     bool controllaContatto(Entita * entita);
 
     void updateTicks();
+    
+    void nextFrame();
+    void setFrame(int frame);
+    int getMaxFrames();
+
+    int getDamage();
+
+    int getVita();
+    void modificaVita(int quantita);
 
     void modificaCoordinate(int new_y, int new_x);
     void incrementaX(int amount);

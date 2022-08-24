@@ -4,12 +4,20 @@ Gioco::Gioco(){
     this->player = new Player(0,0, 50);
 }
 
+Gioco::~Gioco() {
+    delete this->player;
+}
+
 void Gioco::gameLoop() {
     bool gameOver = false;
     Proiettile * pr = NULL;
     gd->resetTicks();
 
-    Stanza * lamammadiPetru = new Stanza();
+    Stanza * lamammadiPetru = new Stanza(ID_STANZA_NORMALE);
+    lamammadiPetru -> imposta_porte(true, false, false, true);
+    lamammadiPetru -> da_logica_a_stampabile();
+
+    Nemico * nemico = new Nemico(0);
 
     do {
         gd->frameStart();
@@ -17,15 +25,19 @@ void Gioco::gameLoop() {
         // SCHERMATA INIZIALE
         // Il menu principale
         gd->getInput();
-        erase();
+        erase(); 
         
         // Calcola logica
 
         this->player->manageInput();
 
+
         lamammadiPetru -> stampa_stanza();
 
+        //if(lamammadiPetru -> accessibile(this -> player -> y, this -> player -> x)){
         this->player->stampa(gd->getTerminalY()/2, gd->getTerminalX()/2);
+        //}
+
         this->player->stampaHUDplayer();
 
         if(gd->checkInput('q')) {
@@ -58,9 +70,13 @@ void Gioco::gameLoop() {
         }
         
         gd->manageTicks();
+        nemico->updateNemico(this->player);
+        nemico->stampa(gd->getTerminalY()/2, gd->getTerminalX()/2);
 
         if(pr != NULL) {
+            //if(lamammadiPetru -> accessibile(this -> . . . -> y, this -> . . . -> x)){
             pr->stampa(gd->getTerminalY()/2, gd->getTerminalX()/2);
+            //}
             pr->updateProjectile();
         }
 

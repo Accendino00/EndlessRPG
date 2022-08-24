@@ -1,7 +1,23 @@
 #include "../generale/libs.hpp"
 //Generazione 
 
-/* Livello -> 5x5
+/* 
+
+Crea dei file .lvl con dei bei layout.
+0, ovvero lo spawn non deve essere al centro.
+  Il posto dove si spawna viene deciso *in base* allo 0, non viceversa
+
+tutte le stanze devono essere contigue e non diagonali, ricordati come sono fatte le porte
+
+
+
+
+
+
+IGNORA TUTTO QUESTO
+VVVVVVVVVVVVVVVVVVV
+
+Livello -> 5x5
 Generazione di un livello standard:
   Quindi generi un livello con 4 stanze tutte collegate
    
@@ -71,8 +87,8 @@ Livello::Livello(){
 */
 
 Livello::Livello(){
-  int current_x = 2;
-  int current_y = 2;
+  int current_x = 0;
+  int current_y = 0;
   int stanza_counter = 0;
   //while(stanza_counter < 16){
   //  
@@ -86,12 +102,39 @@ Livello::Livello(){
   for(int i=0; i < DIM_MATRICE_LIVELLO_Y; i++){
     this -> matrice_livello [i] = new Stanza * [DIM_MATRICE_LIVELLO_X];
     for(int j=0; j < DIM_MATRICE_LIVELLO_X; j++){
-      this ->matrice_livello [i][j] = NULL; //da vedere
+      this -> matrice_livello [i][j] = NULL; //da vedere
+    }
+  }
+
+  FILE * fin;
+  char livello_da_scegliere [100];  // Stringa contenente il nome del file della mappa
+  //int idMappa = (rand() % 1 )+ 1; // Impostazione dell'id casuale della mappa
+
+  // Creazione della stringa che contiene il percorso al file del livello scelto
+  sprintf(livello_da_scegliere, "./mappa/matrici_livello/livello%s%d.lvl");
+  fin = fopen( livello_da_scegliere , "r");
+  
+  //Leggo il file e mi trascrivo i numeri in una matrice di interi temporanea
+  int matrice_numerica [5][5];
+  for(int i= 0; i < 5; i++){
+      for(int j = 0; j < 5; j++){
+          matrice_numerica [i][j] = fgetc(fin) - (int)'0'; // Traduco i numeri ascii in interi
+       }
+      fgetc(fin);
+  }
+  fclose(fin);
+  
+
+  //Imposto l'id della stanza da creare
+  for(int i = 0; i < DIM_MATRICE_LIVELLO_Y; i++){
+    for(int j = 0; j < DIM_MATRICE_LIVELLO_X; j++){
+      matrice_livello [i] [j] = new Stanza(matrice_numerica[i] [j]);
     }
   }
 
   //alloco memoria per la matrice di livello
 
+  /*
   while(stanza_counter < 16){
     if(matrice_livello [current_y] [current_x] != NULL){
       scegli_lato(matrice_livello , &current_y, &current_x);
@@ -103,9 +146,44 @@ Livello::Livello(){
         stanza_counter++;
       }
   }
-
+  */
   //pensa se funziona
 
+  matrice_livello [2] [2] = new Stanza(0);
+  matrice_livello [2] [3] = new Stanza(0);
+  matrice_livello [3] [3] = new Stanza(0);
+  matrice_livello [3] [2] = new Stanza(1);
+
+}
+
+void Livello::crea_porte(){
+  bool nord = false;
+  bool sud = false;
+  bool est = false;
+  bool ovest = false;
+  for(int i = 0; i < DIM_MATRICE_LIVELLO_Y; i++){
+    for(int j = 0; j < DIM_MATRICE_LIVELLO_X; j++){
+      if(this -> matrice_livello [i] [j] != NULL){
+        if(this -> matrice_livello [i + 1] [j] != NULL){
+          nord = true;
+        }
+        if (this -> matrice_livello [i - 1] [j] != NULL){
+          sud = true;
+        }
+        if(this -> matrice_livello [i] [j + 1] != NULL){
+          est = true;
+        }
+        if (this -> matrice_livello [i] [j - 1] != NULL){
+          ovest = true;
+        }
+        this -> matrice_livello [i] [j] -> imposta_porte(nord, sud, est, ovest);
+      }
+    }
+  }
+};
+
+void Livello::stanza_corrente(){
+  
 }
 
 void Livello::scegli_lato(Stanza *** matrice_livello , int * x, int *y){ 

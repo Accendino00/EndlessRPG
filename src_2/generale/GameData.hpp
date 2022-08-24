@@ -6,14 +6,16 @@
 
 // N vuol dire Nord (in alto), S vuol dire Sud (in basso), 
 // E vuol dire Est (a destra), O vuol dire Ovest (a sinistra) 
-#define DIRECTION_NN    0
-#define DIRECTION_NE    1
-#define DIRECTION_EE    2
-#define DIRECTION_SE    3
-#define DIRECTION_SS    4
-#define DIRECTION_SO    5
-#define DIRECTION_OO    6
-#define DIRECTION_NO    7
+#define DIRECTION_NN    0b000
+#define DIRECTION_NE    0b001
+#define DIRECTION_EE    0b010
+#define DIRECTION_SE    0b011
+#define DIRECTION_SS    0b100
+#define DIRECTION_SO    0b101
+#define DIRECTION_OO    0b110
+#define DIRECTION_NO    0b111
+
+#define DIRECTION_MASK  0b111
 
 
 class GameData {
@@ -34,6 +36,9 @@ private:
     short difficulty;
     bool showPerformance; 
     bool impostazioniSalvate;
+
+    // Livello attuale
+    int numLivello;
 
     // for fps
     std::chrono::_V2::system_clock::time_point start, end;
@@ -67,7 +72,7 @@ public:
     int getStatus();
 
     void manageTicks();
-    long int getCurrentTick();
+    long long int getCurrentTick();
     void resetTicks();
 
     // Per i settings
