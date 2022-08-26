@@ -1,13 +1,16 @@
 All: Gioco clean
 
-Gioco: main.o Entita.o Player.o Nemico.o Proiettile.o ListaEntita.o Stanza.o Livello.o GameData.o Gioco.o Colors.o Menu.o MenuMain.o MenuOptions.o MenuCrediti.o
-	g++ -g -Wall -o Gioco main.o Entita.o Player.o Nemico.o Proiettile.o ListaEntita.o Stanza.o Livello.o GameData.o Gioco.o Colors.o Menu.o MenuMain.o MenuOptions.o MenuCrediti.o -lncursesw
+Gioco: main.o Entita.o ListaEntita.o Player.o Nemico.o Proiettile.o Stanza.o Livello.o GameData.o Gioco.o Colors.o Menu.o MenuMain.o MenuOptions.o MenuCrediti.o
+	g++ -g -Wall -o Gioco main.o Entita.o ListaEntita.o Player.o Nemico.o Proiettile.o Stanza.o Livello.o GameData.o Gioco.o Colors.o Menu.o MenuMain.o MenuOptions.o MenuCrediti.o -lncursesw
 
 main.o:
 	g++ -g -Wall -c main.cpp -lncursesw
 
 Entita.o:
 	g++ -g -Wall -c ./entita/Entita.cpp -lncursesw
+
+ListaEntita.o:
+	g++ -g -Wall -c ./entita/ListaEntita.cpp -lncursesw
 
 Player.o:
 	g++ -g -Wall -c ./entita/Player.cpp -lncursesw
@@ -17,9 +20,6 @@ Nemico.o:
 
 Proiettile.o:
 	g++ -g -Wall -c ./entita/Proiettile.cpp -lncursesw
-
-ListaEntita.o:
-	g++ -g -Wall -c ./entita/ListaEntita.cpp -lncursesw
 
 Stanza.o:
 	g++ -g -Wall -c ./mappa/Stanza.cpp -lncursesw

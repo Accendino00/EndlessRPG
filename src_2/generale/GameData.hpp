@@ -6,16 +6,14 @@
 
 // N vuol dire Nord (in alto), S vuol dire Sud (in basso), 
 // E vuol dire Est (a destra), O vuol dire Ovest (a sinistra) 
-#define DIRECTION_NN    0b000
-#define DIRECTION_NE    0b001
-#define DIRECTION_EE    0b010
-#define DIRECTION_SE    0b011
-#define DIRECTION_SS    0b100
-#define DIRECTION_SO    0b101
-#define DIRECTION_OO    0b110
-#define DIRECTION_NO    0b111
-
-#define DIRECTION_MASK  0b111
+#define DIRECTION_NN    0b00000001
+#define DIRECTION_NE    0b00000010
+#define DIRECTION_EE    0b00000100
+#define DIRECTION_SE    0b00001000
+#define DIRECTION_SS    0b00010000
+#define DIRECTION_SO    0b00100000
+#define DIRECTION_OO    0b01000000
+#define DIRECTION_NO    0b10000000
 
 
 class GameData {

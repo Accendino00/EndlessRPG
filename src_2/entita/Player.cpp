@@ -10,6 +10,9 @@ Player::Player(int y, int x, int life) {
     (*this).s_dimx = 1;
     (*this).currentFrame = 0;
 
+    this->passedActions = 0;
+    this->lastTick = gd->getCurrentTick();
+
 	this->dashDistanceY = 5;
 	this->dashDistanceX = this->dashDistanceY*2;
 
@@ -25,10 +28,10 @@ Player::Player(int y, int x, int life) {
     this->x = x;
 };
 
-void Player::manageInput() {
+void Player::manageInput(ListaEntita * proiettili) {
 	int i = 0;
     while(i < gd->getNumOfPressedKeys()) {
-        this->gestione_player(gd->getKey(i));
+        this->gestione_player(gd->getKey(i), proiettili);
         i++;
     }
 }
@@ -51,8 +54,9 @@ void Player::stampaHUDplayer(){
 
 }
 
-void Player::gestione_player(int input){
+void Player::gestione_player(int input, ListaEntita * proiettili){
     switch(input) {
+            // Movimento basilare
 			case (L'w'):
 			    y--;
                 this->lastinput = (L'w');
@@ -69,13 +73,26 @@ void Player::gestione_player(int input){
 				x--;
                 this->lastinput = (L'a');
 				break;
+            // Dash
             case (L' '):
                 if(this->lastinput == L'w') y-=this->dashDistanceY;
                 if(this->lastinput == L's') y+=this->dashDistanceY;
                 if(this->lastinput == L'd') x+=this->dashDistanceX;
                 if(this->lastinput == L'a') x-=this->dashDistanceX;
                 break;
-
+            // Proiettili
+            case (KEY_RIGHT):
+                proiettili->addEntita(new Proiettile(this->y, this->x,true,DIRECTION_EE));
+                break;
+            case (KEY_DOWN):
+                proiettili->addEntita(new Proiettile(this->y, this->x,true,DIRECTION_SS));
+                break;
+            case (KEY_LEFT):
+                proiettili->addEntita(new Proiettile(this->y, this->x,true,DIRECTION_OO));
+                break;
+            case (KEY_UP):
+                proiettili->addEntita(new Proiettile(this->y, this->x,true,DIRECTION_NN));
+                break;
 		}
 
 };

@@ -15,20 +15,31 @@ Nemico::Nemico (int type) {
 	
     this->stampabile = new cchar_t * [1];
     this->stampabile[0] = new cchar_t [1];
+
+    this->passedActions = 0;
+    this->lastTick = gd->getCurrentTick();
    
     setcchar(&(this->stampabile[0][0]), L"N", A_NORMAL, PLAYER_COLOR_PAIR, NULL);
     
     this->y = 20;
     this->x = 20;
 
-    this->ticksForAction = 500;
+    this->ticksForAction = 250;
     this->currentAction = 0;
-    this->numActions = 4;
-    this->actions = new int[4];
+    this->numActions = 12;
+    this->actions = new int[12];
     actions[0] = MUOVI_DIREZIONE | DIRECTION_EE;
-    actions[1] = MUOVI_DIREZIONE | DIRECTION_NN;
-    actions[2] = MUOVI_DIREZIONE | DIRECTION_OO;
-    actions[3] = MUOVI_DIREZIONE | DIRECTION_SS;
+    actions[1] = AZIONE_SPARA_DIREZIONE | AZIONE_SPARA_PRINCIPALE | AZIONE_SPARA_SECONDARIO |  AZIONE_SPARA_TERZIARIO | DIRECTION_EE;
+    actions[2] = AZIONE_SPARA_DIREZIONE | AZIONE_SPARA_PRINCIPALE | AZIONE_SPARA_SECONDARIO |  AZIONE_SPARA_TERZIARIO | DIRECTION_NE;
+    actions[3] = MUOVI_DIREZIONE | DIRECTION_NN;
+    actions[4] = AZIONE_SPARA_DIREZIONE | AZIONE_SPARA_PRINCIPALE | AZIONE_SPARA_SECONDARIO |  AZIONE_SPARA_TERZIARIO | DIRECTION_NN;
+    actions[5] = AZIONE_SPARA_DIREZIONE | AZIONE_SPARA_PRINCIPALE | AZIONE_SPARA_SECONDARIO |  AZIONE_SPARA_TERZIARIO | DIRECTION_NO;
+    actions[6] = MUOVI_DIREZIONE | DIRECTION_OO;
+    actions[7] = AZIONE_SPARA_DIREZIONE | AZIONE_SPARA_PRINCIPALE | AZIONE_SPARA_SECONDARIO |  AZIONE_SPARA_TERZIARIO | DIRECTION_OO;
+    actions[8] = AZIONE_SPARA_DIREZIONE | AZIONE_SPARA_PRINCIPALE | AZIONE_SPARA_SECONDARIO |  AZIONE_SPARA_TERZIARIO | DIRECTION_SO;
+    actions[9] = MUOVI_DIREZIONE | DIRECTION_SS;
+    actions[10] = AZIONE_SPARA_DIREZIONE | AZIONE_SPARA_PRINCIPALE | AZIONE_SPARA_SECONDARIO |  AZIONE_SPARA_TERZIARIO | DIRECTION_SS;
+    actions[11] = AZIONE_SPARA_DIREZIONE | AZIONE_SPARA_PRINCIPALE | AZIONE_SPARA_SECONDARIO |  AZIONE_SPARA_TERZIARIO | DIRECTION_SE;
 
 
     /*if(type == NORMAL_ENEMY) {
@@ -66,30 +77,60 @@ Nemico::Nemico (int type) {
     }*/
 }
 
-void Nemico::updateNemico(Player * player /*e altri dati sulla mappa e sui nemici da controllare*/) {
-    this->updateTicks();
+Nemico::~Nemico() {
+    endwin();
+    std::cout << "Ciao";
+    exit(1);
+    delete[] this->actions;
+}
+
+void Nemico::updateEntita(Player * player, ListaEntita * proiettili /*e altri dati sulla mappa e sui nemici da controllare*/) {
+    this->Entita::updateEntita();
     while (this->passedActions > 0) {
         int azione = this->actions[this->currentAction];
         // Gestione del movimento con direzione
         if( (azione & MUOVI_DIREZIONE) == MUOVI_DIREZIONE ) {
-            switch(azione & DIRECTION_MASK) {
-                case DIRECTION_EE:
-                    this->incrementaX(1);
-                break;
-                case DIRECTION_OO:
-                    this->incrementaX(-1);
-                break;
-                case DIRECTION_NN:
-                    this->incrementaY(-1);
-                break;
-                case DIRECTION_SS:
-                    this->incrementaY(1);
-                break;
+            for(int i = DIRECTION_NN; i <= DIRECTION_NO; i = i << 1) {
+                if((azione & i) == i) {
+                    this->muovi(i, 1);
+                }
+            }
+        }
+
+        
+
+        if( (azione & AZIONE_SPARA_DIREZIONE) == AZIONE_SPARA_DIREZIONE) {
+            for(int i = DIRECTION_NN; i <= DIRECTION_NO; i = i << 1) {
+                if((azione & i) == i) {
+                    // Offset della posizione di creazione degli spari secondari,
+                    // A seconda della direzione di quello primario
+                    int osX, osY;
+                    if( (azione & i) == DIRECTION_NN ) { osX =  1; osY =  0;}
+                    if( (azione & i) == DIRECTION_SS ) { osX = -1; osY =  0;}
+                    if( (azione & i) == DIRECTION_EE ) { osX =  0; osY = -1;}
+                    if( (azione & i) == DIRECTION_OO ) { osX =  0; osY =  1;}
+                    if( (azione & i) == DIRECTION_NE ) { osX =  1; osY =  1;}
+                    if( (azione & i) == DIRECTION_SE ) { osX =  1; osY = -1;}
+                    if( (azione & i) == DIRECTION_SO ) { osX = -1; osY = -1;}
+                    if( (azione & i) == DIRECTION_NO ) { osX = -1; osY =  1;}
+                    // Parte dal centro del nemico
+                    if ((azione & AZIONE_SPARA_PRINCIPALE) == AZIONE_SPARA_PRINCIPALE) {
+                        proiettili->addEntita(new Proiettile(this->y,this->x,false,i));
+                    }
+                    // Parte dalla destra della direzione dove si spara 
+                    if ((azione & AZIONE_SPARA_SECONDARIO) == AZIONE_SPARA_SECONDARIO) {
+                        proiettili->addEntita(new Proiettile((this->y)+osY,(this->x)+osX,false,i));
+                    }
+                    // Parte dalla sinistra della direzione dove si spara 
+                    if ((azione & AZIONE_SPARA_TERZIARIO) == AZIONE_SPARA_TERZIARIO) {
+                        proiettili->addEntita(new Proiettile((this->y)-osY,(this->x)-osX,false,i));
+                    }
+                }
             }
         }
 
         // Gestione del movimento pattern 
-        else if( (azione & MUOVI_PATTERN) == MUOVI_PATTERN ) {
+        /*else if( (azione & MUOVI_PATTERN) == MUOVI_PATTERN ) {
             switch(patternDirezione) {
                 case DIRECTION_EE:
                     // if can't move, change direction
@@ -105,7 +146,7 @@ void Nemico::updateNemico(Player * player /*e altri dati sulla mappa e sui nemic
                     this->incrementaY(1);
                 break;
             }
-        }
+        }*/
         this->currentAction = (this->currentAction + 1) % this->numActions;
         this->passedActions--;
     }

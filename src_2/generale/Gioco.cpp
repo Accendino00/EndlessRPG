@@ -1,85 +1,77 @@
 #include "../generale/libs.hpp"
 
 Gioco::Gioco(){
-    this->player = new Player(0,0, 50);
+    player = new Player(0,0, 50);
+    
+    this->gameOver = false;
 }
 
 Gioco::~Gioco() {
     delete this->player;
+    // delete this->proiettili; e tutte le altre liste
 }
 
 void Gioco::gameLoop() {
-    bool gameOver = false;
-    Proiettile * pr = NULL;
+    // Imposto i ticket a 0 quando inizia il gioco
     gd->resetTicks();
 
-    Stanza * lamammadiPetru = new Stanza(ID_STANZA_NORMALE);
-    lamammadiPetru -> imposta_porte(true, false, false, true);
-    lamammadiPetru -> da_logica_a_stampabile();
+    
+    /* TEMP */
+    
+    Stanza * stanzaProva = new Stanza(ID_STANZA_NORMALE);
+    stanzaProva -> imposta_porte(true, false, false, true);
+    stanzaProva -> da_logica_a_stampabile();
 
-    Nemico * nemico = new Nemico(0);
+    nemici.addEntita(new Nemico(0));
+
+    plistaE tempProiettili, tempNemici, tempPorte, tempArtefatti;
 
     do {
+        // Inizio del frame, aggiornamento dei tick, lettura input e erase dello schermo
         gd->frameStart();
-
-        // SCHERMATA INIZIALE
-        // Il menu principale
+        gd->manageTicks();
         gd->getInput();
         erase(); 
         
-        // Calcola logica
+        /*** Gestione degli input ***/
 
-        this->player->manageInput();
-
-
-        lamammadiPetru -> stampa_stanza();
-
-        //if(lamammadiPetru -> accessibile(this -> player -> y, this -> player -> x)){
-        this->player->stampa(gd->getTerminalY()/2, gd->getTerminalX()/2);
-        //}
-
-        this->player->stampaHUDplayer();
+        this->player->manageInput(&(this->proiettili));
 
         if(gd->checkInput('q')) {
             gameOver = true;
         }
-
-        if(gd->checkInput(KEY_RIGHT)) {
-            pr = new Proiettile(this->player->y, this->player->x,true,DIRECTION_EE);
-        }
-        if(gd->checkInput(KEY_DOWN)) {
-            pr = new Proiettile(this->player->y, this->player->x,true,DIRECTION_SS);
-        }
-        if(gd->checkInput(KEY_LEFT)) {
-            pr = new Proiettile(this->player->y, this->player->x,true,DIRECTION_OO);
-        }
-        if(gd->checkInput(KEY_UP)) {
-            pr = new Proiettile(this->player->y, this->player->x,true,DIRECTION_NN);
-        }
-        if(gd->checkInput('i')) {
-            pr = new Proiettile(this->player->y, this->player->x,true,DIRECTION_NE);
-        }
-        if(gd->checkInput('k')) {
-            pr = new Proiettile(this->player->y, this->player->x,true,DIRECTION_SE);
-        }
-        if(gd->checkInput('j')) {
-            pr = new Proiettile(this->player->y, this->player->x,true,DIRECTION_SO);
-        }
-        if(gd->checkInput('u')) {
-            pr = new Proiettile(this->player->y, this->player->x,true,DIRECTION_NO);
-        }
-        
-        gd->manageTicks();
-        nemico->updateNemico(this->player);
-        nemico->stampa(gd->getTerminalY()/2, gd->getTerminalX()/2);
-
-        if(pr != NULL) {
-            //if(lamammadiPetru -> accessibile(this -> . . . -> y, this -> . . . -> x)){
-            pr->stampa(gd->getTerminalY()/2, gd->getTerminalX()/2);
-            //}
-            pr->updateProjectile();
+        if(gd->checkInput('p')) {
+            // Pause menu
         }
 
+        /*** Calcolo della logica ***/
+
+        tempProiettili = this->proiettili.getList();
+        while(tempProiettili != NULL) {
+            ((Proiettile*)tempProiettili->e)->updateEntita();
+            tempProiettili = tempProiettili->next;
+        }
+
+        tempNemici = this->nemici.getList();
+        while(tempNemici != NULL) {
+            ((Nemico*)tempNemici->e)->updateEntita(player, &(this->proiettili));
+            tempNemici = tempNemici->next;
+        }
+
+
+        /*** Stampa ***/
+
+        /* TEMP */
+        stanzaProva -> stampa_stanza();
+
+
+        // Stampa di tutto
+        this->proiettili.stampaTutte(gd->getTerminalY()/2, gd->getTerminalX()/2);
+        this->nemici.stampaTutte(gd->getTerminalY()/2, gd->getTerminalX()/2);
+        this->player->stampa(gd->getTerminalY()/2, gd->getTerminalX()/2);
+        this->player->stampaHUDplayer();
+
+        // Fine del frame e refresh dello schermo
         gd->frameFinish();
         refresh();
     } while (! (gameOver) );

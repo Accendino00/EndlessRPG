@@ -31,6 +31,10 @@ Entita::Entita(int life, int y,int x, int h_dimy, int h_dimx, cchar_t ** stampa)
     this->currentLife = life;
     this->maxLife = life;
 
+    this->passedActions = 0;
+    this->ticksForAction = 1000; // Placeholder
+    this->lastTick = gd->getCurrentTick();
+
     // Alloco lo "stampabile" dell'entità
     (*this).stampabile = new cchar_t * [s_dimy];
     for(int i = 0; i < s_dimy; i++) {
@@ -126,7 +130,8 @@ bool Entita::controllaContatto(Entita * entita) {
     );
 }
 
-void Entita::updateTicks() {
+void Entita::updateEntita() {
+    // Aggiornamento dei tick e conto delle azioni che deve eseguire l'entità dall'ultima volta che è stata aggiornata
     if((gd->getCurrentTick() - this->lastTick) >= this->ticksForAction) {
         this->passedActions += (gd->getCurrentTick() - this->lastTick) / this->ticksForAction;
         this->lastTick = gd->getCurrentTick();
@@ -170,9 +175,42 @@ void Entita::modificaCoordinate(int new_y, int new_x) {
     (*this).x = new_x;
 }
 
-void Entita::incrementaX(int amount) {
-    (*this).x += amount;
+void Entita::incrementaX(int val) {
+    (*this).x += val;
 }
-void Entita::incrementaY(int amount) {
-    (*this).y -= amount;
+void Entita::incrementaY(int val) {
+    (*this).y -= val;
+}
+
+void Entita::muovi(int direzione, int val) {
+    switch(direzione) {
+        case DIRECTION_NN:
+            this->incrementaY(val);
+            break;
+        case DIRECTION_SS:
+            this->incrementaY(-val);
+            break;
+        case DIRECTION_EE:
+            this->incrementaX(val);
+            break;
+        case DIRECTION_OO:
+            this->incrementaX(-val);
+            break;
+        case DIRECTION_NE:
+            this->incrementaY(val);
+            this->incrementaX(val);
+            break;
+        case DIRECTION_SE:
+            this->incrementaY(-val);
+            this->incrementaX(val);
+            break;
+        case DIRECTION_SO:
+            this->incrementaY(-val);
+            this->incrementaX(-val);
+            break;
+        case DIRECTION_NO:
+            this->incrementaY(val);
+            this->incrementaX(-val);
+            break;
+    }
 }

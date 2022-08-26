@@ -15,9 +15,10 @@ public:
     che già esiste in "Game"
     */
    
-    void manageInput();
     void stampaHUDplayer();
-    void gestione_player(int input);
+
+    void manageInput(ListaEntita * proiettili);
+    void gestione_player(int input, ListaEntita * proiettili);
 
     void inventario();
 };

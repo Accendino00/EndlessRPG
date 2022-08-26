@@ -1,6 +1,6 @@
 #include "../generale/libs.hpp"
 
-Proiettile::Proiettile(int y, int x, bool playerProjectile, int direction) {
+Proiettile::Proiettile(int y, int x, bool playerProjectile, int direzione) {
     this->lastTick = gd->getCurrentTick();
     this->x = x;
     this->y = y;
@@ -12,14 +12,18 @@ Proiettile::Proiettile(int y, int x, bool playerProjectile, int direction) {
     (*this).s_dimx = 1;
     (*this).currentFrame = 0;
 
-    this->direction = direction;
+    this->direzione = direzione;
     this->passedActions = 0;
-    this->moveInDirection();
+    this->muovi(this->direzione, 1);
     
-    if(this->direction == DIRECTION_NN || this->direction == DIRECTION_SS) {
+    this->passedActions = 0;
+    this->lastTick = gd->getCurrentTick();
+
+    // Velocità diverse in base alla direzione nella quale viaggiano
+    if(this->direzione == DIRECTION_NN || this->direzione == DIRECTION_SS) {
         this->ticksForAction = 40;  
     }
-    else if(this->direction == DIRECTION_EE || this->direction == DIRECTION_OO) {
+    else if(this->direzione == DIRECTION_EE || this->direzione == DIRECTION_OO) {
         this->ticksForAction = 20;  
     } else {
         this->ticksForAction = 50;
@@ -29,7 +33,7 @@ Proiettile::Proiettile(int y, int x, bool playerProjectile, int direction) {
     this->stampabile[0] = new cchar_t [1];
 
     short color = (playerProjectile) ? (PLAYER_BULLET_PAIR) : (ENEMY_BULLET_PAIR);
-    switch(direction) {
+    switch(direzione) {
         case DIRECTION_NN:
             setcchar(&(this->stampabile[0][0]), L"\u21D1", A_NORMAL, color, NULL);
             break;
@@ -57,43 +61,10 @@ Proiettile::Proiettile(int y, int x, bool playerProjectile, int direction) {
     }
 }
 
-void Proiettile::updateProjectile(/*dati sulla mappa e sui nemici da controllare*/) {
-    this->updateTicks();
+void Proiettile::updateEntita(/*dati sulla mappa e sui nemici da controllare*/) {
+    this->Entita::updateEntita();
     while (this->passedActions > 0) {
-        this->moveInDirection();
+        this->muovi(this->direzione,1);
         this->passedActions--;
-    }
-}
-
-void Proiettile::moveInDirection() {
-    switch(this->direction) {
-        case DIRECTION_NN:
-            this->incrementaY(1);
-            break;
-        case DIRECTION_SS:
-            this->incrementaY(-1);
-            break;
-        case DIRECTION_EE:
-            this->incrementaX(1);
-            break;
-        case DIRECTION_OO:
-            this->incrementaX(-1);
-            break;
-        case DIRECTION_NE:
-            this->incrementaY(1);
-            this->incrementaX(1);
-            break;
-        case DIRECTION_SE:
-            this->incrementaY(-1);
-            this->incrementaX(1);
-            break;
-        case DIRECTION_SO:
-            this->incrementaY(-1);
-            this->incrementaX(-1);
-            break;
-        case DIRECTION_NO:
-            this->incrementaY(1);
-            this->incrementaX(-1);
-            break;
     }
 }

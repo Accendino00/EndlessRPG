@@ -10,7 +10,7 @@ public:
     // Danno fatto con il tocco di questa entità
     int damage;
 
-    // Coordinate dell'angolo in alto a sinistra del nemico
+    // Coordinate dell'angolo in alto a sinistra dell'entita
     int x, y;
     
     int h_dimx, h_dimy; // Dimensioni hitbox
@@ -35,7 +35,7 @@ public:
     
     bool controllaContatto(Entita * entita);
 
-    void updateTicks();
+    void updateEntita();
     
     void nextFrame();
     void setFrame(int frame);
@@ -49,4 +49,6 @@ public:
     void modificaCoordinate(int new_y, int new_x);
     void incrementaX(int amount);
     void incrementaY(int amount);
+
+    void muovi(int direzione, int val);
 };

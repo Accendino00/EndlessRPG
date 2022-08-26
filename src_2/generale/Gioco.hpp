@@ -6,11 +6,13 @@ private:
     Player * player;
 
     Livello * livello;
-    // Potrei avere come dato la posizione attuale qua dentro
-    // Potrei averlo dentro a Livello
 
-    //Entita * proiettili;
-
+    ListaEntita proiettili;
+    ListaEntita nemici;
+    ListaEntita porte;
+    ListaEntita artefatti;
+    
+    bool gameOver;
 public:
     Gioco();
     ~Gioco();
