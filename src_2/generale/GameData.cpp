@@ -13,6 +13,7 @@ GameData::GameData () {
     this->showPerformance = true;
     this->impostazioniSalvate = true;
     this->numLivello = 0;
+    this->score = 0;
 
     this->currentTick = 0;
     // Devo usare chrono per avere meno cast. Ha il suo particolare 
@@ -136,6 +137,21 @@ int GameData::getStatus() {
     return this->status;
 }
 
+void GameData::incNumLivello() {
+    this->numLivello++;
+}
+
+int GameData::getNumLivello() {
+    return this->numLivello; 
+}
+
+void GameData::changeScore(int amount) {
+    this->score+=amount;
+}
+int GameData::getScore() {
+    return this->score;
+}
+
 void GameData::setCloseGame(bool closeGame) {
     this->closeGame = closeGame;
 }
@@ -161,6 +177,7 @@ long long int GameData::getCurrentTick() {
 
 void GameData::resetTicks() {
     this->currentTick = 0;
+    this->last_clock = std::chrono::system_clock::now();
 }
 
 void GameData::salvaImpostazioni() {
@@ -180,7 +197,9 @@ void GameData::caricaImpostazioni() {
         fprintf(fout,"fpscap;%d\ndifficulty;%d\nshowperformance;%d", this->FPSCap, this->difficulty, this->showPerformance);
         fclose(fout);
     } else {
+        // Temp per la lettura
         char c;
+        // Lettura del FPSCAP
         while(c != ';') {
             c = fgetc(fin);
         }

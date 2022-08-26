@@ -37,7 +37,6 @@ void MenuOptions::loopMenu() {
                             break;
                     }
                     break;
-                case 10:
                 case KEY_RIGHT:
                 case L'D':
                 case L'd':
@@ -51,6 +50,10 @@ void MenuOptions::loopMenu() {
                         case 2:
                             gd->cycleShowPerformance(true);
                             break;
+                    }
+                    break;
+                case 10:
+                    switch(this->getSelezione()) {
                         case 3:
                             // Save
                             gd->salvaImpostazioni();
@@ -81,13 +84,13 @@ void MenuOptions::loopMenu() {
 
 void MenuOptions::printAll() {
     char daStampare[100];
-    sprintf(daStampare, "Difficoltà:\t< %s \t>",gd->getDifficulty());
+    sprintf(daStampare, "Difficoltà: < %s \t>",gd->getDifficulty());
     printLine(daStampare, 0);
     
-    sprintf(daStampare, "FPS cap:\t< %d \t>", gd->getFPSCap());
+    sprintf(daStampare, "FPS cap:    < %d \t>", gd->getFPSCap());
     printLine(daStampare, 1);    
     
-    sprintf(daStampare, "Mostra FPS:\t< %s\t>", gd->getShowPerformance());
+    sprintf(daStampare, "Mostra FPS: < %s \t>", gd->getShowPerformance());
     printLine(daStampare, 2);    
     
     printLine(gd->getImpostazioniSalvate(), 3);

@@ -21,6 +21,7 @@ void MenuMain::loopMenu() {
         this->manageInput();
 
         // Se viene fatta una selezione
+        // 10 è il codice dell'ENTER, KEY_ENTER non funziona correttamente
         if(gd->checkInput(10)) {
             switch(this->getSelezione()) {
                 case 0:

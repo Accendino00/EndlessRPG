@@ -41,7 +41,6 @@ void Menu::printLine(const char * text, int id) {
     mvprintw(lineOffset+centerY+(2*(id+1)),centerX-2,"%s",text);
     if (this->getSelezione() == id) {
         attroff(COLOR_PAIR(MENU_HIGHLIGHT));
-        attron(COLOR_PAIR(MENU_NORMAL));
     }
     attroff(COLOR_PAIR(MENU_NORMAL));
 }

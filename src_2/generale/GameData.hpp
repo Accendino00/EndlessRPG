@@ -38,6 +38,9 @@ private:
     // Livello attuale
     int numLivello;
 
+    // Score attuale
+    int score;
+
     // for fps
     std::chrono::_V2::system_clock::time_point start, end;
 
@@ -68,6 +71,12 @@ public:
 
     void setStatus(int status);
     int getStatus();
+
+    void incNumLivello();
+    int getNumLivello();
+
+    void changeScore(int amount);
+    int getScore();
 
     void manageTicks();
     long long int getCurrentTick();

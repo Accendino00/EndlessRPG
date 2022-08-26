@@ -1,7 +1,7 @@
 All: Gioco clean
 
-Gioco: main.o Entita.o ListaEntita.o Player.o Nemico.o Proiettile.o Stanza.o Livello.o GameData.o Gioco.o Colors.o Menu.o MenuMain.o MenuOptions.o MenuCrediti.o
-	g++ -g -Wall -o Gioco main.o Entita.o ListaEntita.o Player.o Nemico.o Proiettile.o Stanza.o Livello.o GameData.o Gioco.o Colors.o Menu.o MenuMain.o MenuOptions.o MenuCrediti.o -lncursesw
+Gioco: main.o Entita.o ListaEntita.o Player.o Nemico.o Proiettile.o Stanza.o Livello.o GameData.o Gioco.o Colors.o Menu.o MenuMain.o MenuScore.o MenuOptions.o MenuCrediti.o
+	g++ -g -Wall -o Gioco main.o Entita.o ListaEntita.o Player.o Nemico.o Proiettile.o Stanza.o Livello.o GameData.o Gioco.o Colors.o Menu.o MenuMain.o MenuScore.o MenuOptions.o MenuCrediti.o -lncursesw
 
 main.o:
 	g++ -g -Wall -c main.cpp -lncursesw
@@ -38,6 +38,9 @@ Menu.o:
 
 MenuMain.o:
 	g++ -g -Wall -c ./menu/MenuMain.cpp -lncursesw
+
+MenuScore.o:
+	g++ -g -Wall -c ./menu/MenuScore.cpp -lncursesw
 
 MenuOptions.o:
 	g++ -g -Wall -c ./menu/MenuOptions.cpp -lncursesw
