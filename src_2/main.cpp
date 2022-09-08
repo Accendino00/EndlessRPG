@@ -1,5 +1,10 @@
 /**
  * @file main.cpp
+ * @date 2022
+ * @authors Petru Marcel Marincas, 
+ *          Giuseppe Forciniti, 
+ *          Davide Donati, 
+ *          Jacopo Francesco Amoretti
  * 
  * @brief
  *      File che contiene il main del progetto del corso di Programmazione

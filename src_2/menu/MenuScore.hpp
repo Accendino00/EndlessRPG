@@ -2,16 +2,16 @@
 #include "../generale/libs.hpp"
 
 //Dato generico per lo score (punteggio e nome di 3 caratteri)
-struct dati {
+struct UserData {
     int score;
-    char [3] nome;
-    dati *next;
+    char nome [4];
+    UserData *next;
 };
-typedef dati *ptrlist;
+typedef UserData *pUserData;
 
 class MenuScore : public Menu {
 private:
-    ptrlist head;     //Testa della lista dei punteggi
+    pUserData head;     //Testa della lista dei punteggi
 public:
     MenuScore();
     void caricaScore();

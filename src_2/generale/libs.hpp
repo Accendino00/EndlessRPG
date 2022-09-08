@@ -22,17 +22,34 @@
 // in quanto questa variabile è contenuta nel main e deve essere globale
 extern GameData * gd;
 
+#include "../generale/classDeclares.hpp"
+
 //Inclusione degli header
 #include "../entita/Entita.hpp"
-#include "../entita/ListaEntita.hpp"
-#include "../entita/Player.hpp"
 #include "../entita/Nemico.hpp"
 #include "../entita/Proiettile.hpp"
+#include "../entita/Artefatto.hpp"
+#include "../entita/Porta.hpp"
+
+// Le liste di Entita varie
+#include "../liste/ListaEntita.hpp"
+#include "../liste/ListaNemici.hpp"
+#include "../liste/ListaProiettili.hpp"
+#include "../liste/ListaArtefatti.hpp"
+#include "../liste/ListaPorte.hpp"
+
+// Livello e le stanze
 #include "../mappa/Stanza.hpp"
 #include "../mappa/Livello.hpp"
 
-//Menu
+// Il giocatore (che deve avere riferimento a Livello e, 
+// per estensione, alle varie Liste di Entita, pertanto
+// viene incluso successivamente alle loro definizioni)
+#include "../entita/Player.hpp"
+
+// Menu
 #include "../menu/Menu.hpp"
+#include "../menu/MenuScore.hpp"
 #include "../menu/MenuMain.hpp"
 #include "../menu/MenuOptions.hpp"
 #include "../menu/MenuCrediti.hpp"

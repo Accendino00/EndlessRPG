@@ -2,30 +2,28 @@
 
 MenuScore::MenuScore() : Menu(0,1,8) {}
 
-void GameData::caricaScore() {
-    ptrlist tmp = this->head; //Salvo la testa
+void MenuScore::caricaScore() {
+    pUserData tmp = this->head; // Salvo la testa
     FILE *fin;
     fin = fopen("score.csv", "r");
-    //booleano per uscire dalla lettura
-    bool exit=true;
+    // Booleano per uscire dalla lettura
+    bool exit = false;
     // Temp per la lettura
     char c;
-    while(exit) {
-        if (fin == NULL) {
-            char str[50] = "Il file score è inesistente"
-            printf("%s",str);
-        } else {
-            ptrlist curr = new dati;
-            while (c != ';') {   //Carico il nome
+
+    if (fin != NULL) { // Leggo gli score solo se ve ne sono effettivamente
+        while(!exit) { // Lettura degli score fino a quando gli ho letti tutti e devo uscire 
+            pUserData curr = new UserData;
+            for (int i = 0; i < 3; i++) { // Carico il nome
                 c = fgetc(fin);
-                strcpy(curr->nome[i], c);
-                i++;
+                curr->nome[i] = c;
             }
+            curr->nome[3] = '\0';
             curr->score = 0;     //Carico il punteggio
             int i = 10000000;
             while (c != '\n') {
                 c = fgetc(fin);
-                if (c != '\n') {
+                if (feof(fin) && c != '\n') {
                     curr->score += (c - '0') * i;
                     i /= 10;
                 }
@@ -38,7 +36,7 @@ void GameData::caricaScore() {
         }
         //Controllo per fine del file
         if (feof(fin)) {
-            exit = false;
+            exit = true;
         }
     }
 }
@@ -56,26 +54,24 @@ void MenuScore::loopScore() {
                 case KEY_LEFT: //Mi muovo a sinistra nella pagina
                 case L'A':
                 case L'a':
-
-
-                    }
                     break;
                 case KEY_RIGHT: //Mi muovo a destra nella pagina
                 case L'D':
                 case L'd':
-
-                    }
                     break;
             }
             i++;
+        }
+
+
         // Stampa, fine del frame e refresh dello schermo
-        this->printAll();
+        //this->printAll();
         gd->frameFinish();
         refresh();
-        switch()
+        //switch();
 
-        while (!esciDaScore)
-    }
+        //while (!esciDaScore)
+    } while (!esciDaScore);
 }
 
 

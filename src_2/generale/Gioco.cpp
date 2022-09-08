@@ -52,6 +52,8 @@ void Gioco::gameLoop() {
             tempProiettili = tempProiettili->next;
         }
 
+        // updateAll(), una volta chiamato, chiama updateEntita per tutti gli elementi della lista
+
         tempNemici = this->nemici.getList();
         while(tempNemici != NULL) {
             ((Nemico*)tempNemici->e)->updateEntita(player, &(this->proiettili));

@@ -28,6 +28,7 @@ Nemico::Nemico (int type) {
     this->currentAction = 0;
     this->numActions = 12;
     this->actions = new int[12];
+    for (int i = 0; i < 12; i++) this->actions[i] = 0;
     actions[0] = MUOVI_DIREZIONE | DIRECTION_EE;
     actions[1] = AZIONE_SPARA_DIREZIONE | AZIONE_SPARA_PRINCIPALE | AZIONE_SPARA_SECONDARIO |  AZIONE_SPARA_TERZIARIO | DIRECTION_EE;
     actions[2] = AZIONE_SPARA_DIREZIONE | AZIONE_SPARA_PRINCIPALE | AZIONE_SPARA_SECONDARIO |  AZIONE_SPARA_TERZIARIO | DIRECTION_NE;
@@ -78,9 +79,7 @@ Nemico::Nemico (int type) {
 }
 
 Nemico::~Nemico() {
-    endwin();
-    std::cout << "Ciao";
-    exit(1);
+    
     delete[] this->actions;
 }
 
