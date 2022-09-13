@@ -14,7 +14,7 @@ private:
     pUserData head;     //Testa della lista dei punteggi
 public:
     MenuScore();
-    void caricaScore();
+    void CaricaOrdinaScore();
     void loopScore();
     void printAll();
 
