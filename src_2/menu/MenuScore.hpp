@@ -11,7 +11,11 @@ typedef UserData *pUserData;
 
 class MenuScore : public Menu {
 private:
-    pUserData head;     //Testa della lista dei punteggi
+    pUserData head;               //Testa della lista dei punteggi
+    int scoreCounter;              //Grandezza dell'array    
+    int* arrayScore;              //Array ordinato con gli score
+    int pagina;                   //Numero della pagina visualizzata
+
 public:
     MenuScore();
     void CaricaOrdinaScore();
