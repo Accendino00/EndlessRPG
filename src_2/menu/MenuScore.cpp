@@ -118,6 +118,7 @@ void MenuScore::loopScore() {
                 case L'd':
                     if(this->pagina <= this->scoreCounter){
                         //stampa la pagina successiva
+                          pagina++;
                     }
                     break;
             }
@@ -126,12 +127,9 @@ void MenuScore::loopScore() {
 
 
         // Stampa, fine del frame e refresh dello schermo
-        //this->printAll();
+        this->printAll();
         gd->frameFinish();
         refresh();
-        //switch();
-
-        //while (!esciDaScore)
     } while (!esciDaScore);
 }
 
@@ -140,9 +138,8 @@ void MenuScore::printAll(){
     char daStampare[100];
     int line = 0;
     for(int i = (this->pagina-1)*10; i++; i < this->pagina*10){
-        sprintf(daStampare,tmp->nome,this->arrayScore[i]);
-        printLine(daStampare, line);
-        line++;
+        printf ("%s \b", tmp->nome);
+        printf ("%d \n", this->arrayScore[i]);
     }
 }
 
