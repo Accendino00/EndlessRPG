@@ -115,7 +115,7 @@ Livello::Livello(){
   fin = fopen( livello_da_scegliere , "r");
   
   //Leggo il file e mi trascrivo i numeri in una matrice di interi temporanea
-  int matrice_numerica [5][5];
+  int matrice_numerica [DIM_MATRICE_LIVELLO_Y][DIM_MATRICE_LIVELLO_X];
   for(int i= 0; i < 5; i++){
       for(int j = 0; j < 5; j++){
           matrice_numerica [i][j] = fgetc(fin) - (int)'0'; // Traduco i numeri ascii in interi
@@ -128,7 +128,11 @@ Livello::Livello(){
   //Imposto l'id della stanza da creare
   for(int i = 0; i < DIM_MATRICE_LIVELLO_Y; i++){
     for(int j = 0; j < DIM_MATRICE_LIVELLO_X; j++){
-      matrice_livello [i] [j] = new Stanza(matrice_numerica[i] [j]);
+      if(matrice_numerica[i] [j] != 3){
+        matrice_livello [i] [j] = new Stanza(matrice_numerica[i] [j]);
+      } else {
+        matrice_livello [i] [j] = NULL;
+      }
     }
   }
 
@@ -148,11 +152,6 @@ Livello::Livello(){
   }
   */
   //pensa se funziona
-
-  matrice_livello [2] [2] = new Stanza(0);
-  matrice_livello [2] [3] = new Stanza(0);
-  matrice_livello [3] [3] = new Stanza(0);
-  matrice_livello [3] [2] = new Stanza(1);
 
 }
 
@@ -181,6 +180,10 @@ void Livello::crea_porte(){
     }
   }
 };
+
+
+
+// fare una funzione che vede se nella stanza corrente se si interagisce con la port andando ancor a destra per esempio cambia di stanza
 
 void Livello::stanza_corrente(){
   

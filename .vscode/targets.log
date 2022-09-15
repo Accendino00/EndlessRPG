@@ -1,4 +1,6 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+make: *** No rule to make target 'all'.  Stop.
+
 # GNU Make 4.3
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2020 Free Software Foundation, Inc.
@@ -6,7 +8,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue Aug 23 16:48:12 2022
+# Make data base, printed on Mon Aug 29 16:07:48 2022
 
 # Variables
 
@@ -19,7 +21,7 @@ GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
 SSH_AGENT_LAUNCHER = gnome-keyring
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-6e12cbe2-2995-4c10-a2e7-196b11d46724.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-3c5c96f7-435d-4a87-918b-2b1b5a3fa666.sock
 # environment
 LC_NAME = it_IT.UTF-8
 # environment
@@ -57,7 +59,7 @@ VSCODE_CODE_CACHE_PATH = /home/tucano/.config/Code/CachedData/da15b6fd3ef856477b
 # environment
 LANG = C
 # environment
-XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.MJS8Q1
+XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.T9FIR1
 # default
 .LOADED := 
 # default
@@ -97,13 +99,13 @@ MAKEFILE_LIST :=
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 3029
+VSCODE_PID = 2949
 # environment
 XDG_SESSION_TYPE = wayland
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
-SESSION_MANAGER = local/tucano-HP-Laptop-15-dw0xxx:@/tmp/.ICE-unix/1741,unix/tucano-HP-Laptop-15-dw0xxx:/tmp/.ICE-unix/1741
+SESSION_MANAGER = local/tucano-HP-Laptop-15-dw0xxx:@/tmp/.ICE-unix/1750,unix/tucano-HP-Laptop-15-dw0xxx:/tmp/.ICE-unix/1750
 # automatic
 *F = $(notdir $*)
 # environment
@@ -127,7 +129,7 @@ XMODIFIERS = @im=ibus
 # environment
 SHLVL = 1
 # environment
-GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/f1ac2cc5_3c12_484b_8d79_b96a508166c5
+GNOME_TERMINAL_SCREEN = /org/gnome/Terminal/screen/cbcbd4ae_22d8_4019_97a6_092567f5ae79
 # environment
 MAKELEVEL := 0
 # default
@@ -171,7 +173,7 @@ LOGNAME = tucano
 # makefile
 .DEFAULT_GOAL := 
 # environment
-SYSTEMD_EXEC_PID = 1774
+SYSTEMD_EXEC_PID = 1790
 # environment
 DISPLAY = :0
 # environment
@@ -278,8 +280,6 @@ GNUmakefile:
 #  File does not exist.
 #  File has been updated.
  
-make: *** No rule to make target 'all'.  Stop.
-
 #  Failed to be updated.
 
 # files hash-table stats:
@@ -296,6 +296,6 @@ make: *** No rule to make target 'all'.  Stop.
 # strcache performance: lookups = 22 / hit rate = 13%
 # hash-table stats:
 # Load=19/8192=0%, Rehash=0, Collisions=0/22=0%
-# Finished Make data base on Tue Aug 23 16:48:12 2022
+# Finished Make data base on Mon Aug 29 16:07:48 2022
 
  
