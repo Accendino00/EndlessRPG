@@ -49,24 +49,6 @@ Devi far si che sia possibile fare
   Dopo che vengono implementate altre entità, devi poter andare anche a fare tipo "livello.controllaNemici(player, entita)" -> dentro, per ogni entita, si controlla se player.contatto(entita[i])
 ```
 
-
-void Livello::scegli_lato(Stanza *** matrice_livello , int * x, int *y){ 
-    switch(rand() % 4){
-        case 0:
-        y++;
-        break;
-        case 1:
-        x++;
-        break;
-        case 2:
-        y--;
-        break;
-        case 3:
-        x--;
-        break;
-    }
-}
-
 Livello::Livello(){
     int current_x = 2;
     int current_y = 2;
@@ -90,14 +72,8 @@ Livello::Livello(){
   int current_x = 0;
   int current_y = 0;
   int stanza_counter = 0;
-  //while(stanza_counter < 16){
-  //  
-  //    for(int j=0; j < DIM_MATRICE_LIVELLO_X; j++){
-  //      this ->matrice_livello [i][j] = new Stanza();
-  //    }
-  //  }
-  //}
 
+  //alloco lo spazio per la matrice del livello
   this -> matrice_livello = new Stanza ** [DIM_MATRICE_LIVELLO_Y];
   for(int i=0; i < DIM_MATRICE_LIVELLO_Y; i++){
     this -> matrice_livello [i] = new Stanza * [DIM_MATRICE_LIVELLO_X];
@@ -129,6 +105,10 @@ Livello::Livello(){
   for(int i = 0; i < DIM_MATRICE_LIVELLO_Y; i++){
     for(int j = 0; j < DIM_MATRICE_LIVELLO_X; j++){
       if(matrice_numerica[i] [j] != 3){
+        if(matrice_numerica[i] [j] == 0){       //mi serve per capire da dove iniziare
+          current_x = j;
+          current_y = i;
+        }
         matrice_livello [i] [j] = new Stanza(matrice_numerica[i] [j]);
       } else {
         matrice_livello [i] [j] = NULL;
@@ -137,21 +117,6 @@ Livello::Livello(){
   }
 
   //alloco memoria per la matrice di livello
-
-  /*
-  while(stanza_counter < 16){
-    if(matrice_livello [current_y] [current_x] != NULL){
-      scegli_lato(matrice_livello , &current_y, &current_x);
-      } else if (stanza_counter == 8 || stanza_counter == 16){
-          matrice_livello [current_y] [current_x] = new Stanza(1);
-          stanza_counter++;            
-      } else{
-        matrice_livello [current_y] [current_x] = new Stanza(0);
-        stanza_counter++;
-      }
-  }
-  */
-  //pensa se funziona
 
 }
 
@@ -181,9 +146,64 @@ void Livello::crea_porte(){
   }
 };
 
+//funzione stampa della morte che prende tutte le stampe
+
+void Livello::stampa(){
+  this->matrice_livello[this->current_y] [this->current_x]->stampa_stanza();
+  
+};
 
 
-// fare una funzione che vede se nella stanza corrente se si interagisce con la port andando ancor a destra per esempio cambia di stanza
+void Livello::cambia_stanza(int direzione){
+  switch(direzione){
+    case DIRECTION_NN:
+    if(current_y-1 != 0){ //ricontrolla lo zero
+      if(matrice_livello [current_y-1] [current_x] != NULL){
+        this->current_y-1;
+      }
+    }
+    break;
+    case DIRECTION_OO:
+    if(current_x-1 != 0){ //ricontrolla lo zero
+      if(matrice_livello [current_y] [current_x-1] != NULL){
+        this->current_x-1;
+      }
+    }
+    break;
+    case DIRECTION_EE:
+    if(current_x+1 != DIM_MATRICE_LIVELLO_X){ //ricontrolla lo zero
+      if(matrice_livello [current_y] [current_x+1] != NULL){
+        this->current_x+1;
+      }
+    }
+    break;
+    case DIRECTION_SS:
+    if(current_y+1 != DIM_MATRICE_LIVELLO_Y){ //ricontrolla lo zero
+      if(matrice_livello [current_y+1] [current_x] != NULL){
+        this->current_y+1;
+      }
+    }
+    break;
+  }
+}
+// logica della morte (continee tutte le logiche , fare una funzione che vede se nella stanza corrente se si interagisce con la port andando ancor a destra per esempio cambia di stanza)
+
+void Livello::logica_della_morte(Player * player){
+  //parte stanze
+  if(matrice_livello [current_y] [current_y]->direzione_porta(player->getY(), player->getX()) == DIRECTION_NN){
+    cambia_stanza(DIRECTION_NN);
+  }
+  if(matrice_livello [current_y] [current_y]->direzione_porta(player->getY(), player->getX()) == DIRECTION_OO){
+    cambia_stanza(DIRECTION_OO);
+  }
+  if(matrice_livello [current_y] [current_y]->direzione_porta(player->getY(), player->getX()) == DIRECTION_EE){
+    cambia_stanza(DIRECTION_EE);
+  }
+  if(matrice_livello [current_y] [current_y]->direzione_porta(player->getY(), player->getX()) == DIRECTION_SS){
+    cambia_stanza(DIRECTION_SS);
+  }
+}
+
 
 void Livello::stanza_corrente(){
   
