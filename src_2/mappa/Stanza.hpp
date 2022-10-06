@@ -5,7 +5,7 @@
 #define DIM_STANZA_Y 30
 #define DIM_STANZA_BOSS_X 50
 #define DIM_STANZA_BOSS_Y 30
-#define DIMENSIONE_PORTA 5
+#define DIMENSIONE_PORTA_VERTICALE 5
 #define DIMENSIONE_PORTA_ORIZZONTALE 10
 #define ALTEZZA_STANZA 30
 #define LARGHEZZA_STANZA 50
@@ -67,16 +67,20 @@ class Stanza {
         int ** matrice_logica;
         cchar_t ** matrice_stampabile;
         Entita * porte [4];
-        void stampa_stanza();
-        Stanza(int id);
-        void imposta_porte(bool nord, bool sud, bool est, bool ovest);
-        void da_logica_a_stampabile();
+
         int dim_y;
         int dim_x;
+
+        Stanza(int id);
+        
+        void stampa_stanza();
+        void imposta_porte(bool nord, bool sud, bool est, bool ovest);
+        void da_logica_a_stampabile();
         bool accessibile(int y_entity, int x_entity);
+        int direzione_porta(int y_entity, int x_entity);
+
         int zero_x();
         int zero_y();
-        int direzione_porta(int y_entity, int x_entity);
        };
 
 

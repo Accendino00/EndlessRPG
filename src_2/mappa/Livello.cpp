@@ -69,78 +69,102 @@ Livello::Livello(){
 */
 
 Livello::Livello(){
-  int current_x = 0;
-  int current_y = 0;
-  int stanza_counter = 0;
 
   //alloco lo spazio per la matrice del livello
-  this -> matrice_livello = new Stanza ** [DIM_MATRICE_LIVELLO_Y];
+  this -> matrice_livello = (Stanza ***) new Stanza ** [DIM_MATRICE_LIVELLO_Y];
   for(int i=0; i < DIM_MATRICE_LIVELLO_Y; i++){
-    this -> matrice_livello [i] = new Stanza * [DIM_MATRICE_LIVELLO_X];
+    this -> matrice_livello [i] = (Stanza **) new Stanza * [DIM_MATRICE_LIVELLO_X];
     for(int j=0; j < DIM_MATRICE_LIVELLO_X; j++){
-      this -> matrice_livello [i][j] = NULL; //da vedere
+      this -> matrice_livello [i][j] = NULL;
     }
   }
 
   FILE * fin;
   char livello_da_scegliere [100];  // Stringa contenente il nome del file della mappa
-  //int idMappa = (rand() % 1 )+ 1; // Impostazione dell'id casuale della mappa
+  int idLivello = (rand() % 1 )+ 1; // Impostazione dell'id casuale del livello
 
   // Creazione della stringa che contiene il percorso al file del livello scelto
-  sprintf(livello_da_scegliere, "./mappa/matrici_livello/livello%s%d.lvl");
+  sprintf(livello_da_scegliere, "./mappa/matrici_livello/livello%d.lvl", idLivello);
   fin = fopen( livello_da_scegliere , "r");
   
   //Leggo il file e mi trascrivo i numeri in una matrice di interi temporanea
   int matrice_numerica [DIM_MATRICE_LIVELLO_Y][DIM_MATRICE_LIVELLO_X];
-  for(int i= 0; i < 5; i++){
-      for(int j = 0; j < 5; j++){
+  for(int i= 0; i < DIM_MATRICE_LIVELLO_Y; i++){
+      for(int j = 0; j < DIM_MATRICE_LIVELLO_X; j++){
           matrice_numerica [i][j] = fgetc(fin) - (int)'0'; // Traduco i numeri ascii in interi
-       }
+      }
       fgetc(fin);
   }
   fclose(fin);
-  
+
+  /*
+  endwin();
+
+  for(int i = 0; i < DIM_MATRICE_LIVELLO_Y; i++) {
+    for(int j = 0; j < DIM_MATRICE_LIVELLO_X; j++) {
+      printf("%d", matrice_numerica[i][j]);
+    }  
+    printf("\n");
+  }
+
+  for(int i = 0; i < DIM_MATRICE_LIVELLO_Y; i++) {
+    for(int j = 0; j < DIM_MATRICE_LIVELLO_X; j++) {
+      printf("%d", matrice_livello[i][j] == NULL);
+    }  
+    printf("\n");
+  }
+  exit(1);  */
 
   //Imposto l'id della stanza da creare
   for(int i = 0; i < DIM_MATRICE_LIVELLO_Y; i++){
     for(int j = 0; j < DIM_MATRICE_LIVELLO_X; j++){
       if(matrice_numerica[i] [j] != 3){
         if(matrice_numerica[i] [j] == 0){       //mi serve per capire da dove iniziare
-          current_x = j;
           current_y = i;
+          current_x = j;
         }
-        matrice_livello [i] [j] = new Stanza(matrice_numerica[i] [j]);
-      } else {
-        matrice_livello [i] [j] = NULL;
+        matrice_livello [i] [j] = new Stanza(matrice_numerica[i] [j]); 
       }
     }
   }
 
   //alloco memoria per la matrice di livello
 
+  this -> imposta_stanza();
 }
 
-void Livello::crea_porte(){
-  bool nord = false;
-  bool sud = false;
-  bool est = false;
-  bool ovest = false;
+void Livello::imposta_stanza(){
+  bool nord, sud, est, ovest;
+  
   for(int i = 0; i < DIM_MATRICE_LIVELLO_Y; i++){
     for(int j = 0; j < DIM_MATRICE_LIVELLO_X; j++){
       if(this -> matrice_livello [i] [j] != NULL){
-        if(this -> matrice_livello [i + 1] [j] != NULL){
-          nord = true;
+        nord = false;
+        sud = false; 
+        est = false; 
+        ovest = false;
+        if(i+1 < DIM_MATRICE_LIVELLO_Y){
+          if(this -> matrice_livello [i + 1] [j] != NULL){
+            sud = true;
+          }
         }
-        if (this -> matrice_livello [i - 1] [j] != NULL){
-          sud = true;
+        if(i-1 >= 0){
+          if (this -> matrice_livello [i - 1] [j] != NULL){
+            nord = true;
+          }
         }
-        if(this -> matrice_livello [i] [j + 1] != NULL){
-          est = true;
+        if(j+1 < DIM_MATRICE_LIVELLO_X){
+          if(this -> matrice_livello [i] [j + 1] != NULL){
+            est = true;
+          }
         }
-        if (this -> matrice_livello [i] [j - 1] != NULL){
-          ovest = true;
+        if(j-1 >= 0){
+          if (this -> matrice_livello [i] [j - 1] != NULL){
+            ovest = true;
+          }
         }
         this -> matrice_livello [i] [j] -> imposta_porte(nord, sud, est, ovest);
+        this -> matrice_livello [i] [j] -> da_logica_a_stampabile();
       }
     }
   }
@@ -150,7 +174,6 @@ void Livello::crea_porte(){
 
 void Livello::stampa(){
   this->matrice_livello[this->current_y] [this->current_x]->stampa_stanza();
-  
 };
 
 
@@ -204,24 +227,10 @@ void Livello::logica_della_morte(Player * player){
   }
 }
 
-
-void Livello::stanza_corrente(){
-  
+int Livello::offsetY() {
+  return this->matrice_livello[this->current_y][this->current_x]->zero_y();
 }
 
-void Livello::scegli_lato(Stanza *** matrice_livello , int * x, int *y){ 
-    switch(rand() % 4){
-        case 0:
-        y++;
-        break;
-        case 1:
-        x++;
-        break;
-        case 2:
-        y--;
-        break;
-        case 3:
-        x--;
-        break;
-    }
+int Livello::offsetX() {
+  return this->matrice_livello[this->current_y][this->current_x]->zero_x();
 }

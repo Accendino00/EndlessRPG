@@ -11,17 +11,24 @@ Gioco::~Gioco() {
     // delete this->proiettili; e tutte le altre liste
 }
 
+
+
 void Gioco::gameLoop() {
     // Imposto i ticket a 0 quando inizia il gioco
     gd->resetTicks();
 
     
-    /* TEMP */
+    /* 
     
     Stanza * stanzaProva = new Stanza(ID_STANZA_NORMALE);
     stanzaProva -> imposta_porte(true, false, false, true);
     stanzaProva -> da_logica_a_stampabile();
+    stanzaProva -> stampa_stanza();
 
+    */
+    
+    Livello * livello = new Livello();
+    
     nemici.addEntita(new Nemico(0));
 
     plistaE tempProiettili, tempNemici, tempPorte, tempArtefatti;
@@ -64,13 +71,15 @@ void Gioco::gameLoop() {
         /*** Stampa ***/
 
         /* TEMP */
-        stanzaProva -> stampa_stanza();
+    
+        livello -> stampa();
+    
 
 
         // Stampa di tutto
-        this->proiettili.stampaTutte(gd->getTerminalY()/2, gd->getTerminalX()/2);
-        this->nemici.stampaTutte(gd->getTerminalY()/2, gd->getTerminalX()/2);
-        this->player->stampa(gd->getTerminalY()/2, gd->getTerminalX()/2);
+        this->proiettili.stampaTutte(livello->offsetY(), livello->offsetX());
+        this->nemici.stampaTutte(livello->offsetY(), livello->offsetX());
+        this->player->stampa(livello->offsetY(), livello->offsetX());
         this->player->stampaHUDplayer();
 
         // Fine del frame e refresh dello schermo

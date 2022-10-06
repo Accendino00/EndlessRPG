@@ -187,7 +187,7 @@ Stanza::Stanza(int id){
     }
 
     // Creazione della stringa che contiene il percorso al file della mappa scelta
-    sprintf(mappa_da_scegliere, "./mappa/matrici_mappe/mappa%s%d.map", (id == ID_STANZA_BOSS)?("boss"):(""), idMappa);
+    sprintf(mappa_da_scegliere, "./mappa/matrici_mappe/mappa%s%d.map", (id == ID_STANZA_BOSS)?("Boss"):(""), idMappa);
     fin = fopen( mappa_da_scegliere , "r");
     
     
@@ -222,8 +222,8 @@ Stanza::Stanza(int id){
  * il metodo specifico "mvadd_wch".
  */
 void Stanza::stampa_stanza(){ 
-    int offsetx = ((gd -> getTerminalX()) - this -> dim_x)/2;
-    int offsety = ((gd -> getTerminalY()) - this -> dim_y)/2;
+    int offsetx = this->zero_x();
+    int offsety = this->zero_y();
     for(int i = 0; i < this->dim_y; i++){
         for(int j = 0; j < this->dim_x; j++){
             mvadd_wch(offsety+i , offsetx+j, &(matrice_stampabile[i][j]));
@@ -236,8 +236,8 @@ int Stanza::zero_x(){
     return ((gd -> getTerminalX()) - this -> dim_x)/2;
 }
 
-int Stanza::zero_x(){
-    return ((gd -> getTerminalX()) - this -> dim_x)/2;
+int Stanza::zero_y(){
+    return ((gd -> getTerminalY()) - this -> dim_y)/2;
 }
 
 
@@ -267,8 +267,8 @@ void Stanza::imposta_porte(bool nord, bool sud, bool est, bool ovest){
         }
     }
     if (est || ovest) {
-        portaVerticale = new cchar_t * [DIMENSIONE_PORTA];
-        for(int i = 0; i < DIMENSIONE_PORTA ; i ++) {
+        portaVerticale = new cchar_t * [DIMENSIONE_PORTA_VERTICALE];
+        for(int i = 0; i < DIMENSIONE_PORTA_VERTICALE ; i ++) {
             portaVerticale[i]  = new cchar_t [1];
             setcchar(&(portaVerticale[i][0]), L" ", A_NORMAL, DOOR_BACKGROUND, NULL);
         }
@@ -283,21 +283,21 @@ void Stanza::imposta_porte(bool nord, bool sud, bool est, bool ovest){
     }
     if(sud == true){
         for(int i = 0; i < DIMENSIONE_PORTA_ORIZZONTALE; i++){
-            matrice_logica [ALTEZZA_STANZA] [i + (int)((LARGHEZZA_STANZA - DIMENSIONE_PORTA_ORIZZONTALE)/2)] = 0;
+            matrice_logica [ALTEZZA_STANZA-1] [i + (int)((LARGHEZZA_STANZA - DIMENSIONE_PORTA_ORIZZONTALE)/2)] = 0;
         }
-        this -> porte[PORTA_SUD] = new Entita(1, ALTEZZA_STANZA,(int)((LARGHEZZA_STANZA - DIMENSIONE_PORTA_ORIZZONTALE)/2), 1 , DIMENSIONE_PORTA * 2, portaOrizzontale); 
+        this -> porte[PORTA_SUD] = new Entita(1, ALTEZZA_STANZA,(int)((LARGHEZZA_STANZA - DIMENSIONE_PORTA_ORIZZONTALE)/2), 1 , DIMENSIONE_PORTA_VERTICALE * 2, portaOrizzontale); 
     }
     if(est == true){
-        for(int i = 0; i < DIMENSIONE_PORTA; i++){
-            matrice_logica [i + (int)((ALTEZZA_STANZA - DIMENSIONE_PORTA)/2)] [LARGHEZZA_STANZA] = 0;
+        for(int i = 0; i < DIMENSIONE_PORTA_VERTICALE; i++){
+            matrice_logica [i + (int)((ALTEZZA_STANZA - DIMENSIONE_PORTA_VERTICALE)/2)] [LARGHEZZA_STANZA-1] = 0;
         }
-        this -> porte[PORTA_EST] = new Entita(1, LARGHEZZA_STANZA,(int)((ALTEZZA_STANZA - DIMENSIONE_PORTA)/2), DIMENSIONE_PORTA , 1 , portaVerticale);
+        this -> porte[PORTA_EST] = new Entita(1, LARGHEZZA_STANZA,(int)((ALTEZZA_STANZA - DIMENSIONE_PORTA_VERTICALE)/2), DIMENSIONE_PORTA_VERTICALE , 1 , portaVerticale);
     }
     if(ovest == true){
-        for(int i = 0; i < DIMENSIONE_PORTA; i++){
-            matrice_logica [i + (int)((ALTEZZA_STANZA - DIMENSIONE_PORTA)/2)] [0] = 0;
+        for(int i = 0; i < DIMENSIONE_PORTA_VERTICALE; i++){
+            matrice_logica [i + (int)((ALTEZZA_STANZA - DIMENSIONE_PORTA_VERTICALE)/2)] [0] = 0;
         }
-        this -> porte[PORTA_OVEST] = new Entita(1, 0,(int)((ALTEZZA_STANZA - DIMENSIONE_PORTA)/2), DIMENSIONE_PORTA , 1, portaVerticale);
+        this -> porte[PORTA_OVEST] = new Entita(1, 0,(int)((ALTEZZA_STANZA - DIMENSIONE_PORTA_VERTICALE)/2), DIMENSIONE_PORTA_VERTICALE , 1, portaVerticale);
     }
 }
 
@@ -390,11 +390,11 @@ int Stanza::direzione_porta(int y_entity, int x_entity){
         returnvalue = DIRECTION_SS;
     }
         // Porta EE
-    if(matrice_logica [dim_y/2] [dim_x] == 0 && y_entity >= ((ALTEZZA_STANZA - DIMENSIONE_PORTA)/2) && y_entity <= ((ALTEZZA_STANZA - DIMENSIONE_PORTA)/2) + DIMENSIONE_PORTA){
+    if(matrice_logica [dim_y/2] [dim_x] == 0 && y_entity >= ((ALTEZZA_STANZA - DIMENSIONE_PORTA_VERTICALE)/2) && y_entity <= ((ALTEZZA_STANZA - DIMENSIONE_PORTA_VERTICALE)/2) + DIMENSIONE_PORTA_VERTICALE){
         returnvalue = DIRECTION_EE;
     }
         // Porta OO
-    if(matrice_logica [dim_y/2] [0] == 0 && y_entity >= ((ALTEZZA_STANZA - DIMENSIONE_PORTA)/2) && y_entity <= ((ALTEZZA_STANZA - DIMENSIONE_PORTA)/2) + DIMENSIONE_PORTA && x_entity == -1){
+    if(matrice_logica [dim_y/2] [0] == 0 && y_entity >= ((ALTEZZA_STANZA - DIMENSIONE_PORTA_VERTICALE)/2) && y_entity <= ((ALTEZZA_STANZA - DIMENSIONE_PORTA_VERTICALE)/2) + DIMENSIONE_PORTA_VERTICALE && x_entity == -1){
         returnvalue = DIRECTION_OO;
     }
     return returnvalue;
