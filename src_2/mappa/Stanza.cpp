@@ -232,6 +232,14 @@ void Stanza::stampa_stanza(){
     
 }
 
+int Stanza::zero_x(){
+    return ((gd -> getTerminalX()) - this -> dim_x)/2;
+}
+
+int Stanza::zero_x(){
+    return ((gd -> getTerminalX()) - this -> dim_x)/2;
+}
+
 
 /**
  * @brief Imposta la presenza di porte nella matrice logica della stanza.
@@ -350,17 +358,44 @@ bool Stanza::accessibile(int y_entity, int x_entity){
 
 bool Stanza::accessibile(int y_entity, int x_entity){
     bool returnvalue = false;
-    if(matrice_logica [y_entity] [x_entity] == 0){
+    // Prima controllo se c'è la porta, poi controllo se mi sto muovendo fuori da quella porta
+    if(direzione_porta(y_entity, x_entity)!=0){
         returnvalue = true;
     }
-    /*
-    if(y_entity < 0 || 
-       y_entity > dim_y ||
-       x_entity < 0 ||
-       x_entity > dim_x){
-         
+    else if(y_entity > 0 || y_entity < dim_y || x_entity > 0 || x_entity < dim_x){
+        if(matrice_logica [y_entity] [x_entity] == 0){
+            returnvalue = true;
+        }
     }
-    */
+    //cerca le coordinate delle porte e se si può andare uno più a destra allora posso fare cose
+    
     return returnvalue;
 }
 
+/**
+ * @brief Cerco se dove sono c'è una porta ed in che direzione si trova quella porta, resituendo la direzione se giusta
+ * 
+ * @param y_entity coordinata y dell'entità
+ * @param x_entity coordinata x dell'entità
+ * @return int attribuito alla direzione
+ */
+int Stanza::direzione_porta(int y_entity, int x_entity){
+    int returnvalue = 0;
+        // Porta NN
+    if(matrice_logica [0] [dim_x/2] == 0 && y_entity == -1 && x_entity >= (LARGHEZZA_STANZA - DIMENSIONE_PORTA_ORIZZONTALE)/2 && x_entity <= ((LARGHEZZA_STANZA - DIMENSIONE_PORTA_ORIZZONTALE)/2) + DIMENSIONE_PORTA_ORIZZONTALE){
+        returnvalue = DIRECTION_NN;
+    }
+        // Porta SS
+    if(matrice_logica [dim_y] [dim_x/2] == 0 && y_entity == dim_y+1  && x_entity >= (LARGHEZZA_STANZA - DIMENSIONE_PORTA_ORIZZONTALE)/2 && x_entity <= ((LARGHEZZA_STANZA - DIMENSIONE_PORTA_ORIZZONTALE)/2) + DIMENSIONE_PORTA_ORIZZONTALE){
+        returnvalue = DIRECTION_SS;
+    }
+        // Porta EE
+    if(matrice_logica [dim_y/2] [dim_x] == 0 && y_entity >= ((ALTEZZA_STANZA - DIMENSIONE_PORTA)/2) && y_entity <= ((ALTEZZA_STANZA - DIMENSIONE_PORTA)/2) + DIMENSIONE_PORTA){
+        returnvalue = DIRECTION_EE;
+    }
+        // Porta OO
+    if(matrice_logica [dim_y/2] [0] == 0 && y_entity >= ((ALTEZZA_STANZA - DIMENSIONE_PORTA)/2) && y_entity <= ((ALTEZZA_STANZA - DIMENSIONE_PORTA)/2) + DIMENSIONE_PORTA && x_entity == -1){
+        returnvalue = DIRECTION_OO;
+    }
+    return returnvalue;
+};

@@ -74,6 +74,9 @@ class Stanza {
         int dim_y;
         int dim_x;
         bool accessibile(int y_entity, int x_entity);
+        int zero_x();
+        int zero_y();
+        int direzione_porta(int y_entity, int x_entity);
        };
 
 

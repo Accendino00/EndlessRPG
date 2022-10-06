@@ -181,6 +181,13 @@ void Entita::incrementaX(int val) {
 void Entita::incrementaY(int val) {
     (*this).y -= val;
 }
+int Entita::getX() {
+    return this->x;
+}
+
+int Entita::getY() {
+    return this->y;
+}
 
 void Entita::muovi(int direzione, int val) {
     switch(direzione) {
