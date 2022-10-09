@@ -19,6 +19,8 @@ public:
 
     void manageInput(ListaEntita * proiettili);
     void gestione_player(int input, ListaEntita * proiettili);
+    void aggiungi_vita(Artefatto a);
+    
 
     void inventario();
 };

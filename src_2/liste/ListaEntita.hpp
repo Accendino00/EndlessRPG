@@ -7,7 +7,7 @@ struct listaE{
     listaE *next;
 }; typedef listaE *plistaE;
 
-class ListaEntita : public Entita {
+class ListaEntita {
 private:
     plistaE head;
     plistaE chead;
