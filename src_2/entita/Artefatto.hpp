@@ -14,8 +14,4 @@ class Artefatto : public Entita {
         int idArtefatto;
     public:
         Artefatto(int type);
-        ~Artefatto();
-
-
-
 };

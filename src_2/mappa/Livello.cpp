@@ -172,58 +172,104 @@ void Livello::imposta_stanza(){
 
 //funzione stampa della morte che prende tutte le stampe
 
-void Livello::stampa(){
+bool Livello::livello_successivo(){
+  return false;
+}
+
+void Livello::stampa(Player * player){
+  /*while(!(livello_successivo)){
+    this->matrice_livello[this->current_y] [this->current_x]->stampa_stanza();
+    if(matrice_livello [current_y] [current_y]->direzione_porta(player->getY(), player->getX()) == DIRECTION_NN){
+      cambia_stanza(DIRECTION_NN);
+      player->y = DIM_STANZA_Y;
+    }
+    if(matrice_livello [current_y] [current_y]->direzione_porta(player->getY(), player->getX()) == DIRECTION_OO){
+      cambia_stanza(DIRECTION_OO);
+      player->x = 0;
+    }
+    if(matrice_livello [current_y] [current_y]->direzione_porta(player->getY(), player->getX()) == DIRECTION_EE){
+      cambia_stanza(DIRECTION_EE);
+      player->x = DIM_STANZA_X;
+    }
+    if(matrice_livello [current_y] [current_y]->direzione_porta(player->getY(), player->getX()) == DIRECTION_SS){
+      cambia_stanza(DIRECTION_SS);
+      player->y = 0;
+    }
+  }*/
   this->matrice_livello[this->current_y] [this->current_x]->stampa_stanza();
 };
 
 
-void Livello::cambia_stanza(int direzione){
+bool Livello::cambia_stanza(int direzione){
+  bool returnValue = false;
   switch(direzione){
     case DIRECTION_NN:
-    if(current_y-1 != 0){ //ricontrolla lo zero
+    if(current_y-1 >= 0){ //ricontrolla lo zero
       if(matrice_livello [current_y-1] [current_x] != NULL){
-        this->current_y-1;
+        this->current_y-=1;
+        returnValue = true;
       }
     }
     break;
     case DIRECTION_OO:
-    if(current_x-1 != 0){ //ricontrolla lo zero
+    if(current_x-1 >= 0){ //ricontrolla lo zero
       if(matrice_livello [current_y] [current_x-1] != NULL){
-        this->current_x-1;
+        this->current_x-=1;
+        returnValue = true;
       }
     }
     break;
     case DIRECTION_EE:
-    if(current_x+1 != DIM_MATRICE_LIVELLO_X){ //ricontrolla lo zero
+    if(current_x+1 < DIM_MATRICE_LIVELLO_X){ //ricontrolla lo zero
       if(matrice_livello [current_y] [current_x+1] != NULL){
-        this->current_x+1;
+        this->current_x+=1;
+        returnValue = true;
       }
     }
     break;
     case DIRECTION_SS:
-    if(current_y+1 != DIM_MATRICE_LIVELLO_Y){ //ricontrolla lo zero
+    if(current_y+1 < DIM_MATRICE_LIVELLO_Y){ //ricontrolla lo zero
       if(matrice_livello [current_y+1] [current_x] != NULL){
-        this->current_y+1;
+        this->current_y+=1;
+        returnValue = true;
       }
     }
     break;
   }
+  return returnValue;
 }
 // logica della morte (continee tutte le logiche , fare una funzione che vede se nella stanza corrente se si interagisce con la port andando ancor a destra per esempio cambia di stanza)
 
-void Livello::logica_della_morte(Player * player){
+void Livello::calcolo_logica(Player * player){
   //parte stanze
+  bool cambiatoStanza = false;
   if(matrice_livello [current_y] [current_y]->direzione_porta(player->getY(), player->getX()) == DIRECTION_NN){
-    cambia_stanza(DIRECTION_NN);
+    cambiatoStanza = cambia_stanza(DIRECTION_NN);
+    if(cambiatoStanza) { 
+      player->modificaCoordinate( (matrice_livello [current_y] [current_y]->getDimY())-1, 
+                                  player->getX());
+    }
   }
   if(matrice_livello [current_y] [current_y]->direzione_porta(player->getY(), player->getX()) == DIRECTION_OO){
-    cambia_stanza(DIRECTION_OO);
+    cambiatoStanza = cambia_stanza(DIRECTION_OO);
+    if(cambiatoStanza) { 
+      player->modificaCoordinate( player->getY(), 
+                                (matrice_livello [current_y] [current_y]->getDimX())-1);
+    }
   }
   if(matrice_livello [current_y] [current_y]->direzione_porta(player->getY(), player->getX()) == DIRECTION_EE){
-    cambia_stanza(DIRECTION_EE);
+    cambiatoStanza = cambia_stanza(DIRECTION_EE);
+    if(cambiatoStanza) { 
+      player->modificaCoordinate( player->getY(), 
+                                  1);
+    }
   }
   if(matrice_livello [current_y] [current_y]->direzione_porta(player->getY(), player->getX()) == DIRECTION_SS){
-    cambia_stanza(DIRECTION_SS);
+    cambiatoStanza = cambia_stanza(DIRECTION_SS);
+    if(cambiatoStanza) { 
+      player->modificaCoordinate( 1, 
+                                  player->getX());
+    }
   }
 }
 

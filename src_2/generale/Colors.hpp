@@ -35,13 +35,16 @@
 #define WALL_BACKGROUND         20
 #define FLOOR_BACKGROUND        21
 #define DOOR_BACKGROUND         22
+#define DOOR_KEY_BACKGROUND     23
 
-#define WALL_FOREGROUND         23
-#define FLOOR_FOREGROUND        24
-#define DOOR_FOREGROUND         25
+#define WALL_FOREGROUND         24
+#define FLOOR_FOREGROUND        25
+#define DOOR_FOREGROUND         26
+#define DOOR_KEY_FOREGROUND     27
 
 #define WALL_PAIR               8
 #define FLOOR_PAIR              9
 #define DOOR_PAIR               10
+#define DOOR_KEY_PAIR           11
 
 void initializeColors();

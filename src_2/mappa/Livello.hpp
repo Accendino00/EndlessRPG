@@ -15,9 +15,10 @@ public:
     void scegli_lato(Stanza *** matrice_livello , int * x, int *y);
     void imposta_stanza();
     void stanza_corrente();
-    void stampa();
-    void cambia_stanza(int direzione);
-    void logica_della_morte(Player * player);
+    void stampa(Player * player);
+    bool cambia_stanza(int direzione);
+    void calcolo_logica(Player * player);
+    bool livello_successivo();
 
     int offsetY();
     int offsetX();

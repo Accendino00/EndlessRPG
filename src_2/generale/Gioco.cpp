@@ -1,8 +1,7 @@
 #include "../generale/libs.hpp"
 
 Gioco::Gioco(){
-    player = new Player(0,0, 50);
-    
+    player = new Player((int)DIM_STANZA_SPAWN_Y/2,(int)DIM_STANZA_SPAWN_X/2, 50);
     this->gameOver = false;
 }
 
@@ -59,6 +58,8 @@ void Gioco::gameLoop() {
             tempProiettili = tempProiettili->next;
         }
 
+        livello -> calcolo_logica(this->player);
+
         // updateAll(), una volta chiamato, chiama updateEntita per tutti gli elementi della lista
 
         tempNemici = this->nemici.getList();
@@ -72,7 +73,7 @@ void Gioco::gameLoop() {
 
         /* TEMP */
     
-        livello -> stampa();
+        livello -> stampa(this->player);
     
 
 

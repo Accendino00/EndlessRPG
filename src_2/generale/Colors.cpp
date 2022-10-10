@@ -21,10 +21,12 @@ void initializeColors() {
     init_color(WALL_BACKGROUND,         96  * CC,   46  * CC,   199 * CC);
     init_color(FLOOR_BACKGROUND,        51  * CC,   19  * CC,   92  * CC);
     init_color(DOOR_BACKGROUND,         222 * CC,   56  * CC,   200 * CC);
+    init_color(DOOR_KEY_BACKGROUND,     18  * CC,   243 * CC,   156 * CC);
 
     init_color(WALL_FOREGROUND,         96  * CC,   46  * CC,   199 * CC);
     init_color(FLOOR_FOREGROUND,        51  * CC,   19  * CC,   92  * CC);
     init_color(DOOR_FOREGROUND,         222 * CC,   56  * CC,   200 * CC);
+    init_color(DOOR_KEY_FOREGROUND,     18  * CC,   243 * CC,   156 * CC);
 
     init_pair(MENU_NORMAL,          MENU_TEXT,              MENU_BACKGROUND);
     init_pair(MENU_HIGHLIGHT,       MENU_HL_TEXT,           MENU_HL_BACKGROUND);
@@ -37,5 +39,6 @@ void initializeColors() {
     init_pair(WALL_PAIR,            WALL_FOREGROUND,        WALL_BACKGROUND);
     init_pair(FLOOR_PAIR,           FLOOR_FOREGROUND,       FLOOR_BACKGROUND);
     init_pair(DOOR_PAIR,            DOOR_FOREGROUND,        DOOR_BACKGROUND);
+    init_pair(DOOR_KEY_PAIR,        DOOR_KEY_FOREGROUND,    DOOR_KEY_BACKGROUND);
        
 }
