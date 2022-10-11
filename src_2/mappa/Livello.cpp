@@ -88,7 +88,7 @@ Livello::Livello(){
   fin = fopen( livello_da_scegliere , "r");
   
   //Leggo il file e mi trascrivo i numeri in una matrice di interi temporanea
-  int matrice_numerica [DIM_MATRICE_LIVELLO_Y][DIM_MATRICE_LIVELLO_X];
+  matrice_numerica [DIM_MATRICE_LIVELLO_Y][DIM_MATRICE_LIVELLO_X];
   for(int i= 0; i < DIM_MATRICE_LIVELLO_Y; i++){
       for(int j = 0; j < DIM_MATRICE_LIVELLO_X; j++){
           matrice_numerica [i][j] = fgetc(fin) - (int)'0'; // Traduco i numeri ascii in interi
@@ -96,24 +96,6 @@ Livello::Livello(){
       fgetc(fin);
   }
   fclose(fin);
-
-  /*
-  endwin();
-
-  for(int i = 0; i < DIM_MATRICE_LIVELLO_Y; i++) {
-    for(int j = 0; j < DIM_MATRICE_LIVELLO_X; j++) {
-      printf("%d", matrice_numerica[i][j]);
-    }  
-    printf("\n");
-  }
-
-  for(int i = 0; i < DIM_MATRICE_LIVELLO_Y; i++) {
-    for(int j = 0; j < DIM_MATRICE_LIVELLO_X; j++) {
-      printf("%d", matrice_livello[i][j] == NULL);
-    }  
-    printf("\n");
-  }
-  exit(1);  */
 
   //Imposto l'id della stanza da creare
   for(int i = 0; i < DIM_MATRICE_LIVELLO_Y; i++){
