@@ -7,6 +7,7 @@ Gioco::Gioco(){
 
 Gioco::~Gioco() {
     delete this->player;
+    delete livello;
     // delete this->proiettili; e tutte le altre liste
 }
 
@@ -26,11 +27,11 @@ void Gioco::gameLoop() {
 
     */
     
-    Livello * livello = new Livello();
+    livello = new Livello();
     
-    nemici.addEntita(new Nemico(0));
+    // nemici.addEntita(new Nemico(0));
 
-    plistaE tempProiettili, tempNemici, tempPorte, tempArtefatti;
+    // plistaE tempProiettili, tempNemici, tempPorte, tempArtefatti;
 
     do {
         // Inizio del frame, aggiornamento dei tick, lettura input e erase dello schermo
@@ -41,7 +42,7 @@ void Gioco::gameLoop() {
         
         /*** Gestione degli input ***/
 
-        this->player->manageInput(&(this->proiettili));
+        // this->player->manageInput(&(this->proiettili));
 
         if(gd->checkInput('q')) {
             gameOver = true;
@@ -52,21 +53,21 @@ void Gioco::gameLoop() {
 
         /*** Calcolo della logica ***/
 
-        tempProiettili = this->proiettili.getList();
-        while(tempProiettili != NULL) {
-            ((Proiettile*)tempProiettili->e)->updateEntita();
-            tempProiettili = tempProiettili->next;
-        }
+        // tempProiettili = this->proiettili.getList();
+        // while(tempProiettili != NULL) {
+        //     ((Proiettile*)tempProiettili->e)->updateEntita();
+        //     tempProiettili = tempProiettili->next;
+        // }
 
         livello -> calcolo_logica(this->player);
 
         // updateAll(), una volta chiamato, chiama updateEntita per tutti gli elementi della lista
 
-        tempNemici = this->nemici.getList();
-        while(tempNemici != NULL) {
-            ((Nemico*)tempNemici->e)->updateEntita(player, &(this->proiettili));
-            tempNemici = tempNemici->next;
-        }
+        // tempNemici = this->nemici.getList();
+        // while(tempNemici != NULL) {
+        //     ((Nemico*)tempNemici->e)->updateEntita(player, &(this->proiettili));
+        //     tempNemici = tempNemici->next;
+        // }
 
 
         /*** Stampa ***/
@@ -78,8 +79,8 @@ void Gioco::gameLoop() {
 
 
         // Stampa di tutto
-        this->proiettili.stampaTutte(livello->offsetY(), livello->offsetX());
-        this->nemici.stampaTutte(livello->offsetY(), livello->offsetX());
+        // this->proiettili.stampaTutte(livello->offsetY(), livello->offsetX());
+        // this->nemici.stampaTutte(livello->offsetY(), livello->offsetX());
         this->player->stampa(livello->offsetY(), livello->offsetX());
         this->player->stampaHUDplayer();
 

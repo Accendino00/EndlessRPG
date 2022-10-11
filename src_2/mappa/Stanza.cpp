@@ -219,6 +219,17 @@ Stanza::Stanza(int id){
 
 };
 
+Stanza::~Stanza(){
+    // Dealloco tutto
+    delete this->listaPorte;
+    for(int i = 0; i < (*this).dim_y; i++) {
+        delete[] this->matrice_stampabile[i];
+        delete[] this->matrice_logica[i];
+    }
+    delete[] this->matrice_stampabile;
+    delete[] this->matrice_logica;
+}
+
 /**
  * @brief Stampa la stanza. Deve essere chiamato dopo il metodo "da_logica_a_stampabile"
  * 

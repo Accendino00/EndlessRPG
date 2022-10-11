@@ -133,6 +133,16 @@ Livello::Livello(){
   this -> imposta_stanza();
 }
 
+Livello::~Livello(){
+  for(int i=0; i<DIM_MATRICE_LIVELLO_Y; i++){
+    for(int j=0; j<DIM_MATRICE_LIVELLO_X; j++){
+      delete (this->matrice_livello[i][j]);
+    }
+    delete [] (this->matrice_livello[i]);
+  }
+  delete [] (this-> matrice_livello);
+}
+
 void Livello::imposta_stanza(){
   bool nord, sud, est, ovest;
   

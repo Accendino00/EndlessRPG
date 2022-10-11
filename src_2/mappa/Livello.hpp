@@ -9,8 +9,10 @@ public:
     Stanza *** matrice_livello;
     int current_y;
     int current_x;
-
+    int matrice_numerica [DIM_MATRICE_LIVELLO_Y][DIM_MATRICE_LIVELLO_X];
+    
     Livello();
+    ~Livello();
 
     void scegli_lato(Stanza *** matrice_livello , int * x, int *y);
     void imposta_stanza();
