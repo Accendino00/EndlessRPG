@@ -58,52 +58,53 @@ void Player::gestione_player(int input, Livello * livello){
     switch(input) {
             // Movimento basilare
 			case (L'w'):
-			    muoviLiv(DIRECTION_NN, 1, livello);
+			    muoviPlayer(DIRECTION_NN, 1, livello);
                 this->lastinput = (L'w');
 			    break;
 			case (L's'):
-			    muoviLiv(DIRECTION_SS, 1, livello);
+			    muoviPlayer(DIRECTION_SS, 1, livello);
                 this->lastinput = (L's');
 				break;
 			case (L'd'):
-			    muoviLiv(DIRECTION_EE, 1, livello);
+			    muoviPlayer(DIRECTION_EE, 1, livello);
                 this->lastinput = (L'd');
 				break;
 			case (L'a'):
-			    muoviLiv(DIRECTION_OO, 1, livello);
+			    muoviPlayer(DIRECTION_OO, 1, livello);
                 this->lastinput = (L'a');
 				break;
             // Dash
             case (L' '):
                 for (int i = 0; i < this->dashDistanceX; i++) {
-                    if(this->lastinput == L'd') muoviLiv(DIRECTION_EE,1,livello);
-                    if(this->lastinput == L'a') muoviLiv(DIRECTION_OO,1,livello);
+                    if(this->lastinput == L'd') muoviPlayer(DIRECTION_EE,1,livello);
+                    if(this->lastinput == L'a') muoviPlayer(DIRECTION_OO,1,livello);
                 }
                 for (int i = 0; i < this->dashDistanceY; i++) {
-                    if(this->lastinput == L'w') muoviLiv(DIRECTION_NN,1,livello);
-                    if(this->lastinput == L's') muoviLiv(DIRECTION_SS,1,livello);
+                    if(this->lastinput == L'w') muoviPlayer(DIRECTION_NN,1,livello);
+                    if(this->lastinput == L's') muoviPlayer(DIRECTION_SS,1,livello);
                 }
                 break;
             // Proiettili
             case (KEY_RIGHT):
-                if (movimentoValido(DIRECTION_EE, 1, livello))
-                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_EE));
+                livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_EE));
                 break;
             case (KEY_DOWN):
-                if (movimentoValido(DIRECTION_SS, 1, livello))
-                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SS));
+                livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SS));
                 break;
             case (KEY_LEFT):
-                if (movimentoValido(DIRECTION_OO, 1, livello))
-                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_OO));
+                livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_OO));
                 break;
             case (KEY_UP):
-                if (movimentoValido(DIRECTION_NN, 1, livello))
-                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NN));
+                livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NN));
                 break;
 		}
 
 };
+
+void Player::muoviPlayer(int direzione, int val, Livello * livello) {
+    if(movimentoValido(direzione, val, livello->getStanza(), true))
+        muovi(direzione, val);
+}
 
 void Player::inventario(){
 }

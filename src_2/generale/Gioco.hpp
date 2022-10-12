@@ -5,13 +5,9 @@ class Gioco {
 private:
     Player * player;
     Livello * livello;
-
-    // ListaEntita proiettili;
-    // ListaEntita nemici;
-    // ListaEntita porte;
-    // ListaEntita artefatti;
     
     bool gameOver;
+
 public:
     Gioco();
     ~Gioco();

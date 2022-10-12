@@ -19,8 +19,8 @@ public:
 
     void manageInput(Livello * livello);
     void gestione_player(int input, Livello * livello);
+    void muoviPlayer(int direzione, int val, Livello * livello);
     void aggiungi_vita(Artefatto a);
-    
 
     void inventario();
 };

@@ -7,5 +7,5 @@ private:
     int direzione;
 public:
     Proiettile(int y, int x, bool playerProjectile, int direzione);
-    void updateEntita();
+    void updateEntita(Stanza * stanza, Player * player);
 };

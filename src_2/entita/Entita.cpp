@@ -227,15 +227,10 @@ void Entita::muovi(int direzione, int val) {
     }
 }
 
-bool Entita::movimentoValido(int direzione, int val, Livello * livello) {    
+bool Entita::movimentoValido(int direzione, int val, Stanza * stanza, bool giocatore) {    
     bool returnValue = false;
     muovi(direzione, val);
-    returnValue = livello -> accessibile(this->y, this->x);
+    returnValue = stanza -> accessibile(this->y, this->x, giocatore);
     muovi(direzione, -val);;
     return returnValue;
-}
-
-void Entita::muoviLiv(int direzione, int val, Livello * livello) {
-    if(movimentoValido(direzione, val, livello))
-        muovi(direzione, val);
 }

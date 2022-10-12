@@ -179,7 +179,7 @@ Stanza::Stanza(int id){
 
     FILE * fin;
     char mappa_da_scegliere [100];  // Stringa contenente il nome del file della mappa
-    int idMappa = (rand() % 1 )+ 1; // Impostazione dell'id casuale della mappa
+    int idMappa = 0;
 
     // Scelta del tipo di mappa usando il parametro "id"
     if (id == ID_STANZA_SPAWN) {
@@ -187,9 +187,11 @@ Stanza::Stanza(int id){
         this->dim_y = DIM_STANZA_SPAWN_Y;
         this->dim_x = DIM_STANZA_SPAWN_X;
     } else if (id == ID_STANZA_NORMALE){
+        idMappa = (rand() % NUMERO_STANZE_NORMALI) + 1; // Impostazione dell'id casuale della mappa
         this->dim_y = DIM_STANZA_Y;
         this->dim_x = DIM_STANZA_X;
     } else if(id == ID_STANZA_BOSS){
+        idMappa = (rand() % NUMERO_STANZE_BOSS) + 1; // Impostazione dell'id casuale della mappa
         this->dim_y = DIM_STANZA_BOSS_Y;
         this->dim_x = DIM_STANZA_BOSS_X;
     }
@@ -371,17 +373,18 @@ bool Stanza::accessibile(int y_entity, int x_entity){
 
 */
 
-bool Stanza::accessibile(int y_entity, int x_entity){
+//  Solo per il giocatore serve fare il controllo della direzione porta
+bool Stanza::accessibile(int y_entity, int x_entity, bool giocatore){
     bool returnvalue = false;
     // Prima controllo se c'è la porta, poi controllo se mi sto muovendo fuori da quella porta
-    if(direzione_porta(y_entity, x_entity)!=0){
+    if(giocatore && direzione_porta(y_entity, x_entity)!=0){
         returnvalue = true;
     }
     else if(
         x_entity >= 0 && 
-        x_entity < this -> dim_x && 
+        x_entity < (this -> dim_x) && 
         y_entity >= 0 && 
-        y_entity < this -> dim_y && 
+        y_entity < (this -> dim_y) && 
         this -> matrice_logica [y_entity] [x_entity] != 1
     ){
         returnvalue = true;

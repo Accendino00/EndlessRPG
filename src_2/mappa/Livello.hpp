@@ -1,8 +1,10 @@
 #pragma once
 #include "../generale/libs.hpp"
 
-#define DIM_MATRICE_LIVELLO_Y 5
-#define DIM_MATRICE_LIVELLO_X 5
+#define NUMERO_LIVELLI          2
+
+#define DIM_MATRICE_LIVELLO_Y   5
+#define DIM_MATRICE_LIVELLO_X   5
 
 class Livello {
 public:
@@ -22,9 +24,11 @@ public:
     void calcolo_logica(Player * player);
     bool livello_successivo();
 
-    bool accessibile(int y_entity, int x_entity);
+    bool accessibile(int y_entity, int x_entity, bool giocatore);
     
     void aggiungiProiettile(Proiettile * proiettile);
+
+    Stanza * getStanza();
 
     int offsetY();
     int offsetX();

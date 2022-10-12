@@ -81,7 +81,7 @@ Livello::Livello(){
 
   FILE * fin;
   char livello_da_scegliere [100];  // Stringa contenente il nome del file della mappa
-  int idLivello = (rand() % 1 )+ 1; // Impostazione dell'id casuale del livello
+  int idLivello = (rand() % NUMERO_LIVELLI) + 1; // Impostazione dell'id casuale del livello
 
   // Creazione della stringa che contiene il percorso al file del livello scelto
   sprintf(livello_da_scegliere, "./mappa/matrici_livello/livello%d.lvl", idLivello);
@@ -170,8 +170,8 @@ bool Livello::livello_successivo(){
 }
 
 
-bool Livello::accessibile(int y_entity, int x_entity) {
-  return this->matrice_livello[this->current_y] [this->current_x]->accessibile(y_entity, x_entity);
+bool Livello::accessibile(int y_entity, int x_entity, bool giocatore) {
+  return this->matrice_livello[this->current_y] [this->current_x]->accessibile(y_entity, x_entity, giocatore);
 }
 
 void Livello::stampa(Player * player){
@@ -277,6 +277,11 @@ void Livello::calcolo_logica(Player * player){
 
 void Livello::aggiungiProiettile(Proiettile * proiettile) {
   this->matrice_livello[this->current_y][this->current_x]->aggiungiProiettile(proiettile);
+}
+
+
+Stanza * Livello::getStanza() {
+  return this->matrice_livello[this->current_y][this->current_x];
 }
 
 int Livello::offsetY() {

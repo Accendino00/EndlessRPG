@@ -147,7 +147,7 @@ bool ListaProiettili::removeEntita(Proiettile *entity, bool deleteEntita) {
 }
 
 
-bool ListaProiettili::makecList(Proiettile *entity){
+bool ListaProiettili::makecList(Entita *entity){
     // Controlla quali entità sono a contatto con l'entità di input e le aggiungo in chead. Ritorno true se ci sono entita a contatto.
 
     bool returnValue = false;
@@ -158,7 +158,7 @@ bool ListaProiettili::makecList(Proiettile *entity){
             headTemp = headTemp->next;
             returnValue = true;
         }
-        addEntita_p(entity, true);
+        addEntita_p(headTemp->e, true);
         headTemp = headTemp->next;
     }
     return returnValue;
@@ -207,7 +207,7 @@ void ListaProiettili::stampaTutte(int offsetY, int offsetX) {
 void ListaProiettili::aggiornaEntita(Stanza * stanza, Player * player) {
     plistaPro headTemp = head;
     while(headTemp != NULL) {
-        headTemp->e->updateEntita();
+        headTemp->e->updateEntita(stanza, player);
         headTemp = headTemp->next; 
     }
 }

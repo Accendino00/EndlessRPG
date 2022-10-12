@@ -5,7 +5,7 @@ struct listaPro{
     listaPro *prev;
     Proiettile *e;
     listaPro *next;
-}; typedef listaPro *plistaPro;
+}; typedef listaPro * plistaPro;
 
 class ListaProiettili {
 private:
@@ -29,7 +29,7 @@ public:
     void deleteList();
     plistaPro getList();
 
-    bool makecList(Proiettile *entity);
+    bool makecList(Entita *entity);
     plistaPro getcList();
     void deletecList();
 

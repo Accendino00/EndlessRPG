@@ -1,6 +1,10 @@
 #pragma once
 #include "../generale/libs.hpp"
 
+#define NUMERO_STANZE_NORMALI 2
+#define NUMERO_STANZE_BOSS 1
+
+
 #define DIM_STANZA_X 50
 #define DIM_STANZA_Y 30
 #define DIM_STANZA_BOSS_X 50
@@ -80,7 +84,7 @@ class Stanza {
         void stampa_stanza();
         void imposta_porte(bool nord, bool sud, bool est, bool ovest);
         void da_logica_a_stampabile();
-        bool accessibile(int y_entity, int x_entity);
+        bool accessibile(int y_entity, int x_entity, bool giocatore);
         int direzione_porta(int y_entity, int x_entity);
 
         int zero_x();
