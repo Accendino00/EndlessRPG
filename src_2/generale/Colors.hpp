@@ -8,11 +8,6 @@
 #define DEFAULT                 19
 
 
-
-
-
-
-
 #define MAIN_TITLE_TEXT         12
 #define MAIN_TITLE_BACKGROUND   13
 

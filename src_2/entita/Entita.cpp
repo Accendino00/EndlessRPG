@@ -130,12 +130,17 @@ bool Entita::controllaContatto(Entita * entita) {
     );
 }
 
+
 void Entita::updateEntita() {
     // Aggiornamento dei tick e conto delle azioni che deve eseguire l'entità dall'ultima volta che è stata aggiornata
     if((gd->getCurrentTick() - this->lastTick) >= this->ticksForAction) {
         this->passedActions += (gd->getCurrentTick() - this->lastTick) / this->ticksForAction;
         this->lastTick = gd->getCurrentTick();
     }
+}
+
+void Entita::toCurrentTick() {
+    this->lastTick = gd->getCurrentTick();
 }
 
 void Entita::nextFrame() {
@@ -220,4 +225,17 @@ void Entita::muovi(int direzione, int val) {
             this->incrementaX(-val);
             break;
     }
+}
+
+bool Entita::movimentoValido(int direzione, int val, Livello * livello) {    
+    bool returnValue = false;
+    muovi(direzione, val);
+    returnValue = livello -> accessibile(this->y, this->x);
+    muovi(direzione, -val);;
+    return returnValue;
+}
+
+void Entita::muoviLiv(int direzione, int val, Livello * livello) {
+    if(movimentoValido(direzione, val, livello))
+        muovi(direzione, val);
 }

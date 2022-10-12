@@ -2,6 +2,7 @@
 
 ListaEntita::ListaEntita(){
     this->head = NULL;
+    this->chead = NULL;
 }
 
 ListaEntita::~ListaEntita(){

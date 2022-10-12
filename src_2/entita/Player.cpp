@@ -28,10 +28,10 @@ Player::Player(int y, int x, int life) {
     this->x = x;
 };
 
-void Player::manageInput(ListaEntita * proiettili) {
+void Player::manageInput(Livello * livello) {
 	int i = 0;
     while(i < gd->getNumOfPressedKeys()) {
-        this->gestione_player(gd->getKey(i), proiettili);
+        this->gestione_player(gd->getKey(i), livello);
         i++;
     }
 }
@@ -54,44 +54,52 @@ void Player::stampaHUDplayer(){
 
 }
 
-void Player::gestione_player(int input, ListaEntita * proiettili){
+void Player::gestione_player(int input, Livello * livello){
     switch(input) {
             // Movimento basilare
 			case (L'w'):
-			    y--;
+			    muoviLiv(DIRECTION_NN, 1, livello);
                 this->lastinput = (L'w');
 			    break;
 			case (L's'):
-				y++;
+			    muoviLiv(DIRECTION_SS, 1, livello);
                 this->lastinput = (L's');
 				break;
 			case (L'd'):
-				x++;
+			    muoviLiv(DIRECTION_EE, 1, livello);
                 this->lastinput = (L'd');
 				break;
 			case (L'a'):
-				x--;
+			    muoviLiv(DIRECTION_OO, 1, livello);
                 this->lastinput = (L'a');
 				break;
             // Dash
             case (L' '):
-                if(this->lastinput == L'w') y-=this->dashDistanceY;
-                if(this->lastinput == L's') y+=this->dashDistanceY;
-                if(this->lastinput == L'd') x+=this->dashDistanceX;
-                if(this->lastinput == L'a') x-=this->dashDistanceX;
+                for (int i = 0; i < this->dashDistanceX; i++) {
+                    if(this->lastinput == L'd') muoviLiv(DIRECTION_EE,1,livello);
+                    if(this->lastinput == L'a') muoviLiv(DIRECTION_OO,1,livello);
+                }
+                for (int i = 0; i < this->dashDistanceY; i++) {
+                    if(this->lastinput == L'w') muoviLiv(DIRECTION_NN,1,livello);
+                    if(this->lastinput == L's') muoviLiv(DIRECTION_SS,1,livello);
+                }
                 break;
             // Proiettili
             case (KEY_RIGHT):
-                proiettili->addEntita(new Proiettile(this->y, this->x,true,DIRECTION_EE));
+                if (movimentoValido(DIRECTION_EE, 1, livello))
+                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_EE));
                 break;
             case (KEY_DOWN):
-                proiettili->addEntita(new Proiettile(this->y, this->x,true,DIRECTION_SS));
+                if (movimentoValido(DIRECTION_SS, 1, livello))
+                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SS));
                 break;
             case (KEY_LEFT):
-                proiettili->addEntita(new Proiettile(this->y, this->x,true,DIRECTION_OO));
+                if (movimentoValido(DIRECTION_OO, 1, livello))
+                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_OO));
                 break;
             case (KEY_UP):
-                proiettili->addEntita(new Proiettile(this->y, this->x,true,DIRECTION_NN));
+                if (movimentoValido(DIRECTION_NN, 1, livello))
+                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NN));
                 break;
 		}
 

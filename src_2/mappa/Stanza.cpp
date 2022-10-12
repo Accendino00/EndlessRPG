@@ -170,8 +170,12 @@ Stanza::Stanza(int a){
  * @param id Può essere "ID_STANZA_SPAWN", "ID_STANZA_NORMALE" oppure "ID_STANZA_BOSS" 
  */
 Stanza::Stanza(int id){
-    this->idStanza = id;
+    
     this->listaPorte = new ListaPorte();
+    this->listaProiettili = new ListaProiettili();
+    this->listaNemici = new ListaNemici();
+    
+    this->idStanza = id;
 
     FILE * fin;
     char mappa_da_scegliere [100];  // Stringa contenente il nome del file della mappa
@@ -221,7 +225,8 @@ Stanza::Stanza(int id){
 
 Stanza::~Stanza(){
     // Dealloco tutto
-    delete this->listaPorte;
+    delete (this->listaPorte);
+    delete (this->listaNemici);
     for(int i = 0; i < (*this).dim_y; i++) {
         delete[] this->matrice_stampabile[i];
         delete[] this->matrice_logica[i];
@@ -246,6 +251,8 @@ void Stanza::stampa_stanza(){
     }
 
     (*this).listaPorte->stampaTutte(this->zero_y(), this->zero_x());   
+    (*this).listaProiettili->stampaTutte(this->zero_y(), this->zero_x());   
+    (*this).listaNemici->stampaTutte(this->zero_y(), this->zero_x());   
 }
 
 int Stanza::zero_x(){
@@ -309,11 +316,19 @@ void Stanza::da_logica_a_stampabile(){
     for(int i = 0; i < dim_y; i++){
         for(int j = 0; j < dim_x; j++){
             switch(matrice_logica [i] [j]){
-                case 0:
-                setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, FLOOR_PAIR, NULL);
+                case STANZA_SPAZIOLIBERO:
+                    setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, FLOOR_PAIR, NULL);
                 break;
-                case 1:
-                setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, WALL_PAIR, NULL);
+                case STANZA_MURO:
+                    setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, WALL_PAIR, NULL);
+                break;
+                case STANZA_NEMICONORMALE:
+                    listaNemici->addEntita(new Nemico(NORMAL_ENEMY, i, j));
+                    setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, FLOOR_PAIR, NULL);
+                break;
+                case STANZA_NEMICOBOSS:
+                    listaNemici->addEntita(new Nemico(BOSS_ENEMY, i, j));
+                    setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, FLOOR_PAIR, NULL);
                 break;
             }
         }
@@ -362,13 +377,18 @@ bool Stanza::accessibile(int y_entity, int x_entity){
     if(direzione_porta(y_entity, x_entity)!=0){
         returnvalue = true;
     }
-    else if(y_entity > 0 || y_entity < dim_y || x_entity > 0 || x_entity < dim_x){
-        if(matrice_logica [y_entity] [x_entity] == 0){
-            returnvalue = true;
-        }
+    else if(
+        x_entity >= 0 && 
+        x_entity < this -> dim_x && 
+        y_entity >= 0 && 
+        y_entity < this -> dim_y && 
+        this -> matrice_logica [y_entity] [x_entity] != 1
+    ){
+        returnvalue = true;
     }
-    //cerca le coordinate delle porte e se si può andare uno più a destra allora posso fare cose
     
+    // Da controllare anche il contatto con entita
+
     return returnvalue;
 }
 
@@ -383,31 +403,31 @@ int Stanza::direzione_porta(int y_entity, int x_entity){
     int returnvalue = 0;
         // Porta NN
     if(     matrice_logica [0] [(int)(dim_x/2)] == 0 
-        &&  y_entity == -1 
+        &&  y_entity <= -1 
         &&  x_entity >= ((this->dim_x - DIMENSIONE_PORTA_ORIZZONTALE)/2) 
         &&  x_entity <= ((this->dim_x - DIMENSIONE_PORTA_ORIZZONTALE)/2) + DIMENSIONE_PORTA_ORIZZONTALE)
     {
         returnvalue = DIRECTION_NN;
     }
         // Porta SS
-    if(     matrice_logica [dim_y-1] [(int)(dim_x/2)] == 0 
-        &&  y_entity == dim_y  
+    else if(     matrice_logica [dim_y-1] [(int)(dim_x/2)] == 0 
+        &&  y_entity >= dim_y  
         &&  x_entity >= ((this->dim_x - DIMENSIONE_PORTA_ORIZZONTALE)/2) 
         &&  x_entity <= ((this->dim_x - DIMENSIONE_PORTA_ORIZZONTALE)/2) + DIMENSIONE_PORTA_ORIZZONTALE)
     {
         returnvalue = DIRECTION_SS;
     }
         // Porta EE
-    if(     matrice_logica [(int)(dim_y/2)] [dim_x-1] == 0
-        &&  x_entity == dim_x 
+    else if(     matrice_logica [(int)(dim_y/2)] [dim_x-1] == 0
+        &&  x_entity >= dim_x 
         &&  y_entity >= ((this->dim_y - DIMENSIONE_PORTA_VERTICALE)/2) 
         &&  y_entity <= ((this->dim_y - DIMENSIONE_PORTA_VERTICALE)/2) + DIMENSIONE_PORTA_VERTICALE)
     {
         returnvalue = DIRECTION_EE;
     }
         // Porta OO
-    if(     matrice_logica [(int)(dim_y/2)] [0] == 0 
-        &&  x_entity == -1
+    else if(     matrice_logica [(int)(dim_y/2)] [0] == 0 
+        &&  x_entity <= -1
         &&  y_entity >= ((this->dim_y - DIMENSIONE_PORTA_VERTICALE)/2) 
         &&  y_entity <= ((this->dim_y - DIMENSIONE_PORTA_VERTICALE)/2) + DIMENSIONE_PORTA_VERTICALE)
     {
@@ -422,4 +442,23 @@ int Stanza::getDimX() {
 
 int Stanza::getDimY() {
     return this->dim_y;
+}
+
+ListaProiettili * Stanza::getListaProiettili() {
+    return this->listaProiettili;
+}
+
+void Stanza::aggiungiProiettile(Proiettile * proiettile) {
+    this->listaProiettili->addEntita(proiettile);
+}
+
+
+void Stanza::calcolo_logica(Player * player){
+    this->listaProiettili->aggiornaEntita(this, player);
+    this->listaNemici->aggiornaEntita(this, player);
+}
+
+void Stanza::aggiornaTick() {
+    this->listaProiettili->aggiornaTick();
+    this->listaNemici->aggiornaTick();
 }

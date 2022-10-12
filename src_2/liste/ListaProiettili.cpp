@@ -2,6 +2,7 @@
 
 ListaProiettili::ListaProiettili(){
     this->head = NULL;
+    this->chead = NULL;
 }
 
 ListaProiettili::~ListaProiettili(){
@@ -198,6 +199,23 @@ void ListaProiettili::stampaTutte(int offsetY, int offsetX) {
     plistaPro headTemp = head;
     while(headTemp != NULL) {
         headTemp->e->stampa(offsetY, offsetX);
+        headTemp = headTemp->next; 
+    }
+}
+
+
+void ListaProiettili::aggiornaEntita(Stanza * stanza, Player * player) {
+    plistaPro headTemp = head;
+    while(headTemp != NULL) {
+        headTemp->e->updateEntita();
+        headTemp = headTemp->next; 
+    }
+}
+
+void ListaProiettili::aggiornaTick() {
+    plistaPro headTemp = head;
+    while(headTemp != NULL) {
+        headTemp->e->toCurrentTick();
         headTemp = headTemp->next; 
     }
 }

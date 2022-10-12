@@ -22,6 +22,10 @@ public:
     void calcolo_logica(Player * player);
     bool livello_successivo();
 
+    bool accessibile(int y_entity, int x_entity);
+    
+    void aggiungiProiettile(Proiettile * proiettile);
+
     int offsetY();
     int offsetX();
 };

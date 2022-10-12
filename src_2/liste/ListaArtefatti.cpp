@@ -2,6 +2,7 @@
 
 ListaArtefatti::ListaArtefatti(){
     this->head = NULL;
+    this->chead = NULL;
 }
 
 ListaArtefatti::~ListaArtefatti(){

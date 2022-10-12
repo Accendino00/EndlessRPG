@@ -36,6 +36,7 @@ public:
     bool controllaContatto(Entita * entita);
 
     void updateEntita();
+    void toCurrentTick();
     
     void nextFrame();
     void setFrame(int frame);
@@ -53,4 +54,6 @@ public:
     int getY();
 
     void muovi(int direzione, int val);
+    bool movimentoValido(int direzione, int val, Livello * livello);
+    void muoviLiv(int direzione, int val, Livello * livello);
 };

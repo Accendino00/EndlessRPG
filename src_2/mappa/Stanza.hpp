@@ -12,6 +12,11 @@
 #define ID_STANZA_NORMALE 1
 #define ID_STANZA_BOSS 2
 
+#define STANZA_SPAZIOLIBERO 0
+#define STANZA_MURO 1
+#define STANZA_NEMICONORMALE 4
+#define STANZA_NEMICOBOSS 5
+
 class Stanza {
     /*
     public:
@@ -61,6 +66,8 @@ class Stanza {
         int ** matrice_logica;
         cchar_t ** matrice_stampabile;
         ListaPorte * listaPorte;
+        ListaProiettili * listaProiettili;
+        ListaNemici * listaNemici;
 
         int idStanza;
 
@@ -81,7 +88,14 @@ class Stanza {
 
         int getDimX();
         int getDimY();
-       };
+
+        ListaProiettili * getListaProiettili();
+        void aggiungiProiettile(Proiettile * proiettile);
+        void aggiungiNemico (Nemico * nemico);
+
+        void calcolo_logica(Player * player);
+        void aggiornaTick();
+};
 
 
 

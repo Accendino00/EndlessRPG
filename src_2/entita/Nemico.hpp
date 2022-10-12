@@ -52,8 +52,8 @@
 #pragma once
 #include "../generale/libs.hpp"
 
-#define NORMAL_ENEMY 1
-#define BOSS_ENEMY 2
+#define NORMAL_ENEMY 4
+#define BOSS_ENEMY 5
 
 // Vedere in GameData i define delle direzioni
 
@@ -83,8 +83,8 @@ private:
     int patternDirezione; // Usata per nemici che si muovono in maniera ripetitiva
 
 public:
-    Nemico(int type);
+    Nemico(int type, int posy, int posx);
     ~Nemico();
 
-    void updateEntita(Player * player, ListaEntita * proiettili /*e altri dati sulla mappa e sui nemici da controllare*/);
+    void updateEntita(Stanza * stanza, Player * player);
 };

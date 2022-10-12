@@ -7,5 +7,5 @@ private:
     int direzione;
 public:
     Proiettile(int y, int x, bool playerProjectile, int direzione);
-    void updateEntita(/*dati sulla mappa e sui nemici da controllare*/);
+    void updateEntita();
 };

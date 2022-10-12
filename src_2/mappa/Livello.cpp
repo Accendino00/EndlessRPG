@@ -71,9 +71,9 @@ Livello::Livello(){
 Livello::Livello(){
 
   //alloco lo spazio per la matrice del livello
-  this -> matrice_livello = (Stanza ***) new Stanza ** [DIM_MATRICE_LIVELLO_Y];
+  (this -> matrice_livello) = (Stanza ***) new Stanza ** [DIM_MATRICE_LIVELLO_Y];
   for(int i=0; i < DIM_MATRICE_LIVELLO_Y; i++){
-    this -> matrice_livello [i] = (Stanza **) new Stanza * [DIM_MATRICE_LIVELLO_X];
+    (this -> matrice_livello [i]) = (Stanza **) new Stanza * [DIM_MATRICE_LIVELLO_X];
     for(int j=0; j < DIM_MATRICE_LIVELLO_X; j++){
       this -> matrice_livello [i][j] = NULL;
     }
@@ -100,8 +100,8 @@ Livello::Livello(){
   //Imposto l'id della stanza da creare
   for(int i = 0; i < DIM_MATRICE_LIVELLO_Y; i++){
     for(int j = 0; j < DIM_MATRICE_LIVELLO_X; j++){
-      if(matrice_numerica[i] [j] != 3){
-        if(matrice_numerica[i] [j] == 0){       //mi serve per capire da dove iniziare
+      if((matrice_numerica[i] [j]) != 3){
+        if((matrice_numerica[i] [j]) == 0){       //mi serve per capire da dove iniziare
           current_y = i;
           current_x = j;
         }
@@ -117,8 +117,11 @@ Livello::Livello(){
 
 Livello::~Livello(){
   for(int i=0; i<DIM_MATRICE_LIVELLO_Y; i++){
-    for(int j=0; j<DIM_MATRICE_LIVELLO_X; j++){
-      delete (this->matrice_livello[i][j]);
+    for(int j=0; j<DIM_MATRICE_LIVELLO_X; j++) {
+      if (this->matrice_livello[i][j] != NULL) {
+        delete (this->matrice_livello[i][j]);
+        this->matrice_livello[i][j] = NULL;
+      }
     }
     delete [] (this->matrice_livello[i]);
   }
@@ -162,32 +165,31 @@ void Livello::imposta_stanza(){
   }
 };
 
-//funzione stampa della morte che prende tutte le stampe
-
 bool Livello::livello_successivo(){
   return false;
 }
 
+
+bool Livello::accessibile(int y_entity, int x_entity) {
+  return this->matrice_livello[this->current_y] [this->current_x]->accessibile(y_entity, x_entity);
+}
+
 void Livello::stampa(Player * player){
-  /*while(!(livello_successivo)){
-    this->matrice_livello[this->current_y] [this->current_x]->stampa_stanza();
-    if(matrice_livello [current_y] [current_y]->direzione_porta(player->getY(), player->getX()) == DIRECTION_NN){
-      cambia_stanza(DIRECTION_NN);
-      player->y = DIM_STANZA_Y;
+
+  mvprintw(5,10,"Debug presente in livello, riga 170~");
+  mvprintw(7,12,"Stanza attuale: %d %d", current_x, current_y);
+
+  mvprintw(9,11,"Stanza esiste:");
+  mvprintw(16,11,"Tipo stanza:");
+
+  for(int i = 0; i < DIM_MATRICE_LIVELLO_Y; i++){
+    for(int j = 0; j < DIM_MATRICE_LIVELLO_X; j++){
+      mvprintw(10+i,12+j,"%d", matrice_livello[i][j] != NULL);
+      mvprintw(17+i,12+j,"%d", matrice_numerica[i][j]);
     }
-    if(matrice_livello [current_y] [current_y]->direzione_porta(player->getY(), player->getX()) == DIRECTION_OO){
-      cambia_stanza(DIRECTION_OO);
-      player->x = 0;
-    }
-    if(matrice_livello [current_y] [current_y]->direzione_porta(player->getY(), player->getX()) == DIRECTION_EE){
-      cambia_stanza(DIRECTION_EE);
-      player->x = DIM_STANZA_X;
-    }
-    if(matrice_livello [current_y] [current_y]->direzione_porta(player->getY(), player->getX()) == DIRECTION_SS){
-      cambia_stanza(DIRECTION_SS);
-      player->y = 0;
-    }
-  }*/
+  }
+
+
   this->matrice_livello[this->current_y] [this->current_x]->stampa_stanza();
 };
 
@@ -198,7 +200,7 @@ bool Livello::cambia_stanza(int direzione){
     case DIRECTION_NN:
     if(current_y-1 >= 0){ //ricontrolla lo zero
       if(matrice_livello [current_y-1] [current_x] != NULL){
-        this->current_y-=1;
+        (this->current_y)-=1;
         returnValue = true;
       }
     }
@@ -206,7 +208,7 @@ bool Livello::cambia_stanza(int direzione){
     case DIRECTION_OO:
     if(current_x-1 >= 0){ //ricontrolla lo zero
       if(matrice_livello [current_y] [current_x-1] != NULL){
-        this->current_x-=1;
+        (this->current_x)-=1;
         returnValue = true;
       }
     }
@@ -214,7 +216,7 @@ bool Livello::cambia_stanza(int direzione){
     case DIRECTION_EE:
     if(current_x+1 < DIM_MATRICE_LIVELLO_X){ //ricontrolla lo zero
       if(matrice_livello [current_y] [current_x+1] != NULL){
-        this->current_x+=1;
+        (this->current_x)+=1;
         returnValue = true;
       }
     }
@@ -222,7 +224,7 @@ bool Livello::cambia_stanza(int direzione){
     case DIRECTION_SS:
     if(current_y+1 < DIM_MATRICE_LIVELLO_Y){ //ricontrolla lo zero
       if(matrice_livello [current_y+1] [current_x] != NULL){
-        this->current_y+=1;
+        (this->current_y)+=1;
         returnValue = true;
       }
     }
@@ -233,36 +235,48 @@ bool Livello::cambia_stanza(int direzione){
 // logica della morte (continee tutte le logiche , fare una funzione che vede se nella stanza corrente se si interagisce con la port andando ancor a destra per esempio cambia di stanza)
 
 void Livello::calcolo_logica(Player * player){
-  //parte stanze
+
+  // Aggiornamento delle liste
+
+  (matrice_livello [current_y] [current_x]) -> calcolo_logica(player);
+
+  // Cambiare stanza
   bool cambiatoStanza = false;
-  if(matrice_livello [current_y] [current_y]->direzione_porta(player->getY(), player->getX()) == DIRECTION_NN){
+  if(matrice_livello [current_y] [current_x]->direzione_porta(player->getY(), player->getX()) == DIRECTION_NN){
     cambiatoStanza = cambia_stanza(DIRECTION_NN);
     if(cambiatoStanza) { 
-      player->modificaCoordinate( (matrice_livello [current_y] [current_y]->getDimY())-1, 
+      player->modificaCoordinate( (matrice_livello [current_y] [current_x]->getDimY())-2, 
                                   player->getX());
     }
   }
-  if(matrice_livello [current_y] [current_y]->direzione_porta(player->getY(), player->getX()) == DIRECTION_OO){
+  else if(matrice_livello [current_y] [current_x]->direzione_porta(player->getY(), player->getX()) == DIRECTION_OO){
     cambiatoStanza = cambia_stanza(DIRECTION_OO);
     if(cambiatoStanza) { 
       player->modificaCoordinate( player->getY(), 
-                                (matrice_livello [current_y] [current_y]->getDimX())-1);
+                                (matrice_livello [current_y] [current_x]->getDimX())-2);
     }
   }
-  if(matrice_livello [current_y] [current_y]->direzione_porta(player->getY(), player->getX()) == DIRECTION_EE){
+  else if(matrice_livello [current_y] [current_x]->direzione_porta(player->getY(), player->getX()) == DIRECTION_EE){
     cambiatoStanza = cambia_stanza(DIRECTION_EE);
     if(cambiatoStanza) { 
       player->modificaCoordinate( player->getY(), 
                                   1);
     }
   }
-  if(matrice_livello [current_y] [current_y]->direzione_porta(player->getY(), player->getX()) == DIRECTION_SS){
+  else if(matrice_livello [current_y] [current_x]->direzione_porta(player->getY(), player->getX()) == DIRECTION_SS){
     cambiatoStanza = cambia_stanza(DIRECTION_SS);
     if(cambiatoStanza) { 
       player->modificaCoordinate( 1, 
                                   player->getX());
     }
   }
+  if (cambiatoStanza) {
+    matrice_livello [current_y] [current_x] -> aggiornaTick();
+  }
+}
+
+void Livello::aggiungiProiettile(Proiettile * proiettile) {
+  this->matrice_livello[this->current_y][this->current_x]->aggiungiProiettile(proiettile);
 }
 
 int Livello::offsetY() {

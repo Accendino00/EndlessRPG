@@ -31,10 +31,10 @@ void initializeColors() {
     init_pair(MENU_NORMAL,          MENU_TEXT,              MENU_BACKGROUND);
     init_pair(MENU_HIGHLIGHT,       MENU_HL_TEXT,           MENU_HL_BACKGROUND);
     init_pair(MAIN_TITLE,           MAIN_TITLE_TEXT,        MAIN_TITLE_BACKGROUND);
-    init_pair(PLAYER_COLOR_PAIR,    PLAYER_COLOR,           GAME_BACKGROUND);
+    init_pair(PLAYER_COLOR_PAIR,    PLAYER_COLOR,           FLOOR_BACKGROUND);
     init_pair(HEARTS_PAIR,          HEARTS,                 DEFAULT);
-    init_pair(PLAYER_BULLET_PAIR,   PLAYER_BULLET_COLOR,    GAME_BACKGROUND);
-    init_pair(ENEMY_BULLET_PAIR,    ENEMY_BULLET_COLOR,     GAME_BACKGROUND);
+    init_pair(PLAYER_BULLET_PAIR,   PLAYER_BULLET_COLOR,    FLOOR_BACKGROUND);
+    init_pair(ENEMY_BULLET_PAIR,    ENEMY_BULLET_COLOR,     FLOOR_BACKGROUND);
 
     init_pair(WALL_PAIR,            WALL_FOREGROUND,        WALL_BACKGROUND);
     init_pair(FLOOR_PAIR,           FLOOR_FOREGROUND,       FLOOR_BACKGROUND);

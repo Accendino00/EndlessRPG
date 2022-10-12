@@ -17,8 +17,8 @@ public:
    
     void stampaHUDplayer();
 
-    void manageInput(ListaEntita * proiettili);
-    void gestione_player(int input, ListaEntita * proiettili);
+    void manageInput(Livello * livello);
+    void gestione_player(int input, Livello * livello);
     void aggiungi_vita(Artefatto a);
     
 

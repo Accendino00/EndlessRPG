@@ -1,6 +1,6 @@
 #include "../generale/libs.hpp"
 
-Nemico::Nemico (int type) {
+Nemico::Nemico (int type, int posy, int posx) {
 
     // Impostazione dell'hitbox e della dimensione dello stampabile. 
     // Inoltre il giocatore ha 1 solo frame di stampa
@@ -21,10 +21,10 @@ Nemico::Nemico (int type) {
    
     setcchar(&(this->stampabile[0][0]), L"N", A_NORMAL, PLAYER_COLOR_PAIR, NULL);
     
-    this->y = 20;
-    this->x = 20;
+    this->y = posy;
+    this->x = posx;
 
-    this->ticksForAction = 250;
+    this->ticksForAction = 600;
     this->currentAction = 0;
     this->numActions = 12;
     this->actions = new int[12];
@@ -83,7 +83,7 @@ Nemico::~Nemico() {
     delete[] this->actions;
 }
 
-void Nemico::updateEntita(Player * player, ListaEntita * proiettili /*e altri dati sulla mappa e sui nemici da controllare*/) {
+void Nemico::updateEntita(Stanza * stanza, Player * player) {
     this->Entita::updateEntita();
     while (this->passedActions > 0) {
         int azione = this->actions[this->currentAction];
@@ -114,15 +114,15 @@ void Nemico::updateEntita(Player * player, ListaEntita * proiettili /*e altri da
                     if( (azione & i) == DIRECTION_NO ) { osX = -1; osY =  1;}
                     // Parte dal centro del nemico
                     if ((azione & AZIONE_SPARA_PRINCIPALE) == AZIONE_SPARA_PRINCIPALE) {
-                        proiettili->addEntita(new Proiettile(this->y,this->x,false,i));
+                        stanza->aggiungiProiettile(new Proiettile(this->y,this->x,false,i));
                     }
                     // Parte dalla destra della direzione dove si spara 
                     if ((azione & AZIONE_SPARA_SECONDARIO) == AZIONE_SPARA_SECONDARIO) {
-                        proiettili->addEntita(new Proiettile((this->y)+osY,(this->x)+osX,false,i));
+                        stanza->aggiungiProiettile(new Proiettile((this->y)+osY,(this->x)+osX,false,i));
                     }
                     // Parte dalla sinistra della direzione dove si spara 
                     if ((azione & AZIONE_SPARA_TERZIARIO) == AZIONE_SPARA_TERZIARIO) {
-                        proiettili->addEntita(new Proiettile((this->y)-osY,(this->x)-osX,false,i));
+                        stanza->aggiungiProiettile(new Proiettile((this->y)-osY,(this->x)-osX,false,i));
                     }
                 }
             }

@@ -34,4 +34,7 @@ public:
     void deletecList();
 
     void stampaTutte(int offsetY, int offsetX);
+
+    void aggiornaEntita(Stanza * stanza, Player * player);
+    void aggiornaTick();
 };

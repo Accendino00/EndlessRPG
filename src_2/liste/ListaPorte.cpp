@@ -2,6 +2,7 @@
 
 ListaPorte::ListaPorte(){
     this->head = NULL;
+    this->chead = NULL;
 }
 
 ListaPorte::~ListaPorte(){

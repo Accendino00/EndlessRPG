@@ -2,6 +2,7 @@
 
 ListaNemici::ListaNemici(){
     this->head = NULL;
+    this->chead = NULL;
 }
 
 ListaNemici::~ListaNemici(){
@@ -198,6 +199,22 @@ void ListaNemici::stampaTutte(int offsetY, int offsetX) {
     plistaN headTemp = head;
     while(headTemp != NULL) {
         headTemp->e->stampa(offsetY, offsetX);
+        headTemp = headTemp->next; 
+    }
+}
+
+void ListaNemici::aggiornaEntita(Stanza * stanza, Player * player) {
+    plistaN headTemp = head;
+    while(headTemp != NULL) {
+        headTemp->e->updateEntita(stanza, player);
+        headTemp = headTemp->next; 
+    }
+}
+
+void ListaNemici::aggiornaTick() {
+    plistaN headTemp = head;
+    while(headTemp != NULL) {
+        headTemp->e->toCurrentTick();
         headTemp = headTemp->next; 
     }
 }

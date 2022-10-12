@@ -21,12 +21,12 @@ Proiettile::Proiettile(int y, int x, bool playerProjectile, int direzione) {
 
     // Velocità diverse in base alla direzione nella quale viaggiano
     if(this->direzione == DIRECTION_NN || this->direzione == DIRECTION_SS) {
-        this->ticksForAction = 40;  
+        this->ticksForAction = 50;  
     }
     else if(this->direzione == DIRECTION_EE || this->direzione == DIRECTION_OO) {
         this->ticksForAction = 20;  
     } else {
-        this->ticksForAction = 50;
+        this->ticksForAction = 60;
     }
     
     this->stampabile = new cchar_t * [1];
@@ -61,7 +61,7 @@ Proiettile::Proiettile(int y, int x, bool playerProjectile, int direzione) {
     }
 }
 
-void Proiettile::updateEntita(/*dati sulla mappa e sui nemici da controllare*/) {
+void Proiettile::updateEntita() {
     this->Entita::updateEntita();
     while (this->passedActions > 0) {
         this->muovi(this->direzione,1);

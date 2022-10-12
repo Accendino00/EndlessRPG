@@ -8,7 +8,6 @@ Gioco::Gioco(){
 Gioco::~Gioco() {
     delete this->player;
     delete livello;
-    // delete this->proiettili; e tutte le altre liste
 }
 
 
@@ -16,16 +15,6 @@ Gioco::~Gioco() {
 void Gioco::gameLoop() {
     // Imposto i ticket a 0 quando inizia il gioco
     gd->resetTicks();
-
-    
-    /* 
-    
-    Stanza * stanzaProva = new Stanza(ID_STANZA_NORMALE);
-    stanzaProva -> imposta_porte(true, false, false, true);
-    stanzaProva -> da_logica_a_stampabile();
-    stanzaProva -> stampa_stanza();
-
-    */
     
     livello = new Livello();
     
@@ -42,7 +31,7 @@ void Gioco::gameLoop() {
         
         /*** Gestione degli input ***/
 
-        // this->player->manageInput(&(this->proiettili));
+        this->player->manageInput(livello);
 
         if(gd->checkInput('q')) {
             gameOver = true;
