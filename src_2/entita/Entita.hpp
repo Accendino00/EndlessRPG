@@ -54,5 +54,5 @@ public:
     int getY();
 
     void muovi(int direzione, int val);
-    bool movimentoValido(int direzione, int val, Stanza * Stanza, bool giocatore);
+    int movimentoValido(int direzione, int val, Stanza * Stanza, bool giocatore);
 };

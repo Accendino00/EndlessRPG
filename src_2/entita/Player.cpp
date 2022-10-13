@@ -102,7 +102,7 @@ void Player::gestione_player(int input, Livello * livello){
 };
 
 void Player::muoviPlayer(int direzione, int val, Livello * livello) {
-    if(movimentoValido(direzione, val, livello->getStanza(), true))
+    if(movimentoValido(direzione, val, livello->getStanza(), true) == STANZA_ACC_LIBERO)
         muovi(direzione, val);
 }
 

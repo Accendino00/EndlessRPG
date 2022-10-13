@@ -21,6 +21,14 @@
 #define STANZA_NEMICONORMALE 4
 #define STANZA_NEMICOBOSS 5
 
+#define STANZA_ACC_LIBERO 0
+#define STANZA_ACC_MURO 1 // si intende muro, fuori bound, direzione porta valido se si e' un giocatore
+#define STANZA_ACC_NEMICO 2
+#define STANZA_ACC_PORTA 3
+#define STANZA_ACC_ARTEFATTO 4
+#define STANZA_ACC_PROIETTILE_GIOCATORE 5
+#define STANZA_ACC_PROIETTILE_NEMICO 6
+
 class Stanza {
     /*
     public:
@@ -84,7 +92,7 @@ class Stanza {
         void stampa_stanza();
         void imposta_porte(bool nord, bool sud, bool est, bool ovest);
         void da_logica_a_stampabile();
-        bool accessibile(int y_entity, int x_entity, bool giocatore);
+        int accessibile(int y_entity, int x_entity, bool giocatore);
         int direzione_porta(int y_entity, int x_entity);
 
         int zero_x();

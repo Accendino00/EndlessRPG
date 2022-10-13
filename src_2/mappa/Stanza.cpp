@@ -374,20 +374,33 @@ bool Stanza::accessibile(int y_entity, int x_entity){
 */
 
 //  Solo per il giocatore serve fare il controllo della direzione porta
-bool Stanza::accessibile(int y_entity, int x_entity, bool giocatore){
-    bool returnvalue = false;
+/* define dei codici
+
+
+*/
+#define STANZA_ACC_LIBERO 0
+#define STANZA_ACC_MURO 1 // si intende muro, fuori bound, direzione porta valido se si e' un giocatore
+#define STANZA_ACC_NEMICO 2
+#define STANZA_ACC_PORTA 3
+#define STANZA_ACC_ARTEFATTO 4
+#define STANZA_ACC_PROIETTILE_GIOCATORE 5
+#define STANZA_ACC_PROIETTILE_NEMICO 6
+
+
+int Stanza::accessibile(int y_entity, int x_entity, bool giocatore){
+    int returnvalue = STANZA_ACC_MURO;
     // Prima controllo se c'è la porta, poi controllo se mi sto muovendo fuori da quella porta
     if(giocatore && direzione_porta(y_entity, x_entity)!=0){
-        returnvalue = true;
+        returnvalue = STANZA_ACC_LIBERO;
     }
     else if(
         x_entity >= 0 && 
         x_entity < (this -> dim_x) && 
         y_entity >= 0 && 
         y_entity < (this -> dim_y) && 
-        this -> matrice_logica [y_entity] [x_entity] != 1
+        this -> matrice_logica [y_entity] [x_entity] == 0
     ){
-        returnvalue = true;
+        returnvalue = STANZA_ACC_LIBERO;
     }
     
     // Da controllare anche il contatto con entita

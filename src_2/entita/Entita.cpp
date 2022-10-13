@@ -227,10 +227,11 @@ void Entita::muovi(int direzione, int val) {
     }
 }
 
-bool Entita::movimentoValido(int direzione, int val, Stanza * stanza, bool giocatore) {    
-    bool returnValue = false;
+int Entita::movimentoValido(int direzione, int val, Stanza * stanza, bool giocatore) {    
+    int returnValue = STANZA_ACC_LIBERO;
     muovi(direzione, val);
-    returnValue = stanza -> accessibile(this->y, this->x, giocatore);
+    int tempx = this->x, tempy = this->y;
     muovi(direzione, -val);;
+    returnValue = stanza -> accessibile(tempy, tempx, giocatore);
     return returnValue;
 }

@@ -49,6 +49,61 @@ Gioco::~Gioco() {
         nemici, porte e player sono bloccanti
 
 
+
+    prima faccio l'update degli input del giocatore
+        muovo il giocatore fino a quando accessibile mi dice che si puo
+            se intercetto qualcosa di diverso da proiettile e artefatto mi blocco
+            se intercetto artefatto o proiettile, li distruggo e in base a
+                quanti proiettili distruggo, prendo danno
+                    quando distruggo la listacontatti (true) c'e' anche l'entita in modo da poterla danneggiare
+                quali artefatti distruggo, guadagno cose
+                    prima di distruggere un artefatto, in base al suo id e a dei suoi dati, modifico il player
+                    come argomento di deletelistaC (true) c'e' anche il player in modo da poterlo potenziare o curare o altro
+        genero i proiettili sparando, mettendoli di 1 nella direzione dove sto sparando, i quali verranno aggiornati nella parte successiva
+
+    capisco se il giocatore si deve muovere per andare ad un'altra stanza.
+
+    poi faccio l'update dei proiettili
+        muovo il proiettili fino a quando accessibile mi dice che si puo (prima controllo, poi muovo)
+        quando accessibile, oppure il controllo del contatto con il giocatore se proiettile dei nemici, mi danno falso, allora vuol dire che sono a contatto con:
+            stanza (quindi un muro)
+            porta (come se fosse un muro)
+            proiettile (come se fosse un muro)
+            giocatore (da controllare che tipo di proiettile osno)
+            nemico (da controllare che tipo di proiettile sono)
+            artefatto (quindi come se fosse vuoto)
+        quando incontrolo qualsiasi cosa che non sia un artefatto, il ciclo si ferma e il numero di azioni da fare diventa 0 per il proiettile
+
+    aggiorno la salute del giocatore in caso di contatti con proiettili e li cancello
+        se vita inferiore a 0, allora
+            schermata gameover, dove si puo' premere un tasto per tornare al menu oppure per salvare lo score
+                se si salva lo score, allora si arriva ad un'altra schermata dove si possono scegliere caratteri e viene salvato su file
+            si interrompe il ciclo di gameloop e si esce dal gioco
+    aggiorno la salute dei nemici in caso di contatto con proiettili e li cancello
+    aggiorno la lista nemici, facendo un delete di tutti i nemici che hanno vita inferiore o uguale a 0
+        in caso di nemici particolari, genero artefatti (se nemico ha chiave OPPURE se nemico ha casualmente beccato il generare un artefatto)
+
+    poi faccio l'update dei nemici
+        poi uso le azioni del nemico e, ogni volta che faccio un movimento, faccio un controllo con accessibile
+            se stanza
+            oppure porta
+            oppure giocatore
+            oppure nemico
+            allora mi fermo nell'azione di movimento e non la faccio e vado avanti con le azioni
+
+            se invece proiettile, allora continuo con i movimenti ma dannaeggio il nemico
+                se vita inferiore a 0, allora smetto di aggiornare il nemico e le sue azioni da fare diventano 0
+        poi sparo i proiettili e faccio le sue altre cose, come le animazioni
+
+    aggiorno la salute del giocatore in caso di contatto con proiettili e li cancello
+        se vita inferiore a 0, allora
+            schermata gameover, dove si puo' premere un tasto per tornare al menu oppure per salvare lo score
+                se si salva lo score, allora si arriva ad un'altra schermata dove si possono scegliere caratteri e viene salvato su file
+            si interrompe il ciclo di gameloop e si esce dal gioco
+    aggiorno la lista nemici, facendo un delete di tutti i nemici che hanno vita inferiore o uguale a 0
+        in caso di nemici particolari, genero artefatti (se nemico ha chiave OPPURE se nemico ha casualmente beccato il generare un artefatto)
+
+    poi, infine, faccio il calcolo della logica del livello per capire se devo mantenere le porte, quale porte mantenenre e quale cancellare
 */
 
 

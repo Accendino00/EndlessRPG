@@ -64,7 +64,7 @@ Proiettile::Proiettile(int y, int x, bool playerProjectile, int direzione) {
 void Proiettile::updateEntita(Stanza * stanza, Player * player) {
     this->Entita::updateEntita();
     while (this->passedActions > 0) {
-        if (movimentoValido(this->direzione, 1, stanza, false)) {
+        if (movimentoValido(this->direzione, 1, stanza, false) == STANZA_ACC_LIBERO) {
             this->muovi(this->direzione,1);
         }
         this->passedActions--;

@@ -24,7 +24,7 @@ public:
     void calcolo_logica(Player * player);
     bool livello_successivo();
 
-    bool accessibile(int y_entity, int x_entity, bool giocatore);
+    int accessibile(int y_entity, int x_entity, bool giocatore);
     
     void aggiungiProiettile(Proiettile * proiettile);
 

@@ -170,7 +170,7 @@ bool Livello::livello_successivo(){
 }
 
 
-bool Livello::accessibile(int y_entity, int x_entity, bool giocatore) {
+int Livello::accessibile(int y_entity, int x_entity, bool giocatore) {
   return this->matrice_livello[this->current_y] [this->current_x]->accessibile(y_entity, x_entity, giocatore);
 }
 

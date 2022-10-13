@@ -41,7 +41,6 @@ int main () {
     m_main->loopMenu();
     delete m_main;
 
-
     // Chiusura della finestra di ncurses e fine del programma, con restituzione dello status
     // impostato in GameData, che viene impostato in modo particolare in caso di errori.
     endwin();
