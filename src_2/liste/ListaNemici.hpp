@@ -28,10 +28,12 @@ public:
     bool removeEntita(Nemico *entity, bool deleteEntita);
     void deleteList();
     plistaN getList();
+    int lengthList();
 
-    bool makecList(Nemico *entity);
+    bool makecList(Entita *entity);
     plistaN getcList();
     void deletecList();
+    int lengthcList();
 
     void stampaTutte(int offsetY, int offsetX);
 

@@ -34,6 +34,7 @@ public:
     void stampa(int offsetY, int offsetX);
     
     bool controllaContatto(Entita * entita);
+    bool controllaContatto(int x, int y, int h_dimx, int h_dimy);
 
     void updateEntita();
     void toCurrentTick();

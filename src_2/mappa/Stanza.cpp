@@ -170,7 +170,9 @@ Stanza::Stanza(int a){
  * @param id Può essere "ID_STANZA_SPAWN", "ID_STANZA_NORMALE" oppure "ID_STANZA_BOSS" 
  */
 Stanza::Stanza(int id){
-    
+    this->dim_x=0;    
+    this->dim_y=0;
+
     this->listaPorte = new ListaPorte();
     this->listaProiettili = new ListaProiettili();
     this->listaNemici = new ListaNemici();
@@ -181,25 +183,42 @@ Stanza::Stanza(int id){
     char mappa_da_scegliere [100];  // Stringa contenente il nome del file della mappa
     int idMappa = 0;
 
+    //numero di caratteri prima del /n e numero di /n
+    //usa fclose 
+    
+    
     // Scelta del tipo di mappa usando il parametro "id"
     if (id == ID_STANZA_SPAWN) {
         idMappa = 0;
-        this->dim_y = DIM_STANZA_SPAWN_Y;
-        this->dim_x = DIM_STANZA_SPAWN_X;
+        //this->dim_y = DIM_STANZA_SPAWN_Y;
+        //this->dim_x = DIM_STANZA_SPAWN_X;
     } else if (id == ID_STANZA_NORMALE){
         idMappa = (rand() % NUMERO_STANZE_NORMALI) + 1; // Impostazione dell'id casuale della mappa
-        this->dim_y = DIM_STANZA_Y;
-        this->dim_x = DIM_STANZA_X;
+        //this->dim_y = DIM_STANZA_Y;
+        //this->dim_x = DIM_STANZA_X;
     } else if(id == ID_STANZA_BOSS){
         idMappa = (rand() % NUMERO_STANZE_BOSS) + 1; // Impostazione dell'id casuale della mappa
-        this->dim_y = DIM_STANZA_BOSS_Y;
-        this->dim_x = DIM_STANZA_BOSS_X;
+        //this->dim_y = DIM_STANZA_BOSS_Y;
+        //this->dim_x = DIM_STANZA_BOSS_X;
     }
-
+    
     // Creazione della stringa che contiene il percorso al file della mappa scelta
     sprintf(mappa_da_scegliere, "./mappa/matrici_mappe/mappa%s%d.map", (id == ID_STANZA_BOSS)?("Boss"):(""), idMappa);
     fin = fopen( mappa_da_scegliere , "r");
     
+    //controllo fino a fine riga per trovare le x
+    while(fgetc(fin)!='\n'){
+        this->dim_x+=1;
+    }
+    rewind(fin);
+
+    //controllo fino a fine file per trovare le y
+    while(!feof(fin)){
+        if(fgetc(fin)=='\n'){
+            this->dim_y+=1;
+        }
+    }
+    rewind(fin);
     
     // Allocazione della matrice logica della mappa
     this -> matrice_logica = new int* [this->dim_y];
@@ -222,7 +241,6 @@ Stanza::Stanza(int id){
     for(int i = 0; i < dim_y; i++){
         this -> matrice_stampabile [i] = new cchar_t [dim_x];
     }
-
 };
 
 Stanza::~Stanza(){
@@ -325,10 +343,12 @@ void Stanza::da_logica_a_stampabile(){
                     setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, WALL_PAIR, NULL);
                 break;
                 case STANZA_NEMICONORMALE:
+                    matrice_logica [i] [j] = 0;
                     listaNemici->addEntita(new Nemico(NORMAL_ENEMY, i, j));
                     setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, FLOOR_PAIR, NULL);
                 break;
                 case STANZA_NEMICOBOSS:
+                    matrice_logica [i] [j] = 0;
                     listaNemici->addEntita(new Nemico(BOSS_ENEMY, i, j));
                     setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, FLOOR_PAIR, NULL);
                 break;
@@ -408,6 +428,40 @@ int Stanza::accessibile(int y_entity, int x_entity, bool giocatore){
     return returnvalue;
 }
 
+int Stanza::accessibile(Entita * entita, bool giocatore){
+    
+    int returnvalue = STANZA_ACC_MURO;
+
+    /*this->listaProiettili-> makecList(entita);
+    erase();
+    mvprintw(40,5,"Num pro: %d %d", this->listaProiettili->lengthcList(giocatore), this->listaProiettili->lengthcList(!giocatore));
+    refresh();
+    if(this->listaProiettili->lengthcList(giocatore) >= 1){
+        if(giocatore){
+            returnvalue = STANZA_ACC_PROIETTILE_GIOCATORE;
+        } else{
+            returnvalue = STANZA_ACC_PROIETTILE_NEMICO;
+        }
+    }        
+    // Prima controllo se c'è la porta, poi controllo se mi sto muovendo fuori da quella porta
+    else */ if(giocatore && direzione_porta(entita->getY(), entita->getX())!=0){
+        returnvalue = STANZA_ACC_LIBERO;
+    }
+    else if(
+        entita->getX() >= 0 && 
+        entita->getX() < (this -> dim_x) && 
+        entita->getY() >= 0 && 
+        entita->getY() < (this -> dim_y) && 
+        this -> matrice_logica [entita->getY()] [entita->getX()] == 0
+    ){
+        returnvalue = STANZA_ACC_LIBERO;
+    }
+    
+    // Da controllare anche il contatto con entita
+
+    return returnvalue;
+}
+
 /**
  * @brief Cerco se dove sono c'è una porta ed in che direzione si trova quella porta, resituendo la direzione se giusta
  * 
@@ -478,3 +532,5 @@ void Stanza::aggiornaTick() {
     this->listaProiettili->aggiornaTick();
     this->listaNemici->aggiornaTick();
 }
+
+    

@@ -70,3 +70,7 @@ void Proiettile::updateEntita(Stanza * stanza, Player * player) {
         this->passedActions--;
     }
 }
+
+bool Proiettile::isPlayerProjectile(){
+    return this->playerProjectile;
+}

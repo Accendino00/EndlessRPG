@@ -147,7 +147,7 @@ bool ListaNemici::removeEntita(Nemico *entity, bool deleteEntita) {
 }
 
 
-bool ListaNemici::makecList(Nemico *entity){
+bool ListaNemici::makecList(Entita *entity){
     // Controlla quali entità sono a contatto con l'entità di input e le aggiungo in chead. Ritorno true se ci sono entita a contatto.
 
     bool returnValue = false;
@@ -158,7 +158,7 @@ bool ListaNemici::makecList(Nemico *entity){
             headTemp = headTemp->next;
             returnValue = true;
         }
-        addEntita_p(entity, true);
+        addEntita_p(headTemp->e, true);
         headTemp = headTemp->next;
     }
     return returnValue;
@@ -217,4 +217,24 @@ void ListaNemici::aggiornaTick() {
         headTemp->e->toCurrentTick();
         headTemp = headTemp->next; 
     }
+}
+
+int ListaNemici::lengthList(){
+    int returnvalue=0;
+    listaN * tmp = this-> head;
+    while(tmp!=NULL){
+        returnvalue+=1;
+        tmp = tmp -> next;
+    }
+    return returnvalue;
+}
+
+int ListaNemici::lengthcList(){
+    int returnvalue=0;
+    listaN * tmp = this-> chead;
+    while(tmp!=NULL){
+        returnvalue+=1;
+        tmp = tmp -> next;
+    }
+    return returnvalue;
 }

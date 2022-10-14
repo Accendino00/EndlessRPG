@@ -147,7 +147,7 @@ bool ListaPorte::removeEntita(Porta *entity, bool deleteEntita) {
 }
 
 
-bool ListaPorte::makecList(Porta *entity){
+bool ListaPorte::makecList(Entita *entity){
     // Controlla quali entità sono a contatto con l'entità di input e le aggiungo in chead. Ritorno true se ci sono entita a contatto.
 
     bool returnValue = false;
@@ -158,7 +158,7 @@ bool ListaPorte::makecList(Porta *entity){
             headTemp = headTemp->next;
             returnValue = true;
         }
-        addEntita_p(entity, true);
+        addEntita_p(headTemp->e, true);
         headTemp = headTemp->next;
     }
     return returnValue;
@@ -201,4 +201,24 @@ void ListaPorte::stampaTutte(int offsetY, int offsetX) {
         headTemp->e->stampa(offsetY, offsetX);
         headTemp = headTemp->next; 
     }
+}
+
+int ListaPorte::lengthList(){
+    int returnvalue=0;
+    listaP * tmp = this-> head;
+    while(tmp!=NULL){
+        returnvalue+=1;
+        tmp = tmp -> next;
+    }
+    return returnvalue;
+}
+
+int ListaPorte::lengthcList(){
+    int returnvalue=0;
+    listaP * tmp = this-> chead;
+    while(tmp!=NULL){
+        returnvalue+=1;
+        tmp = tmp -> next;
+    }
+    return returnvalue;
 }

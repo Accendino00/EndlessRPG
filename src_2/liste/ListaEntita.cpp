@@ -158,7 +158,7 @@ bool ListaEntita::makecList(Entita *entity){
             headTemp = headTemp->next;
             returnValue = true;
         }
-        addEntita_p(entity, true);
+        addEntita_p(headTemp->e, true);
         headTemp = headTemp->next;
     }
     return returnValue;
@@ -194,6 +194,25 @@ void ListaEntita::deleteList(){
     }
 };
 
+int ListaEntita::lengthList(){
+    int returnvalue=0;
+    listaE * tmp = this-> head;
+    while(tmp!=NULL){
+        returnvalue+=1;
+        tmp = tmp -> next;
+    }
+    return returnvalue;
+}
+
+int ListaEntita::lengthcList(){
+    int returnvalue=0;
+    listaE * tmp = this-> chead;
+    while(tmp!=NULL){
+        returnvalue+=1;
+        tmp = tmp -> next;
+    }
+    return returnvalue;
+}
 
 void ListaEntita::stampaTutte(int offsetY, int offsetX) {
     plistaE headTemp = head;

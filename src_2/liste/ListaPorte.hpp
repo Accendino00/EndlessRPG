@@ -28,10 +28,12 @@ public:
     bool removeEntita(Porta *entity, bool deleteEntita);
     void deleteList();
     plistaP getList();
+    int lengthList();
 
-    bool makecList(Porta *entity);
+    bool makecList(Entita *entity);
     plistaP getcList();
     void deletecList();
+    int lengthcList();
 
     void stampaTutte(int offsetY, int offsetX);
 };

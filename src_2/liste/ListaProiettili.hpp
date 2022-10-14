@@ -28,10 +28,14 @@ public:
     bool removeEntita(Proiettile *entity, bool deleteEntita);
     void deleteList();
     plistaPro getList();
+    int lengthList();
+    int lengthList(bool type);
 
     bool makecList(Entita *entity);
     plistaPro getcList();
     void deletecList();
+    int lengthcList();
+    int lengthcList(bool type);
 
     void stampaTutte(int offsetY, int offsetX);
 

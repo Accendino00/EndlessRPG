@@ -28,10 +28,12 @@ public:
     bool removeEntita(Artefatto *entity, bool deleteEntita);
     void deleteList();
     plistaA getList();
+    int lengthList();
 
-    bool makecList(Artefatto *entity);
+    bool makecList(Entita *entity);
     plistaA getcList();
     void deletecList();
+    int lengthcList();
 
     void stampaTutte(int offsetY, int offsetX);
 };

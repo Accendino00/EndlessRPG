@@ -93,6 +93,7 @@ class Stanza {
         void imposta_porte(bool nord, bool sud, bool est, bool ovest);
         void da_logica_a_stampabile();
         int accessibile(int y_entity, int x_entity, bool giocatore);
+        int accessibile(Entita * entita, bool giocatore);
         int direzione_porta(int y_entity, int x_entity);
 
         int zero_x();

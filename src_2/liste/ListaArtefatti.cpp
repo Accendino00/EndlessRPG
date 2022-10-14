@@ -147,7 +147,7 @@ bool ListaArtefatti::removeEntita(Artefatto *Artefatto, bool deleteEntita) {
 }
 
 
-bool ListaArtefatti::makecList(Artefatto *Artefatto){
+bool ListaArtefatti::makecList(Entita *Artefatto){
     // Controlla quali entità sono a contatto con l'entità di input e le aggiungo in chead. Ritorno true se ci sono entita a contatto.
 
     bool returnValue = false;
@@ -158,7 +158,7 @@ bool ListaArtefatti::makecList(Artefatto *Artefatto){
             headTemp = headTemp->next;
             returnValue = true;
         }
-        addEntita_p(Artefatto, true);
+        addEntita_p(headTemp->e, true);
         headTemp = headTemp->next;
     }
     return returnValue;
@@ -201,4 +201,24 @@ void ListaArtefatti::stampaTutte(int offsetY, int offsetX) {
         headTemp->e->stampa(offsetY, offsetX);
         headTemp = headTemp->next; 
     }
+}
+
+int ListaArtefatti::lengthList(){
+    int returnvalue=0;
+    listaA * tmp = this-> head;
+    while(tmp!=NULL){
+        returnvalue+=1;
+        tmp = tmp -> next;
+    }
+    return returnvalue;
+}
+
+int ListaArtefatti::lengthcList(){
+    int returnvalue=0;
+    listaA * tmp = this-> chead;
+    while(tmp!=NULL){
+        returnvalue+=1;
+        tmp = tmp -> next;
+    }
+    return returnvalue;
 }

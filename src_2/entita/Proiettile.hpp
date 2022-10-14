@@ -8,4 +8,5 @@ private:
 public:
     Proiettile(int y, int x, bool playerProjectile, int direzione);
     void updateEntita(Stanza * stanza, Player * player);
+    bool isPlayerProjectile();
 };

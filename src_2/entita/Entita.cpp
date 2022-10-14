@@ -231,7 +231,65 @@ int Entita::movimentoValido(int direzione, int val, Stanza * stanza, bool giocat
     int returnValue = STANZA_ACC_LIBERO;
     muovi(direzione, val);
     int tempx = this->x, tempy = this->y;
-    muovi(direzione, -val);;
-    returnValue = stanza -> accessibile(tempy, tempx, giocatore);
+    returnValue = stanza -> accessibile(this, giocatore);
+    //returnValue = stanza -> accessibile(tempy, tempx, giocatore);
+    muovi(direzione, -val);
     return returnValue;
+}
+
+//overloading del metodo controllaContatto
+bool Entita::controllaContatto(int posx, int posy, int h_dimx, int h_dimy) {
+        // Controllo se ciascuno dei 4 vertici di una entità è contenuto tra x e x+dimx e y e y+dimy dell'altra entità
+
+    return (
+        // Primo nel secondo
+        (
+            (this->x >= posx && this->x < (posx + h_dimx)) 
+                && 
+            (this->y >= posy && this->y < (posy + h_dimy))
+        )
+            ||
+        (
+            ((this->x + this->h_dimx) > posx && (this->x + this->h_dimx) < (posx + h_dimx)) 
+                && 
+            ((this->y + this->h_dimy) > posy && (this->y + this->h_dimy) < (posy + h_dimy))
+        )
+            ||
+        (
+            ((this->x + this->h_dimx) > posx && (this->x + this->h_dimx) < (posx + h_dimx)) 
+                && 
+            (this->y >= posy && this->y < (posy + h_dimy))
+        )
+            ||
+        (
+            ((*this).x >= posx && (*this).x < (posx + h_dimx)) 
+                && 
+            ((this->y + this->h_dimy) > posy && (this->y + this->h_dimy) < (posy + h_dimy))
+        )
+            ||
+        // Secondo nel primo        
+        (
+            (posx >= this->x && posx < (this->x + this->h_dimx)) 
+                && 
+            (posy >= this->y && posy < (this->y + this->h_dimy))
+        )
+            ||
+        (
+            ((posx + h_dimx) > this->x && (posx + h_dimx) < (this->x + this->h_dimx)) 
+                && 
+            ((posy + h_dimy) > this->y && (posy + h_dimy) < (this->y + this->h_dimy))
+        )
+            ||
+        (
+            ((posx + h_dimx) > this->x && (posx + h_dimx) < (this->x + this->h_dimx)) 
+                && 
+            (posy >= this->y && posy < (this->y + this->h_dimy))
+        )
+            ||
+        (
+            (posx >= this->x && posx < (this->x + this->h_dimx))
+                && 
+            ((posy + h_dimy) > this->y && (posy + h_dimy) < (this->y + this->h_dimy))
+        )
+    );
 }

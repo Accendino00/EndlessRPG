@@ -47,8 +47,6 @@ void ListaProiettili::addEntita_p(Proiettile *entity, bool b){
     plistaPro cheadTemp = chead;
 
     if(!b && !(checkEntity_p(entity, false))){
-        plistaPro headTemp = head;
-
         if(head == NULL){
             head = new listaPro;
             head->prev = NULL;
@@ -218,4 +216,49 @@ void ListaProiettili::aggiornaTick() {
         headTemp->e->toCurrentTick();
         headTemp = headTemp->next; 
     }
+}
+
+
+int ListaProiettili::lengthList(){
+    int returnvalue=0;
+    listaPro * tmp = this-> head;
+    while(tmp!=NULL){
+        returnvalue+=1;
+        tmp = tmp -> next;
+    }
+    return returnvalue;
+}
+
+int ListaProiettili::lengthList(bool type){
+    int returnvalue=0;
+    listaPro * tmp = this-> head;
+    while(tmp!=NULL){
+        if (!type != tmp->e->isPlayerProjectile()){
+            returnvalue+=1;
+        }
+        tmp = tmp -> next;
+    }
+    return returnvalue;
+}
+
+int ListaProiettili::lengthcList(){
+    int returnvalue=0;
+    listaPro * tmp = this-> chead;
+    while(tmp!=NULL){
+        returnvalue+=1;
+        tmp = tmp -> next;
+    }
+    return returnvalue;
+}
+
+int ListaProiettili::lengthcList(bool type){
+    int returnvalue=0;
+    listaPro * tmp = this-> chead;
+    while(tmp!=NULL){
+        if (!type != tmp->e->isPlayerProjectile()){
+            returnvalue+=1;
+        }
+        tmp = tmp -> next;
+    }
+    return returnvalue;
 }
