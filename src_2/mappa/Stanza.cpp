@@ -176,7 +176,9 @@ Stanza::Stanza(int id){
     this->listaPorte = new ListaPorte();
     this->listaProiettili = new ListaProiettili();
     this->listaNemici = new ListaNemici();
+    this->listaArtefatti = new ListaArtefatti();
     
+
     this->idStanza = id;
 
     FILE * fin;
@@ -432,7 +434,29 @@ int Stanza::accessibile(Entita * entita, bool giocatore){
     
     int returnvalue = STANZA_ACC_MURO;
 
-    /*this->listaProiettili-> makecList(entita);
+    /*
+
+    this->listaNemici-> makecList(entita);
+    if(this->listaNemici->lengthcList()>=1){
+        returnvalue = STANZA_ACC_NEMICO;
+    }
+
+    this->listaPorte-> makecList(entita);
+    if(this->listaPorte->lengthcList()>=1){
+        if(giocatore && direzione_porta(entita->getY(), entita->getX())){  //if mi sto muovendo da quella parte
+            returnvalue = STANZA_ACC_LIBERO;
+        } else{
+            returnvalue = STANZA_ACC_PORTA;
+        }
+    }
+
+    this->listaArtefatti-> makecList(entita);
+    if(this->listaArtefatti->lengthcList()>=1){
+        returnvalue = STANZA_ACC_ARTEFATTO;
+    }
+    
+
+    this->listaProiettili-> makecList(entita);
     erase();
     mvprintw(40,5,"Num pro: %d %d", this->listaProiettili->lengthcList(giocatore), this->listaProiettili->lengthcList(!giocatore));
     refresh();

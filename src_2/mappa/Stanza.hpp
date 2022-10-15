@@ -80,6 +80,7 @@ class Stanza {
         ListaPorte * listaPorte;
         ListaProiettili * listaProiettili;
         ListaNemici * listaNemici;
+        ListaArtefatti * listaArtefatti;
 
         int idStanza;
 
