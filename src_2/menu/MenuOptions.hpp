@@ -4,7 +4,6 @@
 class MenuOptions : public Menu {
 public:
     MenuOptions();
-
     void loopMenu();
     void printAll();
 };

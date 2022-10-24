@@ -5,6 +5,7 @@ MenuMain::MenuMain() : Menu(0, 4, 0) {}
 void MenuMain::loopMenu() {
 
     MenuOptions * m_options;
+    MenuScore * m_score;
     Gioco * gioco;
 
     // Loop del menu principale del gioco
@@ -32,6 +33,10 @@ void MenuMain::loopMenu() {
                     break;
                 case 1:
                     // Score
+                    m_score = new MenuScore();
+                    m_score->CaricaOrdinaScore();
+                    m_score->loopScore();
+                    delete m_score;
                     break;
                 case 2:    
                     // Options

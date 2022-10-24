@@ -6,15 +6,20 @@ struct UserData {
     int score;
     char nome [4];
     UserData *next;
+}; typedef UserData *pUserData;
+
+struct UserArrayData {
+    int score;
+    char nome[4];
 };
-typedef UserData *pUserData;
+
 
 class MenuScore : public Menu {
 private:
     pUserData head;               //Testa della lista dei punteggi
     int scoreCounter;              //Grandezza dell'array    
-    int* arrayScore;              //Array ordinato con gli score
-    int pagina;                   //Numero della pagina visualizzata
+    UserArrayData * arrayScore;              //Array ordinato con gli score
+    int pagina;                      //Numero della pagina visualizzata
 
 public:
     MenuScore();
