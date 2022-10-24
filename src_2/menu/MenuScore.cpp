@@ -1,6 +1,6 @@
 #include "../generale/libs.hpp"
 
-MenuScore::MenuScore() : Menu(0,1,8) {}
+MenuScore::MenuScore() : Menu(0,2,6) {}
 void heapify(int arr[], int n, int i)
 {
     int min = i; // Il valore più grande inizialmente è la radice
@@ -85,17 +85,25 @@ void MenuScore::CaricaOrdinaScore() {
         curr->next = NULL;
         delete curr;
     }
-    for(int i = 0; i <= scoreCounter; i++){
-        this->arrayScore[i] = tmp->score;
+    if(scoreCounter > 0){
+        this->arrayScore = new UserArrayData[scoreCounter];
+    }
+    else this->arrayScore = NULL;
+    for(int i = 0; i < scoreCounter; i++){
+        this->arrayScore[i].score = tmp->score;
+        for(int j = 0; j < 4 ; j++){
+        this->arrayScore[i].nome[j] = tmp->nome[j];
+        }
         tmp = tmp->next;
     }
-    heapSort(this->arrayScore,scoreCounter);
-    //Dealloco tmp
-    tmp->next=NULL;
-    delete tmp;
+    //heapSort(this->arrayScore,scoreCounter);
+    //Dealloco tmp(tutta la lista)
+    //tmp->next=NULL; 
+    //delete tmp;
 }
 void MenuScore::loopScore() {
     bool esciDaScore = false;
+    this->pagina = 1; //Inizializzo le pagine 
     do {
         gd->frameStart();
         gd->getInput();
@@ -107,7 +115,7 @@ void MenuScore::loopScore() {
                 case KEY_LEFT: //Mi muovo a sinistra nella pagina
                 case L'A':
                 case L'a':
-                    if(this->pagina >= 0){
+                    if(this->pagina >= 1){
                         //stampa la pagina precedente    
                           pagina--;
 
@@ -116,12 +124,23 @@ void MenuScore::loopScore() {
                 case KEY_RIGHT: //Mi muovo a destra nella pagina
                 case L'D':
                 case L'd':
-                    if(this->pagina <= this->scoreCounter){
+                    if(this->pagina <= (this->scoreCounter)/10){
                         //stampa la pagina successiva
                           pagina++;
                     }
                     break;
-            }
+                case 'q':
+                    esciDaScore = true;
+                    break;
+                case 10:
+                    switch(this->getSelezione()) {
+                        case 0:
+                            break;
+                        case 1:
+                            esciDaScore = true;
+                            break;
+                    }
+            }       break;
             i++;
         }
 
@@ -131,15 +150,23 @@ void MenuScore::loopScore() {
         gd->frameFinish();
         refresh();
     } while (!esciDaScore);
-}
+}    
 
 void MenuScore::printAll(){
-    pUserData tmp = this->head;
     char daStampare[100];
     int line = 0;
-    for(int i = (this->pagina-1)*10; i++; i < this->pagina*10){
-        printf ("%s \b", tmp->nome);
-        printf ("%d \n", this->arrayScore[i]);
+    for(int i = (this->pagina-1)*10; i<(this->pagina*10) ; i++){ //Seleziono la porzione di array che voglio mostrare
+        if(i < scoreCounter){
+            sprintf(daStampare, "< %d %s \t>",arrayScore[i].score,arrayScore[i].nome);
+            attron(COLOR_PAIR(MENU_NORMAL));
+            int centerY = gd->getTerminalY()/2;
+            int centerX = gd->getTerminalX()/2;
+            mvprintw(centerY+(2*(line+1)),centerX-2,"%s",daStampare);
+            attroff(COLOR_PAIR(MENU_NORMAL));
+            line ++;
+        }
     }
+    printLine("Cambia Pagina",0);
+    printLine("Indietro",1);
 }
 
