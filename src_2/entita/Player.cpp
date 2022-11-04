@@ -89,9 +89,7 @@ void Player::muoviPlayer(int direzione, int val, Livello * livello) {
             muovi(direzione, val);
             break;
         default:
-            erase();
-            mvprintw(42,5,"Contatto giocatore!");
-            refresh();
+            
         break;
     }
 }

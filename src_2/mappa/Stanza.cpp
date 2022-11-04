@@ -241,13 +241,16 @@ int Stanza::accessibile(Entita * entita, bool giocatore){
     
     
     this->listaProiettili-> makecList(entita);
+    this->listaNemici-> makecList(entita);
     if(this->listaProiettili->lengthcList() >= 1){
         if(giocatore){
             returnvalue = STANZA_ACC_PROIETTILE_GIOCATORE;
         } else{
             returnvalue = STANZA_ACC_PROIETTILE_NEMICO;
         }
-    }        
+    } else if(this->listaNemici->lengthcList() >= 1){
+        returnvalue = STANZA_ACC_NEMICO;
+    } 
     // Prima controllo se c'è la porta, poi controllo se mi sto muovendo fuori da quella porta
     else if(giocatore && direzione_porta(entita->getY(), entita->getX())!=0){
         returnvalue = STANZA_ACC_LIBERO;

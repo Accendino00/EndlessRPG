@@ -154,11 +154,10 @@ bool ListaPorte::makecList(Entita *entity){
     plistaP headTemp = head;
 
     while(headTemp != NULL){
-        while(!(entity->controllaContatto(headTemp->e))){
-            headTemp = headTemp->next;
+        if (headTemp->e != entity && (entity->controllaContatto(headTemp->e))) {
+            addEntita_p(headTemp->e, true);
             returnValue = true;
         }
-        addEntita_p(headTemp->e, true);
         headTemp = headTemp->next;
     }
     return returnValue;

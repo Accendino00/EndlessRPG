@@ -149,16 +149,15 @@ bool ListaEntita::makecList(Entita *entity){
     // Controlla quali entità sono a contatto con l'entità di input e le aggiungo in chead. Ritorno true se ci sono entita a contatto.
 
     deletecList();
-    
+
     bool returnValue = false;
     plistaE headTemp = head;
 
     while(headTemp != NULL){
-        while(!(entity->controllaContatto(headTemp->e))){
-            headTemp = headTemp->next;
+        if (headTemp->e != entity && (entity->controllaContatto(headTemp->e))) {
+            addEntita_p(headTemp->e, true);
             returnValue = true;
         }
-        addEntita_p(headTemp->e, true);
         headTemp = headTemp->next;
     }
     return returnValue;
