@@ -36,24 +36,6 @@ void Player::manageInput(Livello * livello) {
     }
 }
 
-
-void Player::stampaHUDplayer(){
-    int coordy = 0;
-    int coordx = 0;
-    attron(COLOR_PAIR(0));
-    mvprintw(coordy+2, coordx, "HP : ");
-    attroff(COLOR_PAIR(0));
-    attron(COLOR_PAIR(HEARTS_PAIR));
-    for(int i = currentLife/10; i>0; i--){
-        printw("\u2665");
-    }
-    for(int i = (maxLife-currentLife)/10; i>0; i--){
-        printw("\u2661");
-    }
-    attroff(COLOR_PAIR(HEARTS_PAIR));
-
-}
-
 void Player::gestione_player(int input, Livello * livello){
     switch(input) {
             // Movimento basilare
@@ -102,19 +84,38 @@ void Player::gestione_player(int input, Livello * livello){
 };
 
 void Player::muoviPlayer(int direzione, int val, Livello * livello) {
-    if(movimentoValido(direzione, val, livello->getStanza(), true) == STANZA_ACC_LIBERO)
-        muovi(direzione, val);
+    switch (movimentoValido(direzione, val, livello->getStanza(), true) ) {
+        case STANZA_ACC_LIBERO:
+            muovi(direzione, val);
+            break;
+        default:
+            erase();
+            mvprintw(42,5,"Contatto giocatore!");
+            refresh();
+        break;
+    }
 }
 
 void Player::inventario(){
 }
 
 
+void Player::stampaHUDplayer(){
+    int coordy = 0;
+    int coordx = 0;
+    attron(COLOR_PAIR(0));
+    mvprintw(coordy+2, coordx, "HP : ");
+    attroff(COLOR_PAIR(0));
+    attron(COLOR_PAIR(HEARTS_PAIR));
+    for(int i = currentLife/10; i>0; i--){
+        printw("\u2665");
+    }
+    for(int i = (maxLife-currentLife)/10; i>0; i--){
+        printw("\u2661");
+    }
+    attroff(COLOR_PAIR(HEARTS_PAIR));
 
-
-
-
-
+}
 
 
 

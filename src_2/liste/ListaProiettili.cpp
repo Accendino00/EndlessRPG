@@ -10,14 +10,14 @@ ListaProiettili::~ListaProiettili(){
     this->deleteList();
 }
 
-bool ListaProiettili::checkEntity_p(Proiettile *entity, bool b){
+bool ListaProiettili::checkEntity_p(Proiettile *entity, bool contactList){
 
     // Controlla se l'entità è presente nella lista
     plistaPro headTemp = head;
     bool returnvalue = false;
     plistaPro cheadTemp = chead;
 
-    if(!b){
+    if(!contactList){
         while(headTemp != NULL && !returnvalue){
                 if(headTemp->e == entity)returnvalue = true;
                 else headTemp = headTemp->next;
@@ -39,14 +39,14 @@ bool ListaProiettili::checkEntity(Proiettile *entity){
 }
 
 
-void ListaProiettili::addEntita_p(Proiettile *entity, bool b){
+void ListaProiettili::addEntita_p(Proiettile *entity, bool contactList){
 
     // aggiunge entita controllando che non sia gia presente
 
     plistaPro headTemp = head;
     plistaPro cheadTemp = chead;
 
-    if(!b && !(checkEntity_p(entity, false))){
+    if(!contactList && !(checkEntity_p(entity, false))){
         if(head == NULL){
             head = new listaPro;
             head->prev = NULL;
@@ -84,16 +84,31 @@ void ListaProiettili::addEntita(Proiettile *entity){
     addEntita_p(entity, false);
 }
 
-bool ListaProiettili::removeEntita_p(Proiettile *entity,bool b, bool deleteEntita){
+/**
+ * @brief Cancella un entità dalla lista.
+ * Se contactList è vero, allora si intende cancellare l'entità dalla lista dei proiettili in contatto.
+ * Se deleteEntità è vero, allora non viene solo cancellata l'entità dalla lista, ma anche distrutta.
+ * 
+ * Questo perché vorrei poter cancellare le singole entità dalla lista dei contatti, senza necessariamente
+ * cancellarle anche dalla vera lista di proiettili, che contiene tutti i proiettili della stanza.
+ * 
+ * @param entity 
+ * @param contactList 
+ * @param deleteEntita 
+ * @return true 
+ * @return false 
+ */
+bool ListaProiettili::removeEntita_p(Proiettile *entity,bool contactList, bool deleteEntita){
     bool returnValue = false;
     plistaPro headTemp;
-    if (b) {
+    if (contactList) {
         headTemp = chead;
     } else {
         headTemp = head;
     }
 
-    if(checkEntity_p(entity, b)){
+
+    if(checkEntity_p(entity, contactList)){    
         returnValue = true;
         while(headTemp->e != entity){
             headTemp = headTemp->next;
@@ -117,7 +132,7 @@ bool ListaProiettili::removeEntita_p(Proiettile *entity,bool b, bool deleteEntit
         else{
             // Caso in cui la lista ha altri elementi
             if(headTemp->next != NULL){
-                if (b) {
+                if (contactList) {
                     chead = headTemp->next;
                 } else {
                     head = headTemp->next;
@@ -127,7 +142,7 @@ bool ListaProiettili::removeEntita_p(Proiettile *entity,bool b, bool deleteEntit
             }
             // Caso in cui la lista non ha altri elementi
             else{
-                if (b) {
+                if (contactList) {
                     chead = NULL;
                 } else {
                     head = NULL;
@@ -148,15 +163,16 @@ bool ListaProiettili::removeEntita(Proiettile *entity, bool deleteEntita) {
 bool ListaProiettili::makecList(Entita *entity){
     // Controlla quali entità sono a contatto con l'entità di input e le aggiungo in chead. Ritorno true se ci sono entita a contatto.
 
+    deletecList();
+
     bool returnValue = false;
     plistaPro headTemp = head;
 
     while(headTemp != NULL){
-        while(!(entity->controllaContatto(headTemp->e))){
-            headTemp = headTemp->next;
+        if (headTemp->e != entity && (entity->controllaContatto(headTemp->e))) {
+            addEntita_p(headTemp->e, true);
             returnValue = true;
         }
-        addEntita_p(headTemp->e, true);
         headTemp = headTemp->next;
     }
     return returnValue;
@@ -174,9 +190,15 @@ void ListaProiettili::deletecList(){
     plistaPro temp = getcList();
     if(temp != NULL) {
         while(temp->next != NULL){
-            temp = temp->next;
-            removeEntita_p(temp->prev->e, true, false);
-        } 
+            temp = temp->next;    
+        }
+        while(temp->prev != NULL) {
+            temp = temp->prev;    
+            removeEntita_p(temp->next->e, true, false);
+        }
+        if (temp->next != NULL) {
+            removeEntita_p(temp->next->e, true, false);
+        }
         removeEntita_p(temp->e, true, false);
     }
 };
@@ -185,11 +207,18 @@ void ListaProiettili::deleteList(){
     plistaPro temp = getList();
     if(temp != NULL) {
         while(temp->next != NULL){
-            temp = temp->next;
-            removeEntita(temp->prev->e, true);
-        } 
+            temp = temp->next;    
+        }
+        while(temp->prev != NULL) {
+            temp = temp->prev;
+            removeEntita(temp->next->e, true);
+        }
+        if (temp->next != NULL) {
+            removeEntita(temp->next->e, true);
+        }
         removeEntita(temp->e, true);
     }
+
 };
 
 
@@ -251,11 +280,21 @@ int ListaProiettili::lengthcList(){
     return returnvalue;
 }
 
+/**
+ * @brief Ritorna il numero di proiettili nella contact list.
+ * Type indica se è un giocatore o un nemico. Se type è vero, allora ritorna
+ * il numero di proiettili sparati dal giocatore, altrimenti ritorna il 
+ * numero di proiettili sparati dai nemici. 
+ * 
+ * @param type  Se vero, ritorna il numero dei proiettili sparati dal giocatore. 
+ *              Se falso, il numero dei proiettili sparati dai nemici
+ * @return int  Il numero di proiettili nella contact list in base al loro tipo
+ */
 int ListaProiettili::lengthcList(bool type){
     int returnvalue=0;
     listaPro * tmp = this-> chead;
     while(tmp!=NULL){
-        if (!type != tmp->e->isPlayerProjectile()){
+        if (type == tmp->e->isPlayerProjectile()){
             returnvalue+=1;
         }
         tmp = tmp -> next;

@@ -14,7 +14,7 @@ Proiettile::Proiettile(int y, int x, bool playerProjectile, int direzione) {
 
     this->direzione = direzione;
     this->passedActions = 0;
-    this->muovi(this->direzione, 1);
+    //this->muovi(this->direzione, 1);
     
     this->passedActions = 0;
     this->lastTick = gd->getCurrentTick();
@@ -32,6 +32,7 @@ Proiettile::Proiettile(int y, int x, bool playerProjectile, int direzione) {
     this->stampabile = new cchar_t * [1];
     this->stampabile[0] = new cchar_t [1];
 
+    this->playerProjectile = playerProjectile;
     short color = (playerProjectile) ? (PLAYER_BULLET_PAIR) : (ENEMY_BULLET_PAIR);
     switch(direzione) {
         case DIRECTION_NN:
@@ -71,6 +72,12 @@ void Proiettile::updateEntita(Stanza * stanza, Player * player) {
     }
 }
 
+/**
+ * @brief Ritorna vero se è un proiettile del giocatore
+ * 
+ * @return true     E' un proiettile del giocatore
+ * @return false    E' un proiettile dei nemici
+ */
 bool Proiettile::isPlayerProjectile(){
     return this->playerProjectile;
 }

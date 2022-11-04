@@ -134,7 +134,7 @@ void Gioco::gameLoop() {
         /*** Calcolo della logica ***/
 
         livello -> calcolo_logica(this->player);
-
+        
         /*** Stampa ***/
     
         livello -> stampa(this->player);

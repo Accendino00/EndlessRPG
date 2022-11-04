@@ -90,6 +90,7 @@ Stanza::~Stanza(){
     // Dealloco tutto
     delete (this->listaPorte);
     delete (this->listaNemici);
+    delete (this->listaProiettili);
     for(int i = 0; i < (*this).dim_y; i++) {
         delete[] this->matrice_stampabile[i];
         delete[] this->matrice_logica[i];
@@ -237,12 +238,10 @@ int Stanza::accessibile(int y_entity, int x_entity, bool giocatore){
 int Stanza::accessibile(Entita * entita, bool giocatore){
     
     int returnvalue = STANZA_ACC_MURO;
-
-    /*this->listaProiettili-> makecList(entita);
-    erase();
-    mvprintw(40,5,"Num pro: %d %d", this->listaProiettili->lengthcList(giocatore), this->listaProiettili->lengthcList(!giocatore));
-    refresh();
-    if(this->listaProiettili->lengthcList(giocatore) >= 1){
+    
+    
+    this->listaProiettili-> makecList(entita);
+    if(this->listaProiettili->lengthcList() >= 1){
         if(giocatore){
             returnvalue = STANZA_ACC_PROIETTILE_GIOCATORE;
         } else{
@@ -250,7 +249,7 @@ int Stanza::accessibile(Entita * entita, bool giocatore){
         }
     }        
     // Prima controllo se c'è la porta, poi controllo se mi sto muovendo fuori da quella porta
-    else */ if(giocatore && direzione_porta(entita->getY(), entita->getX())!=0){
+    else if(giocatore && direzione_porta(entita->getY(), entita->getX())!=0){
         returnvalue = STANZA_ACC_LIBERO;
     }
     else if(
@@ -263,8 +262,6 @@ int Stanza::accessibile(Entita * entita, bool giocatore){
         returnvalue = STANZA_ACC_LIBERO;
     }
     
-    // Da controllare anche il contatto con entita
-
     return returnvalue;
 }
 

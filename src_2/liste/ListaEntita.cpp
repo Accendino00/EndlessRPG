@@ -148,6 +148,8 @@ bool ListaEntita::removeEntita(Entita *entity, bool deleteEntita) {
 bool ListaEntita::makecList(Entita *entity){
     // Controlla quali entità sono a contatto con l'entità di input e le aggiungo in chead. Ritorno true se ci sono entita a contatto.
 
+    deletecList();
+    
     bool returnValue = false;
     plistaE headTemp = head;
 
@@ -174,9 +176,15 @@ void ListaEntita::deletecList(){
     plistaE temp = getcList();
     if(temp != NULL) {
         while(temp->next != NULL){
-            temp = temp->next;
-            removeEntita_p(temp->prev->e, true, false);
-        } 
+            temp = temp->next;    
+        }
+        while(temp->prev != NULL) {
+            temp = temp->prev;    
+            removeEntita_p(temp->next->e, true, false);
+        }
+        if (temp->next != NULL) {
+            removeEntita_p(temp->next->e, true, false);
+        }
         removeEntita_p(temp->e, true, false);
     }
 };
@@ -185,9 +193,15 @@ void ListaEntita::deleteList(){
     plistaE temp = getList();
     if(temp != NULL) {
         while(temp->next != NULL){
-            temp = temp->next;
-            removeEntita(temp->prev->e, true);
-        } 
+            temp = temp->next;    
+        }
+        while(temp->prev != NULL) {
+            temp = temp->prev;    
+            removeEntita(temp->next->e, true);
+        }
+        if (temp->next != NULL) {
+            removeEntita(temp->next->e, true);
+        }
         removeEntita(temp->e, true);
     }
 };
