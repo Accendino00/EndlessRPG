@@ -167,6 +167,9 @@ Stanza::Stanza(int a){
  * Viene scelta una stanza casuale tra quelle presenti nei file, viene letta
  * e viene impostata.
  * 
+ * La parte logica non viene interpretata, viene solo letta e salvata.
+ * La parte stampabile delle stanza invece viene solo allocata.
+ * 
  * @param id Può essere "ID_STANZA_SPAWN", "ID_STANZA_NORMALE" oppure "ID_STANZA_BOSS" 
  */
 Stanza::Stanza(int id){
@@ -336,6 +339,7 @@ void Stanza::da_logica_a_stampabile(){
     for(int i = 0; i < dim_y; i++){
         for(int j = 0; j < dim_x; j++){
             switch(matrice_logica [i] [j]){
+                Nemico * nemicoGenerato;
                 case STANZA_SPAZIOLIBERO:
                     setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, FLOOR_PAIR, NULL);
                 break;
@@ -343,14 +347,26 @@ void Stanza::da_logica_a_stampabile(){
                     setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, WALL_PAIR, NULL);
                 break;
                 case STANZA_NEMICONORMALE:
-                    matrice_logica [i] [j] = 0;
-                    listaNemici->addEntita(new Nemico(NORMAL_ENEMY, i, j));
-                    setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, FLOOR_PAIR, NULL);
+                    nemicoGenerato = new Nemico(NORMAL_ENEMY, i, j);
+                    listaNemici->addEntita(nemicoGenerato);
+                    // Libero lo spazio dalla matrice logica e dalla matrice stampabile dove è stato generato il nemico
+                    for (int i_1 = i; i_1 < i + nemicoGenerato->getDimY(); i_1++){
+                        for (int j_1 = j; j_1 < j + nemicoGenerato->getDimX(); j_1++){
+                            matrice_logica[i_1][j_1] = STANZA_SPAZIOLIBERO;
+                            setcchar(&(matrice_stampabile [i_1] [j_1]), L" ", A_NORMAL, FLOOR_PAIR, NULL);
+                        }
+                    }
                 break;
                 case STANZA_NEMICOBOSS:
-                    matrice_logica [i] [j] = 0;
-                    listaNemici->addEntita(new Nemico(BOSS_ENEMY, i, j));
-                    setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, FLOOR_PAIR, NULL);
+                    nemicoGenerato = new Nemico(BOSS_ENEMY, i, j);
+                    listaNemici->addEntita(nemicoGenerato);
+                    // Libero lo spazio dalla matrice logica e dalla matrice stampabile dove è stato generato il nemico
+                    for (int i_1 = i; i_1 < i + nemicoGenerato->getDimY(); i_1++){
+                        for (int j_1 = j; j_1 < j + nemicoGenerato->getDimX(); j_1++){
+                            matrice_logica[i_1][j_1] = STANZA_SPAZIOLIBERO;
+                            setcchar(&(matrice_stampabile [i_1] [j_1]), L" ", A_NORMAL, FLOOR_PAIR, NULL);
+                        }
+                    }
                 break;
             }
         }

@@ -194,6 +194,15 @@ int Entita::getY() {
     return this->y;
 }
 
+
+int Entita::getDimX() {
+    return this->h_dimx;
+}
+
+int Entita::getDimY() {
+    return this->h_dimy;
+}
+
 void Entita::muovi(int direzione, int val) {
     switch(direzione) {
         case DIRECTION_NN:

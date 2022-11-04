@@ -43,7 +43,7 @@ Nemico::Nemico (int type, int posy, int posx) {
     actions[11] = AZIONE_SPARA_DIREZIONE | AZIONE_SPARA_PRINCIPALE | AZIONE_SPARA_SECONDARIO |  AZIONE_SPARA_TERZIARIO | DIRECTION_SE;
 
 
-    /*if(type == NORMAL_ENEMY) {
+    if(type == NORMAL_ENEMY) {
         int idNemico = ( rand() % 5 );
         switch(idNemico) {
             case 0:
@@ -75,7 +75,7 @@ Nemico::Nemico (int type, int posy, int posx) {
 
             break;
         }
-    }*/
+    }
 }
 
 Nemico::~Nemico() {

@@ -54,6 +54,9 @@ public:
     int getX();
     int getY();
 
+    int getDimX();
+    int getDimY();
+
     void muovi(int direzione, int val);
     int movimentoValido(int direzione, int val, Stanza * Stanza, bool giocatore);
 };
