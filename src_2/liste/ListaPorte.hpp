@@ -15,9 +15,9 @@ private:
     // bool:
     // false = head, 
     // true = chead
-    bool checkEntity_p(Porta *entity, bool b);
-    void addEntita_p(Porta *entity, bool b);
-    bool removeEntita_p(Porta *entity,bool b, bool deleteEntita);
+    bool checkEntity_p(Porta *entity, bool contactList);
+    void addEntita_p(Porta *entity, bool contactList);
+    bool removeEntita_p(Porta *entity,bool contactList, bool deleteEntita);
 
 public:
     ListaPorte();

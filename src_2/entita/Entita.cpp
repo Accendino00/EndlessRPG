@@ -228,8 +228,17 @@ void Entita::modificaVita(int quantita) {
     }
 }
 
+
+int Entita::getDamage() {
+    return this->damage;
+}
+
 int Entita::getVita() {
     return this->currentLife;
+}
+
+void Entita::setVita(int quantita) {
+    this->currentLife = quantita;
 }
 
 void Entita::modificaCoordinate(int new_y, int new_x) {

@@ -10,14 +10,14 @@ ListaEntita::~ListaEntita(){
     this->deleteList();
 }
 
-bool ListaEntita::checkEntity_p(Entita *entity, bool b){
+bool ListaEntita::checkEntity_p(Entita *entity, bool contactList){
 
     // Controlla se l'entità è presente nella lista
     plistaE headTemp = head;
     bool returnvalue = false;
     plistaE cheadTemp = chead;
 
-    if(!b){
+    if(!contactList){
         while(headTemp != NULL && !returnvalue){
                 if(headTemp->e == entity)returnvalue = true;
                 else headTemp = headTemp->next;
@@ -39,14 +39,14 @@ bool ListaEntita::checkEntity(Entita *entity){
 }
 
 
-void ListaEntita::addEntita_p(Entita *entity, bool b){
+void ListaEntita::addEntita_p(Entita *entity, bool contactList){
 
     // aggiunge entita controllando che non sia gia presente
 
     plistaE headTemp = head;
     plistaE cheadTemp = chead;
 
-    if(!b && !(checkEntity_p(entity, false))){
+    if(!contactList && !(checkEntity_p(entity, false))){
         if(head == NULL){
             head = new listaE;
             head->prev = NULL;
@@ -84,16 +84,17 @@ void ListaEntita::addEntita(Entita *entity){
     addEntita_p(entity, false);
 }
 
-bool ListaEntita::removeEntita_p(Entita *entity,bool b, bool deleteEntita){
+bool ListaEntita::removeEntita_p(Entita *entity,bool contactList, bool deleteEntita){
     bool returnValue = false;
     plistaE headTemp;
-    if (b) {
+    if (contactList) {
         headTemp = chead;
     } else {
         headTemp = head;
     }
 
-    if(checkEntity_p(entity, b)){
+
+    if(checkEntity_p(entity, contactList)){    
         returnValue = true;
         while(headTemp->e != entity){
             headTemp = headTemp->next;
@@ -103,6 +104,7 @@ bool ListaEntita::removeEntita_p(Entita *entity,bool b, bool deleteEntita){
             // Caso in cui è al centro della lista
             if(headTemp->next != NULL){
                 headTemp->prev->next = headTemp->next;
+                headTemp->next->prev = headTemp->prev;
                 if(deleteEntita) delete headTemp->e;
                 delete headTemp;
             }
@@ -117,7 +119,8 @@ bool ListaEntita::removeEntita_p(Entita *entity,bool b, bool deleteEntita){
         else{
             // Caso in cui la lista ha altri elementi
             if(headTemp->next != NULL){
-                if (b) {
+                headTemp->next->prev = NULL;
+                if (contactList) {
                     chead = headTemp->next;
                 } else {
                     head = headTemp->next;
@@ -127,7 +130,7 @@ bool ListaEntita::removeEntita_p(Entita *entity,bool b, bool deleteEntita){
             }
             // Caso in cui la lista non ha altri elementi
             else{
-                if (b) {
+                if (contactList) {
                     chead = NULL;
                 } else {
                     head = NULL;

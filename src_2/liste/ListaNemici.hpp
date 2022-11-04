@@ -15,9 +15,9 @@ private:
     // bool:
     // false = head, 
     // true = chead
-    bool checkEntity_p(Nemico *entity, bool b);
-    void addEntita_p(Nemico *entity, bool b);
-    bool removeEntita_p(Nemico *entity,bool b, bool deleteEntita);
+    bool checkEntity_p(Nemico *entity, bool contactList);
+    void addEntita_p(Nemico *entity, bool contactList);
+    bool removeEntita_p(Nemico *entity,bool contactList, bool deleteEntita);
 
 public:
     ListaNemici();
@@ -39,4 +39,6 @@ public:
 
     void aggiornaEntita(Stanza * stanza, Player * player);
     void aggiornaTick();
+
+    void dmgNemiciContactList(int quantita);
 };

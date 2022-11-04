@@ -84,7 +84,7 @@ void ListaArtefatti::addEntita(Artefatto *Artefatto){
     addEntita_p(Artefatto, false);
 }
 
-bool ListaArtefatti::removeEntita_p(Artefatto *Artefatto,bool contactList, bool deleteEntita){
+bool ListaArtefatti::removeEntita_p(Artefatto *entity, bool contactList, bool deleteEntita){
     bool returnValue = false;
     plistaA headTemp;
     if (contactList) {
@@ -93,9 +93,10 @@ bool ListaArtefatti::removeEntita_p(Artefatto *Artefatto,bool contactList, bool 
         headTemp = head;
     }
 
-    if(checkEntity_p(Artefatto, contactList)){
+
+    if(checkEntity_p(entity, contactList)){    
         returnValue = true;
-        while(headTemp->e != Artefatto){
+        while(headTemp->e != entity){
             headTemp = headTemp->next;
         }
         // Caso in cui non è la testa della lista
@@ -103,6 +104,7 @@ bool ListaArtefatti::removeEntita_p(Artefatto *Artefatto,bool contactList, bool 
             // Caso in cui è al centro della lista
             if(headTemp->next != NULL){
                 headTemp->prev->next = headTemp->next;
+                headTemp->next->prev = headTemp->prev;
                 if(deleteEntita) delete headTemp->e;
                 delete headTemp;
             }
@@ -117,6 +119,7 @@ bool ListaArtefatti::removeEntita_p(Artefatto *Artefatto,bool contactList, bool 
         else{
             // Caso in cui la lista ha altri elementi
             if(headTemp->next != NULL){
+                headTemp->next->prev = NULL;
                 if (contactList) {
                     chead = headTemp->next;
                 } else {

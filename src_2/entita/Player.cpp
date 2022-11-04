@@ -18,6 +18,8 @@ Player::Player(int y, int x, int life) {
 
     this->maxLife=life;
     this->currentLife = this->maxLife;
+
+    this->damage = 10;
 	
     this->stampabile = new cchar_t * [1];
     this->stampabile[0] = new cchar_t [1];
@@ -68,16 +70,16 @@ void Player::gestione_player(int input, Livello * livello){
                 break;
             // Proiettili
             case (KEY_RIGHT):
-                livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_EE));
+                livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_EE,this->damage));
                 break;
             case (KEY_DOWN):
-                livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SS));
+                livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SS,this->damage));
                 break;
             case (KEY_LEFT):
-                livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_OO));
+                livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_OO,this->damage));
                 break;
             case (KEY_UP):
-                livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NN));
+                livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NN,this->damage));
                 break;
 		}
 
@@ -87,6 +89,16 @@ void Player::muoviPlayer(int direzione, int val, Livello * livello) {
     switch (movimentoValido(direzione, val, livello->getStanza(), true) ) {
         case STANZA_ACC_LIBERO:
             muovi(direzione, val);
+            break;
+        case STANZA_ACC_PROIETTILE_NEMICO:
+            this->modificaVita(- ((livello->getStanza())->dmgDaProiettiliContactList(false)) );
+            break;
+        case STANZA_ACC_ARTEFATTO:
+            // Faccio cose con l'artefatto nella contact list
+        break;
+        case STANZA_ACC_PORTA:
+        case STANZA_ACC_MURO:
+            // non si può muovere in quella direzione
             break;
         default:
             

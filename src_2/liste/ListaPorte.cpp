@@ -10,14 +10,14 @@ ListaPorte::~ListaPorte(){
     this->deleteList();
 }
 
-bool ListaPorte::checkEntity_p(Porta *entity, bool b){
+bool ListaPorte::checkEntity_p(Porta *entity, bool contactList){
 
     // Controlla se l'entità è presente nella lista
     plistaP headTemp = head;
     bool returnvalue = false;
     plistaP cheadTemp = chead;
 
-    if(!b){
+    if(!contactList){
         while(headTemp != NULL && !returnvalue){
                 if(headTemp->e == entity)returnvalue = true;
                 else headTemp = headTemp->next;
@@ -39,14 +39,14 @@ bool ListaPorte::checkEntity(Porta *entity){
 }
 
 
-void ListaPorte::addEntita_p(Porta *entity, bool b){
+void ListaPorte::addEntita_p(Porta *entity, bool contactList){
 
     // aggiunge entita controllando che non sia gia presente
 
     plistaP headTemp = head;
     plistaP cheadTemp = chead;
 
-    if(!b && !(checkEntity_p(entity, false))){
+    if(!contactList && !(checkEntity_p(entity, false))){
         if(head == NULL){
             head = new listaP;
             head->prev = NULL;
@@ -84,16 +84,17 @@ void ListaPorte::addEntita(Porta *entity){
     return addEntita_p(entity, false);
 }
 
-bool ListaPorte::removeEntita_p(Porta *entity,bool b, bool deleteEntita){
+bool ListaPorte::removeEntita_p(Porta *entity,bool contactList, bool deleteEntita){
     bool returnValue = false;
     plistaP headTemp;
-    if (b) {
+    if (contactList) {
         headTemp = chead;
     } else {
         headTemp = head;
     }
 
-    if(checkEntity_p(entity, b)){
+
+    if(checkEntity_p(entity, contactList)){    
         returnValue = true;
         while(headTemp->e != entity){
             headTemp = headTemp->next;
@@ -103,6 +104,7 @@ bool ListaPorte::removeEntita_p(Porta *entity,bool b, bool deleteEntita){
             // Caso in cui è al centro della lista
             if(headTemp->next != NULL){
                 headTemp->prev->next = headTemp->next;
+                headTemp->next->prev = headTemp->prev;
                 if(deleteEntita) delete headTemp->e;
                 delete headTemp;
             }
@@ -117,7 +119,8 @@ bool ListaPorte::removeEntita_p(Porta *entity,bool b, bool deleteEntita){
         else{
             // Caso in cui la lista ha altri elementi
             if(headTemp->next != NULL){
-                if (b) {
+                headTemp->next->prev = NULL;
+                if (contactList) {
                     chead = headTemp->next;
                 } else {
                     head = headTemp->next;
@@ -127,7 +130,7 @@ bool ListaPorte::removeEntita_p(Porta *entity,bool b, bool deleteEntita){
             }
             // Caso in cui la lista non ha altri elementi
             else{
-                if (b) {
+                if (contactList) {
                     chead = NULL;
                 } else {
                     head = NULL;

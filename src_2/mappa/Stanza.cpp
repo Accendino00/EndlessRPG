@@ -236,33 +236,45 @@ int Stanza::accessibile(int y_entity, int x_entity, bool giocatore){
 }
 
 int Stanza::accessibile(Entita * entita, bool giocatore){
+    int returnvalue = STANZA_ACC_LIBERO;
     
-    int returnvalue = STANZA_ACC_MURO;
-    
-    
+    // Controllo contatto con entita
     this->listaProiettili-> makecList(entita);
     this->listaNemici-> makecList(entita);
-    if(this->listaProiettili->lengthcList() >= 1){
-        if(giocatore){
-            returnvalue = STANZA_ACC_PROIETTILE_GIOCATORE;
-        } else{
-            returnvalue = STANZA_ACC_PROIETTILE_NEMICO;
-        }
+    this->listaPorte-> makecList(entita);
+    if(this->listaProiettili->lengthcList(false) >= 1){
+        returnvalue = STANZA_ACC_PROIETTILE_NEMICO;
+    } else if(this->listaProiettili->lengthcList(true) >= 1){
+        returnvalue = STANZA_ACC_PROIETTILE_GIOCATORE;
     } else if(this->listaNemici->lengthcList() >= 1){
         returnvalue = STANZA_ACC_NEMICO;
+    }  else if(this->listaPorte->lengthcList() >= 1){
+        returnvalue = STANZA_ACC_PORTA;
     } 
-    // Prima controllo se c'è la porta, poi controllo se mi sto muovendo fuori da quella porta
-    else if(giocatore && direzione_porta(entita->getY(), entita->getX())!=0){
-        returnvalue = STANZA_ACC_LIBERO;
-    }
+
+    // Controllo accessibilità della cella se sono dentro le mura
     else if(
         entita->getX() >= 0 && 
-        entita->getX() < (this -> dim_x) && 
+        (entita->getX() + entita->getDimX() - 1) < (this -> dim_x) && 
         entita->getY() >= 0 && 
-        entita->getY() < (this -> dim_y) && 
-        this -> matrice_logica [entita->getY()] [entita->getX()] == 0
-    ){
-        returnvalue = STANZA_ACC_LIBERO;
+        (entita->getY() + entita->getDimY() - 1) < (this -> dim_y)
+    ) {
+        // Se sono dentro le mura, allora controllo se la cella è libera
+        // Se lo è, allora finirò gli else if e ritornerò STANZA_ACC_LIBERO
+        for(int x = 0; x < entita->getDimX(); x++) {
+            for(int y = 0; y < entita->getDimY(); y++) {
+                if(this -> matrice_logica [entita->getY() + y] [entita->getX() + x] != 0){
+                    returnvalue = STANZA_ACC_MURO;
+                }
+            }
+        }
+    }
+    // Se sono un giocatore, cerco di uscire fuori dalle mura: mi trovo in una porta? Se falso, allora STANZA_ACC_MURO
+    else if(giocatore && direzione_porta(entita->getY(), entita->getX()) == 0){
+        returnvalue = STANZA_ACC_MURO;
+    } else if (!giocatore) { 
+        // Infine, se non sono un giocatore e sono fuori dalle mura e non ho trovato nient'altro, allora STANZA_ACC_MURO
+        returnvalue = STANZA_ACC_MURO;
     }
     
     return returnvalue;
@@ -332,6 +344,9 @@ void Stanza::aggiungiProiettile(Proiettile * proiettile) {
 void Stanza::calcolo_logica(Player * player){
     this->listaProiettili->aggiornaEntita(this, player);
     this->listaNemici->aggiornaEntita(this, player);
+    if(this->listaNemici->lengthList() == 0 && this->listaPorte->lengthList() >= 0){
+        this->listaPorte->deleteList();
+    }
 }
 
 void Stanza::aggiornaTick() {
@@ -339,4 +354,22 @@ void Stanza::aggiornaTick() {
     this->listaNemici->aggiornaTick();
 }
 
-    
+void Stanza::dmgNemiciContactList(int quantita) {
+    this->listaNemici->dmgNemiciContactList(quantita);
+}
+
+/**
+ * @brief Ritorna il danno totale che infliggono tutti i proiettili
+ * della contact list dei proiettili della stanza. 
+ * 
+ * In particolare, somma insieme soltanto proiettili dello stesso tipo: 
+ * se type è vero, allora somma i proiettili del giocatore, altrimenti 
+ * somma i proiettili dei nemici.
+ * 
+ * @param type      Se vero, somma i proiettili del giocatore. Se falso, 
+ *                  somma i proiettili dei nemici.
+ * @return int 
+ */
+int Stanza::dmgDaProiettiliContactList(bool type) {
+    return this->listaProiettili->dmgDaProiettiliContactList(type); 
+}

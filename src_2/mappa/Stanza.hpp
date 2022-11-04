@@ -60,6 +60,9 @@ public:
 
     void calcolo_logica(Player * player);
     void aggiornaTick();
+
+    void dmgNemiciContactList(int quantita);
+    int dmgDaProiettiliContactList(bool type);
 };
 
 

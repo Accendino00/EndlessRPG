@@ -47,6 +47,7 @@ public:
 
     int getVita();
     void modificaVita(int quantita);
+    void setVita(int quantita);
 
     void modificaCoordinate(int new_y, int new_x);
     void incrementaX(int amount);

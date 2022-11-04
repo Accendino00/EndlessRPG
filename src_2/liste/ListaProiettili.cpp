@@ -118,6 +118,7 @@ bool ListaProiettili::removeEntita_p(Proiettile *entity,bool contactList, bool d
             // Caso in cui è al centro della lista
             if(headTemp->next != NULL){
                 headTemp->prev->next = headTemp->next;
+                headTemp->next->prev = headTemp->prev;
                 if(deleteEntita) delete headTemp->e;
                 delete headTemp;
             }
@@ -132,6 +133,7 @@ bool ListaProiettili::removeEntita_p(Proiettile *entity,bool contactList, bool d
         else{
             // Caso in cui la lista ha altri elementi
             if(headTemp->next != NULL){
+                headTemp->next->prev = NULL;
                 if (contactList) {
                     chead = headTemp->next;
                 } else {
@@ -234,9 +236,16 @@ void ListaProiettili::stampaTutte(int offsetY, int offsetX) {
 void ListaProiettili::aggiornaEntita(Stanza * stanza, Player * player) {
     plistaPro headTemp = head;
     while(headTemp != NULL) {
-        headTemp->e->updateEntita(stanza, player);
-        headTemp = headTemp->next; 
+        if (headTemp->e->getVita() <= 0) {
+            removeEntita_p(headTemp->e, true, false);
+            removeEntita_p(headTemp->e, false, true);
+            headTemp = head;
+        } else {
+            headTemp->e->updateEntita(stanza, player);
+            headTemp = headTemp->next; 
+        }
     }
+
 }
 
 void ListaProiettili::aggiornaTick() {
@@ -296,6 +305,30 @@ int ListaProiettili::lengthcList(bool type){
     while(tmp!=NULL){
         if (type == tmp->e->isPlayerProjectile()){
             returnvalue+=1;
+        }
+        tmp = tmp -> next;
+    }
+    return returnvalue;
+}
+
+/**
+ * @brief Ritorna il danno totale che infliggono tutti i proiettili
+ * della contact list.
+ * 
+ * In particolare, somma insieme soltanto proiettili dello stesso tipo: 
+ * se type è vero, allora somma i proiettili del giocatore, altrimenti 
+ * somma i proiettili dei nemici.
+ * 
+ * @param type      Se vero, somma i proiettili del giocatore. Se falso, 
+ *                  somma i proiettili dei nemici.
+ * @return int 
+ */
+int ListaProiettili::dmgDaProiettiliContactList(bool type) {
+    int returnvalue=0;
+    listaPro * tmp = this-> chead;
+    while(tmp!=NULL){
+        if (type == tmp->e->isPlayerProjectile()){
+            returnvalue += tmp->e->getDamage();
         }
         tmp = tmp -> next;
     }

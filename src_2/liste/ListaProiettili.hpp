@@ -15,9 +15,9 @@ private:
     // bool:
     // false = head, 
     // true = chead
-    bool checkEntity_p(Proiettile *entity, bool b);
-    void addEntita_p(Proiettile *entity, bool b);
-    bool removeEntita_p(Proiettile *entity,bool b, bool deleteEntita);
+    bool checkEntity_p(Proiettile *entity, bool contactList);
+    void addEntita_p(Proiettile *entity, bool contactList);
+    bool removeEntita_p(Proiettile *entity,bool contactList, bool deleteEntita);
 
 public:
     ListaProiettili();
@@ -41,4 +41,6 @@ public:
 
     void aggiornaEntita(Stanza * stanza, Player * player);
     void aggiornaTick();
+
+    int dmgDaProiettiliContactList(bool type);
 };
