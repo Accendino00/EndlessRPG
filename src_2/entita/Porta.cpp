@@ -1,7 +1,7 @@
 #include "../generale/libs.hpp"
 
 
-Porta::Porta(int type, int direzione, bool portaConChiave) {
+Porta::Porta(int type, int direzione, bool portaConChiave, int dimstanzay, int dimstanzax) {
     // Impostazione della dimensione in base alla posizione della porta
     if(direzione == PORTA_EST || direzione == PORTA_OVEST) {
         (*this).h_dimy = DIMENSIONE_PORTA_VERTICALE;
@@ -32,19 +32,6 @@ Porta::Porta(int type, int direzione, bool portaConChiave) {
                 setcchar(&(this->stampabile[i][j]), L"/", A_NORMAL, DOOR_PAIR, NULL);
 
     // Impostazione della posizione della porta in base al tipo di porta e alla sua direzione
-    int dimstanzax = 0, dimstanzay = 0;
-
-    if (type == ID_STANZA_BOSS) {    
-        dimstanzax = DIM_STANZA_BOSS_X;
-        dimstanzay = DIM_STANZA_BOSS_Y;
-    } else if (type == ID_STANZA_NORMALE) {
-        dimstanzax = DIM_STANZA_X;
-        dimstanzay = DIM_STANZA_Y;
-    } else if (type == ID_STANZA_SPAWN) {
-        dimstanzax = DIM_STANZA_SPAWN_X;
-        dimstanzay = DIM_STANZA_SPAWN_Y;
-    }
-
     switch(direzione) {
         case PORTA_EST:
             this->x = dimstanzax-1;

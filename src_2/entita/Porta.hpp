@@ -10,7 +10,7 @@
 
 class Porta : public Entita {
 public:
-    Porta(int type, int direzione, bool portaConChiave);
+    Porta(int type, int direzione, bool portaConChiave, int dimstanzay, int dimstanzax);
 
     void updateEntita();
 };
