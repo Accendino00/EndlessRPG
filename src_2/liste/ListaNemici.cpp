@@ -47,8 +47,6 @@ void ListaNemici::addEntita_p(Nemico *entity, bool b){
     plistaN cheadTemp = chead;
 
     if(!b && !(checkEntity_p(entity, false))){
-        plistaN headTemp = head;
-
         if(head == NULL){
             head = new listaN;
             head->prev = NULL;
@@ -143,7 +141,7 @@ bool ListaNemici::removeEntita_p(Nemico *entity,bool b, bool deleteEntita){
 };
 
 bool ListaNemici::removeEntita(Nemico *entity, bool deleteEntita) {
-    removeEntita_p(entity, false, deleteEntita);
+    return removeEntita_p(entity, false, deleteEntita);
 }
 
 

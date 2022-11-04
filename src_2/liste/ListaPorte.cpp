@@ -47,8 +47,6 @@ void ListaPorte::addEntita_p(Porta *entity, bool b){
     plistaP cheadTemp = chead;
 
     if(!b && !(checkEntity_p(entity, false))){
-        plistaP headTemp = head;
-
         if(head == NULL){
             head = new listaP;
             head->prev = NULL;
@@ -83,7 +81,7 @@ void ListaPorte::addEntita_p(Porta *entity, bool b){
 }
 
 void ListaPorte::addEntita(Porta *entity){
-    addEntita_p(entity, false);
+    return addEntita_p(entity, false);
 }
 
 bool ListaPorte::removeEntita_p(Porta *entity,bool b, bool deleteEntita){
@@ -143,7 +141,7 @@ bool ListaPorte::removeEntita_p(Porta *entity,bool b, bool deleteEntita){
 };
 
 bool ListaPorte::removeEntita(Porta *entity, bool deleteEntita) {
-    removeEntita_p(entity, false, deleteEntita);
+    return removeEntita_p(entity, false, deleteEntita);
 }
 
 

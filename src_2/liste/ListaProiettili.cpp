@@ -141,7 +141,7 @@ bool ListaProiettili::removeEntita_p(Proiettile *entity,bool b, bool deleteEntit
 };
 
 bool ListaProiettili::removeEntita(Proiettile *entity, bool deleteEntita) {
-    removeEntita_p(entity, false, deleteEntita);
+    return removeEntita_p(entity, false, deleteEntita);
 }
 
 

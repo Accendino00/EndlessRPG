@@ -47,8 +47,6 @@ void ListaArtefatti::addEntita_p(Artefatto *Artefatto, bool b){
     plistaA cheadTemp = chead;
 
     if(!b && !(checkEntity_p(Artefatto, false))){
-        plistaA headTemp = head;
-
         if(head == NULL){
             head = new listaA;
             head->prev = NULL;
@@ -143,7 +141,7 @@ bool ListaArtefatti::removeEntita_p(Artefatto *Artefatto,bool b, bool deleteEnti
 };
 
 bool ListaArtefatti::removeEntita(Artefatto *Artefatto, bool deleteEntita) {
-    removeEntita_p(Artefatto, false, deleteEntita);
+    return removeEntita_p(Artefatto, false, deleteEntita);
 }
 
 

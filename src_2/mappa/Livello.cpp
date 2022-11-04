@@ -87,8 +87,7 @@ Livello::Livello(){
   sprintf(livello_da_scegliere, "./mappa/matrici_livello/livello%d.lvl", idLivello);
   fin = fopen( livello_da_scegliere , "r");
   
-  //Leggo il file e mi trascrivo i numeri in una matrice di interi temporanea
-  matrice_numerica [DIM_MATRICE_LIVELLO_Y][DIM_MATRICE_LIVELLO_X];
+  //Leggo il file e mi trascrivo i numeri in una matrice di interi
   for(int i= 0; i < DIM_MATRICE_LIVELLO_Y; i++){
       for(int j = 0; j < DIM_MATRICE_LIVELLO_X; j++){
           matrice_numerica [i][j] = fgetc(fin) - (int)'0'; // Traduco i numeri ascii in interi
