@@ -69,7 +69,7 @@ Proiettile::Proiettile(int y, int x, bool playerProjectile, int direzione, int d
 
 void Proiettile::updateEntita(Stanza * stanza, Player * player) {
     this->Entita::updateEntita();
-    while (this->getVita() != 0 && this->passedActions > 0) {
+    while (this->getVita() > 0 && this->passedActions > 0) {
         // Interazione con il giocatore
         this->muovi(this->direzione,1);
         if (!this->isPlayerProjectile()  && player->controllaContatto(this->getX(), this->getY(), this->getDimX(), this->getDimY())) {
@@ -88,8 +88,8 @@ void Proiettile::updateEntita(Stanza * stanza, Player * player) {
             case STANZA_ACC_NEMICO:
                 if (this->isPlayerProjectile()) {
                     stanza->dmgNemiciContactList(this->getDamage());
+                    this->setVita(0);
                 }
-                this->setVita(0);
                 break;
             case STANZA_ACC_PORTA:
             case STANZA_ACC_MURO:

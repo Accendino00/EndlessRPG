@@ -99,6 +99,7 @@ void Nemico::updateEntita(Stanza * stanza, Player * player) {
                             break;
                         case STANZA_ACC_PROIETTILE_GIOCATORE:
                             stanza->dmgDaProiettiliContactList(true);
+                            stanza->cancellaProiettiliSovrapposti(this, false);
                             break;
                         case STANZA_ACC_PORTA:
                         case STANZA_ACC_MURO:

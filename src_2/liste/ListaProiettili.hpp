@@ -25,7 +25,7 @@ public:
 
     bool checkEntity(Proiettile *entity);
     void addEntita(Proiettile *entity);
-    bool removeEntita(Proiettile *entity, bool deleteEntita);
+    bool removeEntita(Proiettile *entity);
     void deleteList();
     plistaPro getList();
     int lengthList();
@@ -34,6 +34,7 @@ public:
     bool makecList(Entita *entity);
     plistaPro getcList();
     void deletecList();
+    void deletecList_fromList(bool type);
     int lengthcList();
     int lengthcList(bool type);
 

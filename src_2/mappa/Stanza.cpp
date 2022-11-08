@@ -242,14 +242,15 @@ int Stanza::accessibile(Entita * entita, bool giocatore){
     this->listaProiettili-> makecList(entita);
     this->listaNemici-> makecList(entita);
     this->listaPorte-> makecList(entita);
-    if(this->listaProiettili->lengthcList(false) >= 1){
-        returnvalue = STANZA_ACC_PROIETTILE_NEMICO;
-    } else if(this->listaProiettili->lengthcList(true) >= 1){
-        returnvalue = STANZA_ACC_PROIETTILE_GIOCATORE;
-    } else if(this->listaNemici->lengthcList() >= 1){
+
+    if(this->listaNemici->lengthcList() >= 1){
         returnvalue = STANZA_ACC_NEMICO;
     }  else if(this->listaPorte->lengthcList() >= 1){
         returnvalue = STANZA_ACC_PORTA;
+    } else if(this->listaProiettili->lengthcList(false) >= 1){
+        returnvalue = STANZA_ACC_PROIETTILE_NEMICO;
+    } else if(this->listaProiettili->lengthcList(true) >= 1){
+        returnvalue = STANZA_ACC_PROIETTILE_GIOCATORE;
     } 
 
     // Controllo accessibilità della cella se sono dentro le mura
@@ -342,6 +343,10 @@ void Stanza::aggiungiProiettile(Proiettile * proiettile) {
 
 
 void Stanza::calcolo_logica(Player * player){
+    // #TODO
+    // Aggiornare la logica del giocatore e dei nemici in base alla posizione dei proiettili nel momento stesso:
+    // Se un proiettile nemico si sovrappone al giocatore o un proiettile alleato si sovrappo ad un nemico, allora va cancellato
+
     this->listaProiettili->aggiornaEntita(this, player);
     this->listaNemici->aggiornaEntita(this, player);
     if(this->listaNemici->lengthList() == 0 && this->listaPorte->lengthList() >= 0){
@@ -354,6 +359,13 @@ void Stanza::aggiornaTick() {
     this->listaNemici->aggiornaTick();
 }
 
+/**
+ * @brief Danneggia tutti i nemici nella contact list
+ * dei nemici con la quantità inserita come parametro.
+ * 
+ * @param quantita Danno da infliggere a tutti i nemici 
+ *                 nella contact list
+ */
 void Stanza::dmgNemiciContactList(int quantita) {
     this->listaNemici->dmgNemiciContactList(quantita);
 }
@@ -368,8 +380,21 @@ void Stanza::dmgNemiciContactList(int quantita) {
  * 
  * @param type      Se vero, somma i proiettili del giocatore. Se falso, 
  *                  somma i proiettili dei nemici.
- * @return int 
+ * @return int      Il totale dei danni dei proiettili sommati
  */
 int Stanza::dmgDaProiettiliContactList(bool type) {
     return this->listaProiettili->dmgDaProiettiliContactList(type); 
+}
+
+/**
+ * @brief Cancella i proiettili sovrapposti con l'entità inserita.
+ * Se giocatore è vero, allora bisogna cancellare tutti i proiettili nemici,
+ * se bool è falso, allora bisogna cancellare tutti i proiettili alleati.
+ * 
+ * @param entita    L'entità con cui si deve creare la contact list
+ * @param giocatore Se vero cancella proiettili nemici, se falso cancella proiettili alleati 
+ */
+void Stanza::cancellaProiettiliSovrapposti(Entita * entita, bool giocatore) {
+    this->listaProiettili->makecList(entita);
+    this->listaProiettili->deletecList_fromList(!giocatore); // Cancello il contrario del tipo di nemici
 }

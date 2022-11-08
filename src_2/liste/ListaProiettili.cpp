@@ -157,8 +157,9 @@ bool ListaProiettili::removeEntita_p(Proiettile *entity,bool contactList, bool d
     return returnValue;
 };
 
-bool ListaProiettili::removeEntita(Proiettile *entity, bool deleteEntita) {
-    return removeEntita_p(entity, false, deleteEntita);
+bool ListaProiettili::removeEntita(Proiettile *entity) {
+    removeEntita_p(entity, true, false);
+    return removeEntita_p(entity, false, true);
 }
 
 
@@ -205,6 +206,26 @@ void ListaProiettili::deletecList(){
     }
 };
 
+/**
+ * @brief Cancella dalla lista dei proiettili, tutti quelli 
+ * che si trovano nella lista dei contatti.
+ * Se type è falso, allora cancella i proiettili nemici.
+ * Se type è vero, allora cancella i proiettili alleati.
+ * 
+ * @param type 
+ */
+void ListaProiettili::deletecList_fromList(bool type){
+    plistaPro temp = getcList();
+    while(temp != NULL) {
+        if (temp->e->isPlayerProjectile() == type) {
+            removeEntita(temp->e);
+            temp = getcList();
+        }
+        if(temp != NULL)
+            temp = temp->next;
+    }
+};
+
 void ListaProiettili::deleteList(){
     plistaPro temp = getList();
     if(temp != NULL) {
@@ -213,12 +234,12 @@ void ListaProiettili::deleteList(){
         }
         while(temp->prev != NULL) {
             temp = temp->prev;
-            removeEntita(temp->next->e, true);
+            removeEntita(temp->next->e);
         }
         if (temp->next != NULL) {
-            removeEntita(temp->next->e, true);
+            removeEntita(temp->next->e);
         }
-        removeEntita(temp->e, true);
+        removeEntita(temp->e);
     }
 
 };
@@ -237,8 +258,7 @@ void ListaProiettili::aggiornaEntita(Stanza * stanza, Player * player) {
     plistaPro headTemp = head;
     while(headTemp != NULL) {
         if (headTemp->e->getVita() <= 0) {
-            removeEntita_p(headTemp->e, true, false);
-            removeEntita_p(headTemp->e, false, true);
+            removeEntita(headTemp->e);
             headTemp = head;
         } else {
             headTemp->e->updateEntita(stanza, player);
@@ -271,7 +291,7 @@ int ListaProiettili::lengthList(bool type){
     int returnvalue=0;
     listaPro * tmp = this-> head;
     while(tmp!=NULL){
-        if (!type != tmp->e->isPlayerProjectile()){
+        if (type == tmp->e->isPlayerProjectile()){
             returnvalue+=1;
         }
         tmp = tmp -> next;

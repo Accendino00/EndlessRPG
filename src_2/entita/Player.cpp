@@ -92,6 +92,7 @@ void Player::muoviPlayer(int direzione, int val, Livello * livello) {
             break;
         case STANZA_ACC_PROIETTILE_NEMICO:
             this->modificaVita(- ((livello->getStanza())->dmgDaProiettiliContactList(false)) );
+            
             break;
         case STANZA_ACC_ARTEFATTO:
             // Faccio cose con l'artefatto nella contact list
