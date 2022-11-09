@@ -76,26 +76,30 @@ void MenuScore::CaricaOrdinaScore() {
             }
             this->scoreCounter++;
             curr->next = tmp;
-        }
+        
         //Controllo per fine del file
         if (feof(fin)) {
             exit = true;
+            }
         }
         //Dealloco curr
         curr->next = NULL;
         delete curr;
     }
-    if(scoreCounter > 0){
-        this->arrayScore = new UserArrayData[scoreCounter];
+    
+    if(this->scoreCounter > 0){
+        this->arrayScore = new UserArrayData[this->scoreCounter]; //Puntatore ad array di strutture 
     }
     else this->arrayScore = NULL;
-    for(int i = 0; i < scoreCounter; i++){
+
+    for(int i = 0; i < this->scoreCounter; i++){
         this->arrayScore[i].score = tmp->score;
-        for(int j = 0; j < 4 ; j++){
-        this->arrayScore[i].nome[j] = tmp->nome[j];
+        for(int j = 0; j < 3 ; j++){
+            this->arrayScore[i].nome[j] = tmp->nome[j];
         }
         tmp = tmp->next;
     }
+    
     //heapSort(this->arrayScore,scoreCounter);
     //Dealloco tmp(tutta la lista)
     //tmp->next=NULL; 
@@ -157,7 +161,7 @@ void MenuScore::printAll(){
     int line = 0;
     for(int i = (this->pagina-1)*10; i<(this->pagina*10) ; i++){ //Seleziono la porzione di array che voglio mostrare
         if(i < scoreCounter){
-            sprintf(daStampare, "< %d %s \t>",arrayScore[i].score,arrayScore[i].nome);
+            sprintf(daStampare, "< %d %s \t>",this->arrayScore[i].score,arrayScore[i].nome);
             attron(COLOR_PAIR(MENU_NORMAL));
             int centerY = gd->getTerminalY()/2;
             int centerX = gd->getTerminalX()/2;
