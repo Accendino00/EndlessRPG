@@ -10,14 +10,14 @@ ListaArtefatti::~ListaArtefatti(){
     this->deleteList();
 }
 
-bool ListaArtefatti::checkEntity_p(Artefatto *Artefatto, bool b){
+bool ListaArtefatti::checkEntity_p(Artefatto *Artefatto, bool contactList){
 
     // Controlla se l'entità è presente nella lista
     plistaA headTemp = head;
     bool returnvalue = false;
     plistaA cheadTemp = chead;
 
-    if(!b){
+    if(!contactList){
         while(headTemp != NULL && !returnvalue){
                 if(headTemp->e == Artefatto)returnvalue = true;
                 else headTemp = headTemp->next;
@@ -39,16 +39,14 @@ bool ListaArtefatti::checkEntity(Artefatto *Artefatto){
 }
 
 
-void ListaArtefatti::addEntita_p(Artefatto *Artefatto, bool b){
+void ListaArtefatti::addEntita_p(Artefatto *Artefatto, bool contactList){
 
     // aggiunge entita controllando che non sia gia presente
 
     plistaA headTemp = head;
     plistaA cheadTemp = chead;
 
-    if(!b && !(checkEntity_p(Artefatto, false))){
-        plistaA headTemp = head;
-
+    if(!contactList && !(checkEntity_p(Artefatto, false))){
         if(head == NULL){
             head = new listaA;
             head->prev = NULL;
@@ -86,18 +84,19 @@ void ListaArtefatti::addEntita(Artefatto *Artefatto){
     addEntita_p(Artefatto, false);
 }
 
-bool ListaArtefatti::removeEntita_p(Artefatto *Artefatto,bool b, bool deleteEntita){
+bool ListaArtefatti::removeEntita_p(Artefatto *entity, bool contactList, bool deleteEntita){
     bool returnValue = false;
     plistaA headTemp;
-    if (b) {
+    if (contactList) {
         headTemp = chead;
     } else {
         headTemp = head;
     }
 
-    if(checkEntity_p(Artefatto, b)){
+
+    if(checkEntity_p(entity, contactList)){    
         returnValue = true;
-        while(headTemp->e != Artefatto){
+        while(headTemp->e != entity){
             headTemp = headTemp->next;
         }
         // Caso in cui non è la testa della lista
@@ -105,6 +104,7 @@ bool ListaArtefatti::removeEntita_p(Artefatto *Artefatto,bool b, bool deleteEnti
             // Caso in cui è al centro della lista
             if(headTemp->next != NULL){
                 headTemp->prev->next = headTemp->next;
+                headTemp->next->prev = headTemp->prev;
                 if(deleteEntita) delete headTemp->e;
                 delete headTemp;
             }
@@ -119,7 +119,8 @@ bool ListaArtefatti::removeEntita_p(Artefatto *Artefatto,bool b, bool deleteEnti
         else{
             // Caso in cui la lista ha altri elementi
             if(headTemp->next != NULL){
-                if (b) {
+                headTemp->next->prev = NULL;
+                if (contactList) {
                     chead = headTemp->next;
                 } else {
                     head = headTemp->next;
@@ -129,7 +130,7 @@ bool ListaArtefatti::removeEntita_p(Artefatto *Artefatto,bool b, bool deleteEnti
             }
             // Caso in cui la lista non ha altri elementi
             else{
-                if (b) {
+                if (contactList) {
                     chead = NULL;
                 } else {
                     head = NULL;
@@ -143,22 +144,23 @@ bool ListaArtefatti::removeEntita_p(Artefatto *Artefatto,bool b, bool deleteEnti
 };
 
 bool ListaArtefatti::removeEntita(Artefatto *Artefatto, bool deleteEntita) {
-    removeEntita_p(Artefatto, false, deleteEntita);
+    return removeEntita_p(Artefatto, false, deleteEntita);
 }
 
 
-bool ListaArtefatti::makecList(Entita *Artefatto){
+bool ListaArtefatti::makecList(Entita *entity){
     // Controlla quali entità sono a contatto con l'entità di input e le aggiungo in chead. Ritorno true se ci sono entita a contatto.
+
+    deletecList();
 
     bool returnValue = false;
     plistaA headTemp = head;
 
     while(headTemp != NULL){
-        while(!(Artefatto->controllaContatto(headTemp->e))){
-            headTemp = headTemp->next;
+        if (headTemp->e != entity && (entity->controllaContatto(headTemp->e))) {
+            addEntita_p(headTemp->e, true);
             returnValue = true;
         }
-        addEntita_p(headTemp->e, true);
         headTemp = headTemp->next;
     }
     return returnValue;
@@ -176,9 +178,15 @@ void ListaArtefatti::deletecList(){
     plistaA temp = getcList();
     if(temp != NULL) {
         while(temp->next != NULL){
-            temp = temp->next;
-            removeEntita_p(temp->prev->e, true, false);
-        } 
+            temp = temp->next;    
+        }
+        while(temp->prev != NULL) {
+            temp = temp->prev;    
+            removeEntita_p(temp->next->e, true, false);
+        }
+        if (temp->next != NULL) {
+            removeEntita_p(temp->next->e, true, false);
+        }
         removeEntita_p(temp->e, true, false);
     }
 };
@@ -187,9 +195,15 @@ void ListaArtefatti::deleteList(){
     plistaA temp = getList();
     if(temp != NULL) {
         while(temp->next != NULL){
-            temp = temp->next;
-            removeEntita(temp->prev->e, true);
-        } 
+            temp = temp->next;    
+        }
+        while(temp->prev != NULL) {
+            temp = temp->prev;    
+            removeEntita(temp->next->e, true);
+        }
+        if (temp->next != NULL) {
+            removeEntita(temp->next->e, true);
+        }
         removeEntita(temp->e, true);
     }
 };

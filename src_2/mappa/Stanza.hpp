@@ -4,11 +4,6 @@
 #define NUMERO_STANZE_NORMALI 2
 #define NUMERO_STANZE_BOSS 1
 
-
-#define DIM_STANZA_X 50
-#define DIM_STANZA_Y 30
-#define DIM_STANZA_BOSS_X 50
-#define DIM_STANZA_BOSS_Y 30
 #define DIM_STANZA_SPAWN_X 50
 #define DIM_STANZA_SPAWN_Y 30
 
@@ -30,85 +25,45 @@
 #define STANZA_ACC_PROIETTILE_NEMICO 6
 
 class Stanza {
-    /*
-    public:
-        Entita * nemici; 
-            /*
-                Questa in realtà è una struttura dati del tipo
-                NemiciStanza * s_nemici
-                    {
-                        Nemico * nemico
-                        Proiettile * proiettili
-                    }
+private:
+    int ** matrice_logica;
+    cchar_t ** matrice_stampabile;
+    ListaPorte * listaPorte;
+    ListaProiettili * listaProiettili;
+    ListaNemici * listaNemici;
 
-                I nemici si possono muovere e a intervalli regolari sparano
-                Proiettili è una struttura dati che contiene proiettili
+    int idStanza;
 
-            
-        Entita * porte;
+    int dim_y;
+    int dim_x;
 
-        Entita * artefatti; //pick me up soon
+public:
+    Stanza(int id);
+    ~Stanza();
 
-        //volendo potrei fare una struct            
-        cchar_t ** matrice_stampabile; //matrice di widechar con attributi 
-        int ** matrice_logica;         //matrice logica/numerica
-        
+    void stampa_stanza();
+    void imposta_porte(bool nord, bool sud, bool est, bool ovest);
+    void da_logica_a_stampabile();
+    int accessibile(int y_entity, int x_entity, bool giocatore);
+    int accessibile(Entita * entita, bool giocatore);
+    int direzione_porta(int y_entity, int x_entity);
 
-        WINDOW * schermata_mappa;  //prima window da stampare
-        
-        int x, y, maxx, maxy;
+    int zero_x();
+    int zero_y();
 
-    public:
-        Stanza(int tipoStanza);
-        Stanza(Entita * nemici, Entita * porte, Entita * artefatti, WINDOW * schermata_mappa, cchar_t ** matrice_stampabile, int ** matrice_logica, int x, int y, int maxx, int maxy);
-        
-        cchar_t ** da_logica_a_stampabile(int ** matrice_stanza);
+    int getDimX();
+    int getDimY();
 
-        void stampa_stanza(WINDOW * window_one, cchar_t ** mappa_stampabile, int offset_y, int offset_x);
+    ListaProiettili * getListaProiettili();
+    void aggiungiProiettile(Proiettile * proiettile);
+    void aggiungiNemico (Nemico * nemico);
 
-        void creazione_porte();
+    void calcolo_logica(Player * player);
+    void aggiornaTick();
 
-        bool accessibile(int ** mappa, int x, int y);
-        
-        int ** Stanza::scegli_stanza();
-        
-        bool Stanza::lettura_matrice(int ** mappa);
-        */
-       public:
-        int ** matrice_logica;
-        cchar_t ** matrice_stampabile;
-        ListaPorte * listaPorte;
-        ListaProiettili * listaProiettili;
-        ListaNemici * listaNemici;
-        ListaArtefatti * listaArtefatti;
-
-        int idStanza;
-
-        int dim_y;
-        int dim_x;
-
-        Stanza(int id);
-        ~Stanza();
-
-        void stampa_stanza();
-        void imposta_porte(bool nord, bool sud, bool est, bool ovest);
-        void da_logica_a_stampabile();
-        int accessibile(int y_entity, int x_entity, bool giocatore);
-        int accessibile(Entita * entita, bool giocatore);
-        int direzione_porta(int y_entity, int x_entity);
-
-        int zero_x();
-        int zero_y();
-
-        int getDimX();
-        int getDimY();
-
-        ListaProiettili * getListaProiettili();
-        void aggiungiProiettile(Proiettile * proiettile);
-        void aggiungiNemico (Nemico * nemico);
-
-        void calcolo_logica(Player * player);
-        void aggiornaTick();
+    void dmgNemiciContactList(int quantita);
+    int dmgDaProiettiliContactList(bool type);
+    void cancellaProiettiliSovrapposti(Entita * entita, bool giocatore);
 };
 
 

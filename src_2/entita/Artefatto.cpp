@@ -1,4 +1,3 @@
-#pragma once
 #include "../generale/libs.hpp"
 
 Artefatto::Artefatto(int type){

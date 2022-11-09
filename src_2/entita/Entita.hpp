@@ -47,12 +47,16 @@ public:
 
     int getVita();
     void modificaVita(int quantita);
+    void setVita(int quantita);
 
     void modificaCoordinate(int new_y, int new_x);
     void incrementaX(int amount);
     void incrementaY(int amount);
     int getX();
     int getY();
+
+    int getDimX();
+    int getDimY();
 
     void muovi(int direzione, int val);
     int movimentoValido(int direzione, int val, Stanza * Stanza, bool giocatore);

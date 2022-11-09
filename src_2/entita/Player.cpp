@@ -18,6 +18,8 @@ Player::Player(int y, int x, int life) {
 
     this->maxLife=life;
     this->currentLife = this->maxLife;
+
+    this->damage = 10;
 	
     this->stampabile = new cchar_t * [1];
     this->stampabile[0] = new cchar_t [1];
@@ -34,24 +36,6 @@ void Player::manageInput(Livello * livello) {
         this->gestione_player(gd->getKey(i), livello);
         i++;
     }
-}
-
-
-void Player::stampaHUDplayer(){
-    int coordy = 0;
-    int coordx = 0;
-    attron(COLOR_PAIR(0));
-    mvprintw(coordy+2, coordx, "HP : ");
-    attroff(COLOR_PAIR(0));
-    attron(COLOR_PAIR(HEARTS_PAIR));
-    for(int i = currentLife/10; i>0; i--){
-        printw("\u2665");
-    }
-    for(int i = (maxLife-currentLife)/10; i>0; i--){
-        printw("\u2661");
-    }
-    attroff(COLOR_PAIR(HEARTS_PAIR));
-
 }
 
 void Player::gestione_player(int input, Livello * livello){
@@ -86,35 +70,63 @@ void Player::gestione_player(int input, Livello * livello){
                 break;
             // Proiettili
             case (KEY_RIGHT):
-                livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_EE));
+                livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_EE,this->damage));
                 break;
             case (KEY_DOWN):
-                livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SS));
+                livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SS,this->damage));
                 break;
             case (KEY_LEFT):
-                livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_OO));
+                livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_OO,this->damage));
                 break;
             case (KEY_UP):
-                livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NN));
+                livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NN,this->damage));
                 break;
 		}
 
 };
 
 void Player::muoviPlayer(int direzione, int val, Livello * livello) {
-    if(movimentoValido(direzione, val, livello->getStanza(), true) == STANZA_ACC_LIBERO)
-        muovi(direzione, val);
+    switch (movimentoValido(direzione, val, livello->getStanza(), true) ) {
+        case STANZA_ACC_LIBERO:
+            muovi(direzione, val);
+            break;
+        case STANZA_ACC_PROIETTILE_NEMICO:
+            this->modificaVita(- ((livello->getStanza())->dmgDaProiettiliContactList(false)) );
+            
+            break;
+        case STANZA_ACC_ARTEFATTO:
+            // Faccio cose con l'artefatto nella contact list
+        break;
+        case STANZA_ACC_PORTA:
+        case STANZA_ACC_MURO:
+            // non si può muovere in quella direzione
+            break;
+        default:
+            
+        break;
+    }
 }
 
 void Player::inventario(){
 }
 
 
+void Player::stampaHUDplayer(){
+    int coordy = 0;
+    int coordx = 0;
+    attron(COLOR_PAIR(0));
+    mvprintw(coordy+2, coordx, "HP : ");
+    attroff(COLOR_PAIR(0));
+    attron(COLOR_PAIR(HEARTS_PAIR));
+    for(int i = currentLife/10; i>0; i--){
+        printw("\u2665");
+    }
+    for(int i = (maxLife-currentLife)/10; i>0; i--){
+        printw("\u2661");
+    }
+    attroff(COLOR_PAIR(HEARTS_PAIR));
 
-
-
-
-
+}
 
 
 

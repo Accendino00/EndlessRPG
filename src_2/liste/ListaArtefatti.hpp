@@ -15,9 +15,9 @@ private:
     // bool:
     // false = head, 
     // true = chead
-    bool checkEntity_p(Artefatto *entity, bool b);
-    void addEntita_p(Artefatto *entity, bool b);
-    bool removeEntita_p(Artefatto *entity,bool b, bool deleteEntita);
+    bool checkEntity_p(Artefatto *entity, bool contactList);
+    void addEntita_p(Artefatto *entity, bool contactList);
+    bool removeEntita_p(Artefatto *entity,bool contactList, bool deleteEntita);
 
 public:
     ListaArtefatti();

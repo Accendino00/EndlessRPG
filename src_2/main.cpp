@@ -53,4 +53,12 @@ int main () {
     Comandi per compilazione con debug:
         g++ -g -o Gioco Entita.cpp Compatibility.cpp main.cpp -lncursesw
         valgrind --leak-check=full          --show-leak-kinds=all          --track-origins=yes          --verbose          --log-file=valgrind-out.txt          ./Gioco
+
+    Ncurses sembra usare:
+    ==48346== HEAP SUMMARY:
+    ==48346==     in use at exit: 1,079,082 bytes in 510 blocks
+    ==48346==   total heap usage: 572 allocs, 62 frees, 1,174,014 bytes allocated
+
+    // per ora, data 04 / 11 / 22, sembra non avere più memory leak
+
 */

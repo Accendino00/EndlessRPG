@@ -87,8 +87,7 @@ Livello::Livello(){
   sprintf(livello_da_scegliere, "./mappa/matrici_livello/livello%d.lvl", idLivello);
   fin = fopen( livello_da_scegliere , "r");
   
-  //Leggo il file e mi trascrivo i numeri in una matrice di interi temporanea
-  matrice_numerica [DIM_MATRICE_LIVELLO_Y][DIM_MATRICE_LIVELLO_X];
+  //Leggo il file e mi trascrivo i numeri in una matrice di interi
   for(int i= 0; i < DIM_MATRICE_LIVELLO_Y; i++){
       for(int j = 0; j < DIM_MATRICE_LIVELLO_X; j++){
           matrice_numerica [i][j] = fgetc(fin) - (int)'0'; // Traduco i numeri ascii in interi
@@ -236,30 +235,36 @@ bool Livello::cambia_stanza(int direzione){
 
 void Livello::calcolo_logica(Player * player){
 
-  // Aggiornamento delle liste
-
+  // Aggiornamento delle liste di entità che si trovano nella stanza
   (matrice_livello [current_y] [current_x]) -> calcolo_logica(player);
 
   // Cambiare stanza
+
+  // Offset rispetto alla parte in alto a sinistra delle porte (orizzontali e verticali)
+  int door_offset_x = player->getX() - (((matrice_livello [current_y] [current_x]) -> getDimX() - DIMENSIONE_PORTA_ORIZZONTALE) / 2);
+  int door_offset_y = player->getY() - (((matrice_livello [current_y] [current_x]) -> getDimY() - DIMENSIONE_PORTA_VERTICALE) / 2);
+
+  // 
+
   bool cambiatoStanza = false;
   if(matrice_livello [current_y] [current_x]->direzione_porta(player->getY(), player->getX()) == DIRECTION_NN){
     cambiatoStanza = cambia_stanza(DIRECTION_NN);
     if(cambiatoStanza) { 
       player->modificaCoordinate( (matrice_livello [current_y] [current_x]->getDimY())-2, 
-                                  player->getX());
+                                  (((matrice_livello [current_y] [current_x]) -> getDimX() - DIMENSIONE_PORTA_ORIZZONTALE) / 2) + door_offset_x);
     }
   }
   else if(matrice_livello [current_y] [current_x]->direzione_porta(player->getY(), player->getX()) == DIRECTION_OO){
     cambiatoStanza = cambia_stanza(DIRECTION_OO);
     if(cambiatoStanza) { 
-      player->modificaCoordinate( player->getY(), 
+      player->modificaCoordinate( (((matrice_livello [current_y] [current_x]) -> getDimY() - DIMENSIONE_PORTA_VERTICALE) / 2) + door_offset_y, 
                                 (matrice_livello [current_y] [current_x]->getDimX())-2);
     }
   }
   else if(matrice_livello [current_y] [current_x]->direzione_porta(player->getY(), player->getX()) == DIRECTION_EE){
     cambiatoStanza = cambia_stanza(DIRECTION_EE);
     if(cambiatoStanza) { 
-      player->modificaCoordinate( player->getY(), 
+      player->modificaCoordinate( (((matrice_livello [current_y] [current_x]) -> getDimY() - DIMENSIONE_PORTA_VERTICALE) / 2) + door_offset_y, 
                                   1);
     }
   }
@@ -267,10 +272,11 @@ void Livello::calcolo_logica(Player * player){
     cambiatoStanza = cambia_stanza(DIRECTION_SS);
     if(cambiatoStanza) { 
       player->modificaCoordinate( 1, 
-                                  player->getX());
+                                  (((matrice_livello [current_y] [current_x]) -> getDimX() - DIMENSIONE_PORTA_ORIZZONTALE) / 2) + door_offset_x);
     }
   }
   if (cambiatoStanza) {
+    // Se ho cambiato stanza, aggiorno i tick a quelli di presenti, senza modificare le entità
     matrice_livello [current_y] [current_x] -> aggiornaTick();
   }
 }

@@ -7,12 +7,13 @@
 #define DIM_MATRICE_LIVELLO_X   5
 
 class Livello {
-public:
+private:
+    int matrice_numerica [DIM_MATRICE_LIVELLO_Y][DIM_MATRICE_LIVELLO_X];
     Stanza *** matrice_livello;
     int current_y;
     int current_x;
-    int matrice_numerica [DIM_MATRICE_LIVELLO_Y][DIM_MATRICE_LIVELLO_X];
-    
+
+public:
     Livello();
     ~Livello();
 

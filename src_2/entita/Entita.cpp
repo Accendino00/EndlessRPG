@@ -130,117 +130,10 @@ bool Entita::controllaContatto(Entita * entita) {
     );
 }
 
-
-void Entita::updateEntita() {
-    // Aggiornamento dei tick e conto delle azioni che deve eseguire l'entità dall'ultima volta che è stata aggiornata
-    if((gd->getCurrentTick() - this->lastTick) >= this->ticksForAction) {
-        this->passedActions += (gd->getCurrentTick() - this->lastTick) / this->ticksForAction;
-        this->lastTick = gd->getCurrentTick();
-    }
-}
-
-void Entita::toCurrentTick() {
-    this->lastTick = gd->getCurrentTick();
-}
-
-void Entita::nextFrame() {
-    int maxFrames = getMaxFrames();
-    if(this->currentFrame < (maxFrames - 1)) {
-        this->currentFrame++; 
-    } else {
-        this->currentFrame = 0;
-    }
-}
-
-void Entita::setFrame(int frame) { 
-    int maxFrames = getMaxFrames();
-    if(frame < (maxFrames)) {
-        this->currentFrame = frame; 
-    } 
-}
-
-int Entita::getMaxFrames() {
-    return (this->s_dimx / this->h_dimx);
-}
-
-void Entita::modificaVita(int quantita) {
-    if(quantita + this->getVita() > this->maxLife) {
-        this->currentLife = this->maxLife;
-    } else {
-        this->currentLife += quantita;
-    }
-}
-
-int Entita::getVita() {
-    return this->currentLife;
-}
-
-void Entita::modificaCoordinate(int new_y, int new_x) {
-    (*this).y = new_y;
-    (*this).x = new_x;
-}
-
-void Entita::incrementaX(int val) {
-    (*this).x += val;
-}
-void Entita::incrementaY(int val) {
-    (*this).y -= val;
-}
-int Entita::getX() {
-    return this->x;
-}
-
-int Entita::getY() {
-    return this->y;
-}
-
-void Entita::muovi(int direzione, int val) {
-    switch(direzione) {
-        case DIRECTION_NN:
-            this->incrementaY(val);
-            break;
-        case DIRECTION_SS:
-            this->incrementaY(-val);
-            break;
-        case DIRECTION_EE:
-            this->incrementaX(val);
-            break;
-        case DIRECTION_OO:
-            this->incrementaX(-val);
-            break;
-        case DIRECTION_NE:
-            this->incrementaY(val);
-            this->incrementaX(val);
-            break;
-        case DIRECTION_SE:
-            this->incrementaY(-val);
-            this->incrementaX(val);
-            break;
-        case DIRECTION_SO:
-            this->incrementaY(-val);
-            this->incrementaX(-val);
-            break;
-        case DIRECTION_NO:
-            this->incrementaY(val);
-            this->incrementaX(-val);
-            break;
-    }
-}
-
-int Entita::movimentoValido(int direzione, int val, Stanza * stanza, bool giocatore) {    
-    int returnValue = STANZA_ACC_LIBERO;
-    muovi(direzione, val);
-    int tempx = this->x, tempy = this->y;
-    returnValue = stanza -> accessibile(this, giocatore);
-    //returnValue = stanza -> accessibile(tempy, tempx, giocatore);
-    muovi(direzione, -val);
-    return returnValue;
-}
-
 //overloading del metodo controllaContatto
 bool Entita::controllaContatto(int posx, int posy, int h_dimx, int h_dimy) {
-        // Controllo se ciascuno dei 4 vertici di una entità è contenuto tra x e x+dimx e y e y+dimy dell'altra entità
-
+    
+    // Controllo se ciascuno dei 4 vertici di una entità è contenuto tra x e x+dimx e y e y+dimy dell'altra entità
     return (
         // Primo nel secondo
         (
@@ -292,4 +185,142 @@ bool Entita::controllaContatto(int posx, int posy, int h_dimx, int h_dimy) {
             ((posy + h_dimy) > this->y && (posy + h_dimy) < (this->y + this->h_dimy))
         )
     );
+}
+
+
+void Entita::updateEntita() {
+    // Aggiornamento dei tick e conto delle azioni che deve eseguire l'entità dall'ultima volta che è stata aggiornata
+    if((gd->getCurrentTick() - this->lastTick) >= this->ticksForAction) {
+        this->passedActions += (gd->getCurrentTick() - this->lastTick) / this->ticksForAction;
+        this->lastTick = gd->getCurrentTick();
+    }
+}
+
+void Entita::toCurrentTick() {
+    this->lastTick = gd->getCurrentTick();
+}
+
+void Entita::nextFrame() {
+    int maxFrames = getMaxFrames();
+    if(this->currentFrame < (maxFrames - 1)) {
+        this->currentFrame++; 
+    } else {
+        this->currentFrame = 0;
+    }
+}
+
+void Entita::setFrame(int frame) { 
+    int maxFrames = getMaxFrames();
+    if(frame < (maxFrames)) {
+        this->currentFrame = frame; 
+    } 
+}
+
+int Entita::getMaxFrames() {
+    return (this->s_dimx / this->h_dimx);
+}
+
+void Entita::modificaVita(int quantita) {
+    if(quantita + this->getVita() > this->maxLife) {
+        this->currentLife = this->maxLife;
+    } else {
+        this->currentLife += quantita;
+    }
+}
+
+
+int Entita::getDamage() {
+    return this->damage;
+}
+
+int Entita::getVita() {
+    return this->currentLife;
+}
+
+void Entita::setVita(int quantita) {
+    this->currentLife = quantita;
+}
+
+void Entita::modificaCoordinate(int new_y, int new_x) {
+    (*this).y = new_y;
+    (*this).x = new_x;
+}
+
+void Entita::incrementaX(int val) {
+    (*this).x += val;
+}
+void Entita::incrementaY(int val) {
+    (*this).y -= val;
+}
+int Entita::getX() {
+    return this->x;
+}
+
+int Entita::getY() {
+    return this->y;
+}
+
+
+int Entita::getDimX() {
+    return this->h_dimx;
+}
+
+int Entita::getDimY() {
+    return this->h_dimy;
+}
+
+void Entita::muovi(int direzione, int val) {
+    switch(direzione) {
+        case DIRECTION_NN:
+            this->incrementaY(val);
+            break;
+        case DIRECTION_SS:
+            this->incrementaY(-val);
+            break;
+        case DIRECTION_EE:
+            this->incrementaX(val);
+            break;
+        case DIRECTION_OO:
+            this->incrementaX(-val);
+            break;
+        case DIRECTION_NE:
+            this->incrementaY(val);
+            this->incrementaX(val);
+            break;
+        case DIRECTION_SE:
+            this->incrementaY(-val);
+            this->incrementaX(val);
+            break;
+        case DIRECTION_SO:
+            this->incrementaY(-val);
+            this->incrementaX(-val);
+            break;
+        case DIRECTION_NO:
+            this->incrementaY(val);
+            this->incrementaX(-val);
+            break;
+    }
+}
+
+/**
+ * @brief Funzione che controlla se l'entità si può muovere in una certa
+ * direzione, ad un certo numero di x e y, in una specifica stanza.
+ * 
+ * 
+ * @param direzione Direzione del moviemnto, vedere le costanti DIRECTION_* in GameData.hpp
+ * @param val       Numero di "spazi" di cui si vuole muovere l'entità
+ * @param stanza    Stanza in cui si vuole muovere l'entità
+ * @param giocatore Se l'entità che si vuole muovere è il giocatore o no
+ *                  Ci sono delle differenze fondamentali, in quanto il giocatore può 
+ *                  "uscire" dalle stanze, a differenza delle altre entità.
+ * 
+ * @return int      Ritorna un valore particolare che indica in cosa si è imbattuta l'entità.
+ *                  Vedere le costanti STANZA_ACC_* in Stanza.hpp
+ */
+int Entita::movimentoValido(int direzione, int val, Stanza * stanza, bool giocatore) {    
+    int returnValue = STANZA_ACC_LIBERO;
+    muovi(direzione, val);
+    returnValue = stanza -> accessibile(this, giocatore);
+    muovi(direzione, -val);
+    return returnValue;
 }

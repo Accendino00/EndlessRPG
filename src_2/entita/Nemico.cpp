@@ -43,7 +43,9 @@ Nemico::Nemico (int type, int posy, int posx) {
     actions[11] = AZIONE_SPARA_DIREZIONE | AZIONE_SPARA_PRINCIPALE | AZIONE_SPARA_SECONDARIO |  AZIONE_SPARA_TERZIARIO | DIRECTION_SE;
 
 
-    /*if(type == NORMAL_ENEMY) {
+    this->damage = 5;
+
+    if(type == NORMAL_ENEMY) {
         int idNemico = ( rand() % 5 );
         switch(idNemico) {
             case 0:
@@ -75,7 +77,7 @@ Nemico::Nemico (int type, int posy, int posx) {
 
             break;
         }
-    }*/
+    }
 }
 
 Nemico::~Nemico() {
@@ -91,7 +93,22 @@ void Nemico::updateEntita(Stanza * stanza, Player * player) {
         if( (azione & MUOVI_DIREZIONE) == MUOVI_DIREZIONE ) {
             for(int i = DIRECTION_NN; i <= DIRECTION_NO; i = i << 1) {
                 if((azione & i) == i) {
-                    this->muovi(i, 1);
+                    switch(movimentoValido(i, 1, stanza, false)) {
+                        case STANZA_ACC_LIBERO:
+                            this->muovi(i,1);
+                            break;
+                        case STANZA_ACC_PROIETTILE_GIOCATORE:
+                            stanza->dmgDaProiettiliContactList(true);
+                            stanza->cancellaProiettiliSovrapposti(this, false);
+                            break;
+                        case STANZA_ACC_PORTA:
+                        case STANZA_ACC_MURO:
+                            // Sta fermo
+                            break;
+                        default:
+                            // Non sono contemplate interazioni con altro
+                            break;
+                    }
                 }
             }
         }
@@ -114,15 +131,15 @@ void Nemico::updateEntita(Stanza * stanza, Player * player) {
                     if( (azione & i) == DIRECTION_NO ) { osX = -1; osY =  1;}
                     // Parte dal centro del nemico
                     if ((azione & AZIONE_SPARA_PRINCIPALE) == AZIONE_SPARA_PRINCIPALE) {
-                        stanza->aggiungiProiettile(new Proiettile(this->y,this->x,false,i));
+                        stanza->aggiungiProiettile(new Proiettile(this->y,this->x,false,i,this->damage));
                     }
                     // Parte dalla destra della direzione dove si spara 
                     if ((azione & AZIONE_SPARA_SECONDARIO) == AZIONE_SPARA_SECONDARIO) {
-                        stanza->aggiungiProiettile(new Proiettile((this->y)+osY,(this->x)+osX,false,i));
+                        stanza->aggiungiProiettile(new Proiettile((this->y)+osY,(this->x)+osX,false,i,this->damage));
                     }
                     // Parte dalla sinistra della direzione dove si spara 
                     if ((azione & AZIONE_SPARA_TERZIARIO) == AZIONE_SPARA_TERZIARIO) {
-                        stanza->aggiungiProiettile(new Proiettile((this->y)-osY,(this->x)-osX,false,i));
+                        stanza->aggiungiProiettile(new Proiettile((this->y)-osY,(this->x)-osX,false,i,this->damage));
                     }
                 }
             }

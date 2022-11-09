@@ -1,171 +1,14 @@
 #include "../generale/libs.hpp"
 //#include "Stanzaprova.cpp"
-/*
 
-Stanza::Stanza(int tipoStanza) {
-    // Implementare
-}
-
-
-int ** Stanza::scegli_stanza(){
-    switch(rand() % 0){
-        case 0:
-        int ** mappa = Stanzaprova;
-        if(Stanza::lettura_matrice(mappa) == true){
-            Stanza::matrice_logica = mappa;
-        }
-        break;
-    }
-    return mappa;
-}
-
-bool Stanza::lettura_matrice(int ** mappa){
-    bool returnvalue = true;
-    for(int i = 0; i < maxy; i++){
-        for(int j = 0; j < maxx; j++){
-            if(mappa [i] [j] != 0 || mappa [i] [j] != 1){
-                returnvalue = false;
-            }
-        }
-    }
-    return returnvalue;
-}
-
-Stanza::Stanza(Entita * nemici, Entita * porte, Entita * artefatti, WINDOW * schermata_mappa, cchar_t ** matrice_stampabile, int ** matrice_logica, int x, int y, int maxx, int maxy){
-    (*this).nemici = nemici;
-    (*this).porte = porte;
-    (*this).artefatti = artefatti;
-    (*this).schermata_mappa = schermata_mappa;
-    (*this).matrice_stampabile = matrice_stampabile;
-    (*this).matrice_logica = matrice_logica;
-    (*this).x = x;
-    (*this).y = y;
-    (*this).maxx = getmaxx(stdscr); //sus
-    (*this).maxy = getmaxy(stdscr);
-}
-
-
-bool Stanza::accessibile(int ** mappa, int x, int y){
-    int returnbool = false;
-    if(x >= 0 && x < 80 && y >= 0 && y < 20 && mappa[x][y] != 1){
-        returnbool = true;
-    } return returnbool;
-}
-
-
-cchar_t ** Stanza::da_logica_a_stampabile(int ** matrice_stanza){
-    cchar_t ** matrice_da_stampare;
-    for(int i = 0; i < maxy; i++){
-        for(int j = 0; j < maxx; j++){
-            switch(matrice_stanza [i] [j]){
-                case(0):
-                break;
-                case(1):
-                break;
-                case(2):
-                break;
-                case(3):
-                break;
-                case(4):
-                break;
-                case(5):
-                //if l'entià è spawnata
-                //matrice_da_stampare [i] [j] = "";
-                break;
-            }
-        }
-    }
-    return matrice_da_stampare;
-}
-//la funzione ch estampa effetivamente la faccio a parte, qui passo semplicemente da matric elogica a matrice grafica
-
-void Stanza::stampa_stanza(WINDOW * window_one, cchar_t ** mappa_stampabile, int offset_y, int offset_x){
-    for(int i = 0; i < (*this).y; i++){
-        for(int j = 0; j < (*this).x; j++){
-            mvwadd_wch( (window_one), (this->y)+i+offset_y, (this->x)+j+offset_y,  & (mappa_stampabile)[i][j]);
-        }
-    }
-}
-    sprintf
-
-    char ciao [20];
-    sprintf(ciao, "mappa%d.map", idMappa1)  
-
-
-    //EOF endodfile
-
-
-
-Stanza::Stanza(int a){
-    FILE * fin;
-    char mappa_da_scegliere [100];
-    int idMappa = (rand() % 1 )+ 1;
-    sprintf(mappa_da_scegliere, "./mappa/matrici_mappe/mappa%d.map", idMappa);
-    fin = fopen( mappa_da_scegliere , "r");
-    
-    
-    //come aprire un file
-
-    this -> matrice_logica = new int* [DIM_STANZA_Y];
-    for(int i=0; i < DIM_STANZA_Y; i++ ){
-        this -> matrice_logica [i] = new int [DIM_STANZA_X];
-    }
-        
-    
-    //alloco memoria per la matrice
-
-    for(int i= 0; i < DIM_STANZA_Y; i++){
-        for(int j = 0; j < DIM_STANZA_X; j++){
-            matrice_logica [i][j] = fgetc(fin) -48 ;
-        }
-        fgetc(fin);
-    }
-    fclose(fin);
-    
-    //leggo il file
-
-
-};
-
-Stanza::Stanza(int a){
-    FILE * fin;
-    char mappa_da_scegliere [100];
-    int idMappa = (rand() % 1 )+ 1;
-    sprintf(mappa_da_scegliere, "./mappa/matrici_mappe/mappaBoss%d.map", idMappa);
-    fin = fopen( mappa_da_scegliere , "r");
-    
-    
-    //come aprire un file
-
-    this -> matrice_logica = new int * [DIM_STANZA_BOSS_Y];
-    for(int i=0; i < DIM_STANZA_BOSS_Y; i++ ){
-        this -> matrice_logica [i] = new int [DIM_STANZA_BOSS_X];
-    }
-        
-    
-    //alloco memoria per la matrice
-
-    for(int i= 0; i < DIM_STANZA_Y; i++){
-        for(int j = 0; j < DIM_STANZA_X; j++){
-            matrice_logica [i][j] = fgetc(fin) -48 ;
-        }
-        fgetc(fin);
-    }
-    fclose(fin);
-    
-    //leggo il file
-
-    
-
-
-
-};
-*/
 
 /**
  * @brief Costruttore di Stanza. Usando l'id capisce che tipo di stanza creare. 
  * Viene scelta una stanza casuale tra quelle presenti nei file, viene letta
  * e viene impostata.
+ * 
+ * La parte logica non viene interpretata, viene solo letta e salvata.
+ * La parte stampabile delle stanza invece viene solo allocata.
  * 
  * @param id Può essere "ID_STANZA_SPAWN", "ID_STANZA_NORMALE" oppure "ID_STANZA_BOSS" 
  */
@@ -249,6 +92,7 @@ Stanza::~Stanza(){
     // Dealloco tutto
     delete (this->listaPorte);
     delete (this->listaNemici);
+    delete (this->listaProiettili);
     for(int i = 0; i < (*this).dim_y; i++) {
         delete[] this->matrice_stampabile[i];
         delete[] this->matrice_logica[i];
@@ -308,25 +152,25 @@ void Stanza::imposta_porte(bool nord, bool sud, bool est, bool ovest){
         for(int i = 0; i < DIMENSIONE_PORTA_ORIZZONTALE; i++){
             matrice_logica [0] [i + (int)((this->dim_x - DIMENSIONE_PORTA_ORIZZONTALE)/2)] = 0;
         }
-        this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_NORD, false));
+        this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_NORD, false, this->dim_y, this->dim_x));
     }
     if(sud){
         for(int i = 0; i < DIMENSIONE_PORTA_ORIZZONTALE; i++){
             matrice_logica [this->dim_y-1] [i + (int)((this->dim_x - DIMENSIONE_PORTA_ORIZZONTALE)/2)] = 0;
         }
-        this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_SUD, false));
+        this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_SUD, false, this->dim_y, this->dim_x));
     }
     if(est){
         for(int i = 0; i < DIMENSIONE_PORTA_VERTICALE; i++){
             matrice_logica [i + (int)((this->dim_y - DIMENSIONE_PORTA_VERTICALE)/2)] [this->dim_x-1] = 0;
         }
-        this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_EST, false));
+        this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_EST, false, this->dim_y, this->dim_x));
     }
     if(ovest){
         for(int i = 0; i < DIMENSIONE_PORTA_VERTICALE; i++){
             matrice_logica [i + (int)((this->dim_y - DIMENSIONE_PORTA_VERTICALE)/2)] [0] = 0;
         }
-        this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_OVEST, false));
+        this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_OVEST, false, this->dim_y, this->dim_x));
     }
 }
 
@@ -338,6 +182,7 @@ void Stanza::da_logica_a_stampabile(){
     for(int i = 0; i < dim_y; i++){
         for(int j = 0; j < dim_x; j++){
             switch(matrice_logica [i] [j]){
+                Nemico * nemicoGenerato;
                 case STANZA_SPAZIOLIBERO:
                     setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, FLOOR_PAIR, NULL);
                 break;
@@ -345,69 +190,31 @@ void Stanza::da_logica_a_stampabile(){
                     setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, WALL_PAIR, NULL);
                 break;
                 case STANZA_NEMICONORMALE:
-                    matrice_logica [i] [j] = 0;
-                    listaNemici->addEntita(new Nemico(NORMAL_ENEMY, i, j));
-                    setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, FLOOR_PAIR, NULL);
+                    nemicoGenerato = new Nemico(NORMAL_ENEMY, i, j);
+                    listaNemici->addEntita(nemicoGenerato);
+                    // Libero lo spazio dalla matrice logica e dalla matrice stampabile dove è stato generato il nemico
+                    for (int i_1 = i; i_1 < i + nemicoGenerato->getDimY(); i_1++){
+                        for (int j_1 = j; j_1 < j + nemicoGenerato->getDimX(); j_1++){
+                            matrice_logica[i_1][j_1] = STANZA_SPAZIOLIBERO;
+                            setcchar(&(matrice_stampabile [i_1] [j_1]), L" ", A_NORMAL, FLOOR_PAIR, NULL);
+                        }
+                    }
                 break;
                 case STANZA_NEMICOBOSS:
-                    matrice_logica [i] [j] = 0;
-                    listaNemici->addEntita(new Nemico(BOSS_ENEMY, i, j));
-                    setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, FLOOR_PAIR, NULL);
+                    nemicoGenerato = new Nemico(BOSS_ENEMY, i, j);
+                    listaNemici->addEntita(nemicoGenerato);
+                    // Libero lo spazio dalla matrice logica e dalla matrice stampabile dove è stato generato il nemico
+                    for (int i_1 = i; i_1 < i + nemicoGenerato->getDimY(); i_1++){
+                        for (int j_1 = j; j_1 < j + nemicoGenerato->getDimX(); j_1++){
+                            matrice_logica[i_1][j_1] = STANZA_SPAZIOLIBERO;
+                            setcchar(&(matrice_stampabile [i_1] [j_1]), L" ", A_NORMAL, FLOOR_PAIR, NULL);
+                        }
+                    }
                 break;
             }
         }
     }
 }
-
-/*
-// Da rivedere
-bool Stanza::accessibile(int y_entity, int x_entity){
-    //int offsetx = ((gd -> getTerminalX()) - this -> dim_x)/2;
-    //int offsety = ((gd -> getTerminalY()) - this -> dim_y)/2;
-    //int halfx = dim_x/2;
-    //int halfy = dim_y/2;
-    int returnbool = false;
-    if(
-        x_entity >= 0 && 
-        x_entity < this -> dim_x && 
-        y_entity > 0 && 
-        y_entity < this -> dim_y && 
-        this -> matrice_logica [y_entity] [x_entity] != 1
-    ){
-        returnbool = true;
-    } return returnbool;
-}
-*/
-
-/* ANCORA DA FARE::
-
-    Pulire il codice
-    Impostare lo spawn dei nemici 
-        (in attesa di petru, ma puoi già pensare a come 
-        fare impostanto di punti di spawn e usando entità 
-        placeholder)
-
-    Fare un metodo che ha come parametri "x" e "y" 
-    e ritorna true se è una casella della mappa libera
-    o false se vi è un muro, interno o esterno, 
-    oppure se è fuori dai bounds della mappa.
-        -(Sostituto di accessibile)
-
-*/
-
-//  Solo per il giocatore serve fare il controllo della direzione porta
-/* define dei codici
-
-
-*/
-#define STANZA_ACC_LIBERO 0
-#define STANZA_ACC_MURO 1 // si intende muro, fuori bound, direzione porta valido se si e' un giocatore
-#define STANZA_ACC_NEMICO 2
-#define STANZA_ACC_PORTA 3
-#define STANZA_ACC_ARTEFATTO 4
-#define STANZA_ACC_PROIETTILE_GIOCATORE 5
-#define STANZA_ACC_PROIETTILE_NEMICO 6
-
 
 int Stanza::accessibile(int y_entity, int x_entity, bool giocatore){
     int returnvalue = STANZA_ACC_MURO;
@@ -431,58 +238,48 @@ int Stanza::accessibile(int y_entity, int x_entity, bool giocatore){
 }
 
 int Stanza::accessibile(Entita * entita, bool giocatore){
+    int returnvalue = STANZA_ACC_LIBERO;
     
-    int returnvalue = STANZA_ACC_MURO;
-
-    /*
-
-    this->listaNemici-> makecList(entita);
-    if(this->listaNemici->lengthcList()>=1){
-        returnvalue = STANZA_ACC_NEMICO;
-    }
-
-    this->listaPorte-> makecList(entita);
-    if(this->listaPorte->lengthcList()>=1){
-        if(giocatore && direzione_porta(entita->getY(), entita->getX())){  //if mi sto muovendo da quella parte
-            returnvalue = STANZA_ACC_LIBERO;
-        } else{
-            returnvalue = STANZA_ACC_PORTA;
-        }
-    }
-
-    this->listaArtefatti-> makecList(entita);
-    if(this->listaArtefatti->lengthcList()>=1){
-        returnvalue = STANZA_ACC_ARTEFATTO;
-    }
-    
-
+    // Controllo contatto con entita
     this->listaProiettili-> makecList(entita);
-    erase();
-    mvprintw(40,5,"Num pro: %d %d", this->listaProiettili->lengthcList(giocatore), this->listaProiettili->lengthcList(!giocatore));
-    refresh();
-    if(this->listaProiettili->lengthcList(giocatore) >= 1){
-        if(giocatore){
-            returnvalue = STANZA_ACC_PROIETTILE_GIOCATORE;
-        } else{
-            returnvalue = STANZA_ACC_PROIETTILE_NEMICO;
-        }
-    }        
-    // Prima controllo se c'è la porta, poi controllo se mi sto muovendo fuori da quella porta
-    else */ if(giocatore && direzione_porta(entita->getY(), entita->getX())!=0){
-        returnvalue = STANZA_ACC_LIBERO;
-    }
+    this->listaNemici-> makecList(entita);
+    this->listaPorte-> makecList(entita);
+
+    if(this->listaNemici->lengthcList() >= 1){
+        returnvalue = STANZA_ACC_NEMICO;
+    }  else if(this->listaPorte->lengthcList() >= 1){
+        returnvalue = STANZA_ACC_PORTA;
+    } else if(this->listaProiettili->lengthcList(false) >= 1){
+        returnvalue = STANZA_ACC_PROIETTILE_NEMICO;
+    } else if(this->listaProiettili->lengthcList(true) >= 1){
+        returnvalue = STANZA_ACC_PROIETTILE_GIOCATORE;
+    } 
+
+    // Controllo accessibilità della cella se sono dentro le mura
     else if(
         entita->getX() >= 0 && 
-        entita->getX() < (this -> dim_x) && 
+        (entita->getX() + entita->getDimX() - 1) < (this -> dim_x) && 
         entita->getY() >= 0 && 
-        entita->getY() < (this -> dim_y) && 
-        this -> matrice_logica [entita->getY()] [entita->getX()] == 0
-    ){
-        returnvalue = STANZA_ACC_LIBERO;
+        (entita->getY() + entita->getDimY() - 1) < (this -> dim_y)
+    ) {
+        // Se sono dentro le mura, allora controllo se la cella è libera
+        // Se lo è, allora finirò gli else if e ritornerò STANZA_ACC_LIBERO
+        for(int x = 0; x < entita->getDimX(); x++) {
+            for(int y = 0; y < entita->getDimY(); y++) {
+                if(this -> matrice_logica [entita->getY() + y] [entita->getX() + x] != 0){
+                    returnvalue = STANZA_ACC_MURO;
+                }
+            }
+        }
+    }
+    // Se sono un giocatore, cerco di uscire fuori dalle mura: mi trovo in una porta? Se falso, allora STANZA_ACC_MURO
+    else if(giocatore && direzione_porta(entita->getY(), entita->getX()) == 0){
+        returnvalue = STANZA_ACC_MURO;
+    } else if (!giocatore) { 
+        // Infine, se non sono un giocatore e sono fuori dalle mura e non ho trovato nient'altro, allora STANZA_ACC_MURO
+        returnvalue = STANZA_ACC_MURO;
     }
     
-    // Da controllare anche il contatto con entita
-
     return returnvalue;
 }
 
@@ -548,8 +345,15 @@ void Stanza::aggiungiProiettile(Proiettile * proiettile) {
 
 
 void Stanza::calcolo_logica(Player * player){
+    // #TODO
+    // Aggiornare la logica del giocatore e dei nemici in base alla posizione dei proiettili nel momento stesso:
+    // Se un proiettile nemico si sovrappone al giocatore o un proiettile alleato si sovrappo ad un nemico, allora va cancellato
+
     this->listaProiettili->aggiornaEntita(this, player);
     this->listaNemici->aggiornaEntita(this, player);
+    if(this->listaNemici->lengthList() == 0 && this->listaPorte->lengthList() >= 0){
+        this->listaPorte->deleteList();
+    }
 }
 
 void Stanza::aggiornaTick() {
@@ -557,4 +361,42 @@ void Stanza::aggiornaTick() {
     this->listaNemici->aggiornaTick();
 }
 
-    
+/**
+ * @brief Danneggia tutti i nemici nella contact list
+ * dei nemici con la quantità inserita come parametro.
+ * 
+ * @param quantita Danno da infliggere a tutti i nemici 
+ *                 nella contact list
+ */
+void Stanza::dmgNemiciContactList(int quantita) {
+    this->listaNemici->dmgNemiciContactList(quantita);
+}
+
+/**
+ * @brief Ritorna il danno totale che infliggono tutti i proiettili
+ * della contact list dei proiettili della stanza. 
+ * 
+ * In particolare, somma insieme soltanto proiettili dello stesso tipo: 
+ * se type è vero, allora somma i proiettili del giocatore, altrimenti 
+ * somma i proiettili dei nemici.
+ * 
+ * @param type      Se vero, somma i proiettili del giocatore. Se falso, 
+ *                  somma i proiettili dei nemici.
+ * @return int      Il totale dei danni dei proiettili sommati
+ */
+int Stanza::dmgDaProiettiliContactList(bool type) {
+    return this->listaProiettili->dmgDaProiettiliContactList(type); 
+}
+
+/**
+ * @brief Cancella i proiettili sovrapposti con l'entità inserita.
+ * Se giocatore è vero, allora bisogna cancellare tutti i proiettili nemici,
+ * se bool è falso, allora bisogna cancellare tutti i proiettili alleati.
+ * 
+ * @param entita    L'entità con cui si deve creare la contact list
+ * @param giocatore Se vero cancella proiettili nemici, se falso cancella proiettili alleati 
+ */
+void Stanza::cancellaProiettiliSovrapposti(Entita * entita, bool giocatore) {
+    this->listaProiettili->makecList(entita);
+    this->listaProiettili->deletecList_fromList(!giocatore); // Cancello il contrario del tipo di nemici
+}
