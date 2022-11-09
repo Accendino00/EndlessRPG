@@ -89,6 +89,8 @@ void Proiettile::updateEntita(Stanza * stanza, Player * player) {
                 if (this->isPlayerProjectile()) {
                     stanza->dmgNemiciContactList(this->getDamage());
                     this->setVita(0);
+                } else{
+                    this->muovi(this->direzione,1);
                 }
                 break;
             case STANZA_ACC_PORTA:

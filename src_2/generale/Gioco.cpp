@@ -8,7 +8,7 @@ Gioco::Gioco(){
 
 Gioco::~Gioco() {
     delete this->player;
-    delete livello;
+    delete livello_corrente;
 }
 
 /*
@@ -106,12 +106,14 @@ Gioco::~Gioco() {
     poi, infine, faccio il calcolo della logica del livello per capire se devo mantenere le porte, quale porte mantenenre e quale cancellare
 */
 
+//da fare i metodi che mi riportano dei bool se il boss è morto
 
 void Gioco::gameLoop() {
     // Imposto i ticket a 0 quando inizia il gioco
     gd->resetTicks();
     
-    livello = new Livello();
+    this->livello_counter = 1;
+    livello_corrente = new Livello();
 
     do {
         // Inizio del frame, aggiornamento dei tick, lettura input e erase dello schermo
@@ -122,7 +124,7 @@ void Gioco::gameLoop() {
         
         /*** Gestione degli input ***/
 
-        this->player->manageInput(livello);
+        this->player->manageInput(livello_corrente);
 
         if(gd->checkInput('q')) {
             gameOver = true;
@@ -133,16 +135,26 @@ void Gioco::gameLoop() {
 
         /*** Calcolo della logica ***/
 
-        livello -> calcolo_logica(this->player);
+        livello_corrente -> calcolo_logica(this->player);
         
         /*** Stampa ***/
+
+        mvprintw(23,11, "Livello : %d", livello_counter);
+
+        livello_corrente -> stampa(this->player);
     
-        livello -> stampa(this->player);
-    
-        this->player->stampa(livello->offsetY(), livello->offsetX());
+        this->player->stampa(livello_corrente->offsetY(), livello_corrente->offsetX());
         this->player->stampaHUDplayer();
-
-
+        
+        if(livello_corrente->isBossstanza()){
+            mvprintw(livello_corrente->getStanza()->zero_y()+1, livello_corrente->getStanza()->zero_x()+1, "Premere 'l' per cambiare livello");
+            if(gd->checkInput('l')){
+                delete livello_corrente;
+                livello_corrente = new Livello();
+                livello_counter++;
+                player->modificaCoordinate((int)DIM_STANZA_SPAWN_Y/2,(int)DIM_STANZA_SPAWN_X/2);
+            }
+        }
         // Fine del frame e refresh dello schermo
         gd->frameFinish();
         refresh();

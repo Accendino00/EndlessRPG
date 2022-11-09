@@ -31,6 +31,7 @@ private:
     ListaPorte * listaPorte;
     ListaProiettili * listaProiettili;
     ListaNemici * listaNemici;
+    ListaArtefatti * listaArtefatti;
 
     int idStanza;
 
@@ -42,7 +43,7 @@ public:
     ~Stanza();
 
     void stampa_stanza();
-    void imposta_porte(bool nord, bool sud, bool est, bool ovest);
+    void imposta_porte(bool nord, bool sud, bool est, bool ovest, int boss);
     void da_logica_a_stampabile();
     int accessibile(int y_entity, int x_entity, bool giocatore);
     int accessibile(Entita * entita, bool giocatore);
@@ -64,6 +65,7 @@ public:
     void dmgNemiciContactList(int quantita);
     int dmgDaProiettiliContactList(bool type);
     void cancellaProiettiliSovrapposti(Entita * entita, bool giocatore);
+    int returnId();
 };
 
 

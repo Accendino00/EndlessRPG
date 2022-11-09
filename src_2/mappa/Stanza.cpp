@@ -88,6 +88,10 @@ Stanza::Stanza(int id){
     }
 };
 
+int Stanza::returnId(){
+    return this->idStanza;
+}
+
 Stanza::~Stanza(){
     // Dealloco tutto
     delete (this->listaPorte);
@@ -145,32 +149,47 @@ int Stanza::zero_y(){
  * @param est 
  * @param ovest 
  */
-void Stanza::imposta_porte(bool nord, bool sud, bool est, bool ovest){
-
+void Stanza::imposta_porte(bool nord, bool sud, bool est, bool ovest, int boss){
     // Imposto le porte della matrice logica e poi creo le entità
     if(nord){
         for(int i = 0; i < DIMENSIONE_PORTA_ORIZZONTALE; i++){
             matrice_logica [0] [i + (int)((this->dim_x - DIMENSIONE_PORTA_ORIZZONTALE)/2)] = 0;
         }
-        this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_NORD, false, this->dim_y, this->dim_x));
+        if(boss != DIRECTION_NN){
+            this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_NORD, false, this->dim_y, this->dim_x));
+        } else{
+            this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_NORD, true, this->dim_y, this->dim_x));
+        }    
     }
     if(sud){
         for(int i = 0; i < DIMENSIONE_PORTA_ORIZZONTALE; i++){
             matrice_logica [this->dim_y-1] [i + (int)((this->dim_x - DIMENSIONE_PORTA_ORIZZONTALE)/2)] = 0;
         }
-        this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_SUD, false, this->dim_y, this->dim_x));
+        if(boss != DIRECTION_SS){
+            this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_SUD, false, this->dim_y, this->dim_x));
+        } else{
+            this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_SUD, true, this->dim_y, this->dim_x));
+        } 
     }
     if(est){
         for(int i = 0; i < DIMENSIONE_PORTA_VERTICALE; i++){
             matrice_logica [i + (int)((this->dim_y - DIMENSIONE_PORTA_VERTICALE)/2)] [this->dim_x-1] = 0;
         }
-        this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_EST, false, this->dim_y, this->dim_x));
+        if(boss != DIRECTION_EE){
+            this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_EST, false, this->dim_y, this->dim_x));
+        } else{
+            this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_EST, true, this->dim_y, this->dim_x));
+        }
     }
     if(ovest){
         for(int i = 0; i < DIMENSIONE_PORTA_VERTICALE; i++){
             matrice_logica [i + (int)((this->dim_y - DIMENSIONE_PORTA_VERTICALE)/2)] [0] = 0;
         }
-        this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_OVEST, false, this->dim_y, this->dim_x));
+        if(boss != DIRECTION_OO){
+            this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_OVEST, false, this->dim_y, this->dim_x));
+        } else{
+            this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_OVEST, true, this->dim_y, this->dim_x));
+        }    
     }
 }
 

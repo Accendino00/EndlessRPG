@@ -129,7 +129,8 @@ Livello::~Livello(){
 
 void Livello::imposta_stanza(){
   bool nord, sud, est, ovest;
-  
+  int boss = 0;
+
   for(int i = 0; i < DIM_MATRICE_LIVELLO_Y; i++){
     for(int j = 0; j < DIM_MATRICE_LIVELLO_X; j++){
       if(this -> matrice_livello [i] [j] != NULL){
@@ -140,24 +141,36 @@ void Livello::imposta_stanza(){
         if(i+1 < DIM_MATRICE_LIVELLO_Y){
           if(this -> matrice_livello [i + 1] [j] != NULL){
             sud = true;
+            if(this -> matrice_livello [i + 1] [j]->returnId() == 2){
+              boss =  DIRECTION_SS;
+            }
           }
         }
         if(i-1 >= 0){
           if (this -> matrice_livello [i - 1] [j] != NULL){
             nord = true;
+            if(this -> matrice_livello [i - 1] [j]->returnId() == 2){
+              boss =  DIRECTION_NN;
+            }
           }
         }
         if(j+1 < DIM_MATRICE_LIVELLO_X){
           if(this -> matrice_livello [i] [j + 1] != NULL){
             est = true;
+            if(this -> matrice_livello [i] [j + 1]->returnId() == 2){
+              boss =  DIRECTION_EE;
+            }
           }
         }
         if(j-1 >= 0){
           if (this -> matrice_livello [i] [j - 1] != NULL){
             ovest = true;
+            if(this -> matrice_livello [i] [j - 1]->returnId() == 2){
+              boss =  DIRECTION_OO;
+            }
           }
         }
-        this -> matrice_livello [i] [j] -> imposta_porte(nord, sud, est, ovest);
+        this -> matrice_livello [i] [j] -> imposta_porte(nord, sud, est, ovest, boss);
         this -> matrice_livello [i] [j] -> da_logica_a_stampabile();
       }
     }
@@ -296,4 +309,20 @@ int Livello::offsetY() {
 
 int Livello::offsetX() {
   return this->matrice_livello[this->current_y][this->current_x]->zero_x();
+}
+
+bool Livello::Bossisdead(){
+  if(this->getStanza()->returnId() == ID_STANZA_BOSS){
+    return true;
+  } else {
+    return false;
+  }
+}
+
+bool Livello::isBossstanza(){
+  if(this->getStanza()->returnId() == ID_STANZA_BOSS){
+    return true;
+  } else {
+    return false;
+  }
 }

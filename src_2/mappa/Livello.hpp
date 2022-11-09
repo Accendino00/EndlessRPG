@@ -24,6 +24,8 @@ public:
     bool cambia_stanza(int direzione);
     void calcolo_logica(Player * player);
     bool livello_successivo();
+    bool Bossisdead();
+    bool isBossstanza();
 
     int accessibile(int y_entity, int x_entity, bool giocatore);
     

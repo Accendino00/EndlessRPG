@@ -4,8 +4,9 @@
 class Gioco {
 private:
     Player * player;
-    Livello * livello;
-    
+    Livello * livello_corrente;
+    int livello_counter;
+
     bool gameOver;
 
 public:
