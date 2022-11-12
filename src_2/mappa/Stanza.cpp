@@ -422,5 +422,5 @@ void Stanza::cancellaProiettiliSovrapposti(Entita * entita, bool giocatore) {
 
 
 void Stanza::effettiArtefatti(Player * player){
-    this->ListaArtefatti->effettiArtefatti(player);
+    this->listaArtefatti->effettiArtefatti(player);
 }

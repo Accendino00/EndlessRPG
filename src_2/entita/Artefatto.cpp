@@ -42,8 +42,12 @@ Artefatto::Artefatto(int type){
 
 }
 
+int Artefatto::getIDArtefatto(){
+    return this->idArtefatto;
+}
+
 void Artefatto::updateEntita(Player * player){
     this->Entita::updateEntita();
-    
+
     
     };

@@ -241,12 +241,12 @@ void ListaArtefatti::effettiArtefatti(Player * player){
 
     listaA * tmp = this-> chead;
     while(tmp!=NULL){
-        switch(tmp->e->idArtefatto){
+        switch(tmp->e->getIDArtefatto()){
             case AUMENTA_HP:
-                player->modificaVita((rand() % (player->getVita()-10)+10);
+                player->modificaVita((rand() % (player->getVita()-10))+10);
             break;
             case AUMENTA_ATTACCO:
-                player->modificaDanno((rand() % (10)+3));
+                player->modificaDanno((rand() % (8))+3);
             break;               
             case ATTACCO_DIETRO:
                 player->aggiungiDirezioneAttacco(DIRECTION_EE);
@@ -268,5 +268,4 @@ void ListaArtefatti::effettiArtefatti(Player * player){
         tmp = tmp -> next;
     }
 
-    }
 }

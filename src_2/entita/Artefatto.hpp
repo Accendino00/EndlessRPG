@@ -14,4 +14,6 @@ class Artefatto : public Entita {
         int idArtefatto;
     public:
         Artefatto(int type);
+        int getIDArtefatto();
+        void updateEntita(Player * player);
 };

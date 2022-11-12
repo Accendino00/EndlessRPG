@@ -70,7 +70,7 @@ void Player::gestione_player(int input, Livello * livello){
                 break;
             // Proiettili
             case (KEY_RIGHT):
-                if(attacco){
+                if(attacco_dietro){
                     livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_OO,this->damage));
                 }
                 if(attacco_diagonale){
@@ -80,7 +80,7 @@ void Player::gestione_player(int input, Livello * livello){
                 livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_EE,this->damage));
                 break;
             case (KEY_DOWN):
-                if(attacco){
+                if(attacco_dietro){
                     livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NN,this->damage));
                 }
                 if(attacco_diagonale){
@@ -90,7 +90,7 @@ void Player::gestione_player(int input, Livello * livello){
                 livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SS,this->damage));
                 break;
             case (KEY_LEFT):
-                if(attacco){
+                if(attacco_dietro){
                     livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_EE,this->damage));
                 }
                 if(attacco_diagonale){
@@ -100,7 +100,7 @@ void Player::gestione_player(int input, Livello * livello){
                 livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_OO,this->damage));
                 break;
             case (KEY_UP):
-                if(attacco){
+                if(attacco_dietro){
                     livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SS,this->damage));
                 }
                 if(attacco_diagonale){
@@ -142,12 +142,14 @@ void Player::modificaDanno(int danno){
 }
 
 void Player::aggiungiDirezioneAttacco(int direzione){
+    switch(direzione){
     case DIRECTION_EE:
         this->attacco_dietro = true;
         break;
     case DIRECTION_SE:
-        this->attaco_diagonale = true;
+        this->attacco_diagonale = true;
         break;
+    }
 }
 
 void Player::modificaDifesa(int val){
