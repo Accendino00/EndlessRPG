@@ -419,3 +419,8 @@ void Stanza::cancellaProiettiliSovrapposti(Entita * entita, bool giocatore) {
     this->listaProiettili->makecList(entita);
     this->listaProiettili->deletecList_fromList(!giocatore); // Cancello il contrario del tipo di nemici
 }
+
+
+void Stanza::effettiArtefatti(Player * player){
+    this->ListaArtefatti->effettiArtefatti(player);
+}

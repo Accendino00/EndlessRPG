@@ -35,5 +35,7 @@ public:
     void deletecList();
     int lengthcList();
 
+    void effettiArtefatti(Player * player);
+
     void stampaTutte(int offsetY, int offsetX);
 };

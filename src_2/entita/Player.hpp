@@ -5,6 +5,10 @@ class Player:public Entita{
 private:
     int lastinput;
     int dashDistanceX, dashDistanceY;
+    bool attacco_dietro;
+    bool attacco_diagonale;
+    int difesa;
+    bool chiave;
 
 public:
     Player(int y, int x, int life);
@@ -20,7 +24,13 @@ public:
     void manageInput(Livello * livello);
     void gestione_player(int input, Livello * livello);
     void muoviPlayer(int direzione, int val, Livello * livello);
-    void aggiungi_vita(Artefatto a);
+    void modificaDanno(int danno);
+    void aggiungiDirezioneAttacco(int direzione);
+    void modificaDifesa(int val);
+    void modificaVita(int quantita);
+    void modificaSprint(int val);
+    void setChiave(bool val);
+    bool getChiave();
 
     void inventario();
 };

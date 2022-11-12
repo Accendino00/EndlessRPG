@@ -65,6 +65,9 @@ public:
     void dmgNemiciContactList(int quantita);
     int dmgDaProiettiliContactList(bool type);
     void cancellaProiettiliSovrapposti(Entita * entita, bool giocatore);
+
+    void effettiArtefatti(Player * player);
+
     int returnId();
 };
 

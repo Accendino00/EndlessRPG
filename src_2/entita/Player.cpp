@@ -70,15 +70,43 @@ void Player::gestione_player(int input, Livello * livello){
                 break;
             // Proiettili
             case (KEY_RIGHT):
+                if(attacco){
+                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_OO,this->damage));
+                }
+                if(attacco_diagonale){
+                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NE,this->damage));
+                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SE,this->damage));
+                }
                 livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_EE,this->damage));
                 break;
             case (KEY_DOWN):
+                if(attacco){
+                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NN,this->damage));
+                }
+                if(attacco_diagonale){
+                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SO,this->damage));
+                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SE,this->damage));
+                }
                 livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SS,this->damage));
                 break;
             case (KEY_LEFT):
+                if(attacco){
+                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_EE,this->damage));
+                }
+                if(attacco_diagonale){
+                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NO,this->damage));
+                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SO,this->damage));
+                }
                 livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_OO,this->damage));
                 break;
             case (KEY_UP):
+                if(attacco){
+                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SS,this->damage));
+                }
+                if(attacco_diagonale){
+                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NE,this->damage));
+                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NO,this->damage));
+                }
                 livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NN,this->damage));
                 break;
 		}
@@ -96,6 +124,8 @@ void Player::muoviPlayer(int direzione, int val, Livello * livello) {
             break;
         case STANZA_ACC_ARTEFATTO:
             // Faccio cose con l'artefatto nella contact list
+            livello->getStanza()->effettiArtefatti(this);
+            break;
         break;
         case STANZA_ACC_PORTA:
         case STANZA_ACC_MURO:
@@ -107,7 +137,48 @@ void Player::muoviPlayer(int direzione, int val, Livello * livello) {
     }
 }
 
-void Player::inventario(){
+void Player::modificaDanno(int danno){
+    this->damage += danno;
+}
+
+void Player::aggiungiDirezioneAttacco(int direzione){
+    case DIRECTION_EE:
+        this->attacco_dietro = true;
+        break;
+    case DIRECTION_SE:
+        this->attaco_diagonale = true;
+        break;
+}
+
+void Player::modificaDifesa(int val){
+    this->difesa += val;
+}
+
+
+void Player::modificaVita(int quantita){
+    if(quantita>0){
+        if(quantita + this->getVita() > this->maxLife) {
+            this->currentLife = this->maxLife;
+        } else {
+            this->currentLife += quantita;
+        }
+    }
+    else{
+            this->currentLife += quantita*(100/(100+this->difesa));
+    }
+}
+
+void Player::setChiave(bool val){
+    if(val) this->chiave = true;
+};
+
+bool Player::getChiave(){
+    return this->chiave;
+}
+
+void Player::modificaSprint(int val){
+    this->dashDistanceX += val*2;
+    this->dashDistanceY += val;
 }
 
 

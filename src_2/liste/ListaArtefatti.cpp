@@ -236,3 +236,37 @@ int ListaArtefatti::lengthcList(){
     }
     return returnvalue;
 }
+
+void ListaArtefatti::effettiArtefatti(Player * player){
+
+    listaA * tmp = this-> chead;
+    while(tmp!=NULL){
+        switch(tmp->e->idArtefatto){
+            case AUMENTA_HP:
+                player->modificaVita((rand() % (player->getVita()-10)+10);
+            break;
+            case AUMENTA_ATTACCO:
+                player->modificaDanno((rand() % (10)+3));
+            break;               
+            case ATTACCO_DIETRO:
+                player->aggiungiDirezioneAttacco(DIRECTION_EE);
+            break;
+            case ATTACCO_DIAGONALE:
+                player->aggiungiDirezioneAttacco(DIRECTION_SE);
+            break;
+            case AUMENTA_DIFESA:
+                player->modificaDifesa((rand() % (10)+5));
+            break;
+            case AUMENTA_SPRINT:
+                player->modificaSprint(2);
+            break;
+            case CHIAVE:
+                player->setChiave(true);
+            break;
+
+        }
+        tmp = tmp -> next;
+    }
+
+    }
+}

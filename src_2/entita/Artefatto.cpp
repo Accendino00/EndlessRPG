@@ -14,27 +14,36 @@ Artefatto::Artefatto(int type){
 
     this->ticksForAction = 250;
 
+    this->currentLife = 1;
+    this->maxLife = 1;
+
 
     if(type == AUMENTA_HP){
-        
+        setcchar(&(this->stampabile[0][0]), L"1", A_NORMAL, PLAYER_COLOR_PAIR, NULL);
     }
     else if(type == AUMENTA_ATTACCO){
-
+        setcchar(&(this->stampabile[0][0]), L"2", A_NORMAL, PLAYER_COLOR_PAIR, NULL);
     }
     else if(type == ATTACCO_DIETRO ){
-        
+        setcchar(&(this->stampabile[0][0]), L"3", A_NORMAL, PLAYER_COLOR_PAIR, NULL);
     }
     else if(type == ATTACCO_DIAGONALE ){
-        
+        setcchar(&(this->stampabile[0][0]), L"4", A_NORMAL, PLAYER_COLOR_PAIR, NULL);
     }
     else if(type == AUMENTA_DIFESA){
-        
+        setcchar(&(this->stampabile[0][0]), L"5", A_NORMAL, PLAYER_COLOR_PAIR, NULL);
     }
     else if(type == AUMENTA_SPRINT){
-        
+        setcchar(&(this->stampabile[0][0]), L"6", A_NORMAL, PLAYER_COLOR_PAIR, NULL);
     }
     else if(type == CHIAVE){
-
+        setcchar(&(this->stampabile[0][0]), L"7", A_NORMAL, PLAYER_COLOR_PAIR, NULL);
     }
 
 }
+
+void Artefatto::updateEntita(Player * player){
+    this->Entita::updateEntita();
+    
+    
+    };
