@@ -1,6 +1,6 @@
 #include "../generale/libs.hpp"
 
-MenuScore::MenuScore() : Menu(0,2,6) {}
+MenuScore::MenuScore() : Menu(0,4,6) {}
 void heapify(int arr[], int n, int i)
 {
     int min = i; // Il valore più grande inizialmente è la radice
@@ -51,9 +51,10 @@ void MenuScore::CaricaOrdinaScore() {
     // Temp per la lettura
     char c;
     this->scoreCounter = 0; //Contatore per dimensione array di ordinamento
-
+    
     if (fin != NULL) { // Leggo gli score solo se ve ne sono effettivamente
     pUserData curr = new UserData;
+        if(feof(fin)){
         while(!exit) { // Lettura degli score fino a quando li ho letti tutti e devo uscire 
         
             for (int i = 0; i < 3; i++) { // Carico il nome
@@ -61,8 +62,9 @@ void MenuScore::CaricaOrdinaScore() {
                 curr->nome[i] = c;
             }
             curr->nome[3] = '\0';
-            curr->score = 0;     //Carico il punteggio
+            curr->score = 0;            //Carico il punteggio
             int i = 10000000;
+            c = fgetc(fin);
             while (c != '\n') {
                 c = fgetc(fin);
                 if (feof(fin) && c != '\n') {
@@ -75,23 +77,29 @@ void MenuScore::CaricaOrdinaScore() {
                 i /= 10;
             }
             this->scoreCounter++;
-            curr->next = tmp;
+            while(tmp->next!=NULL){
+                tmp = tmp->next;
+            }
+            tmp->next = curr;
         
         //Controllo per fine del file
         if (feof(fin)) {
             exit = true;
             }
         }
+        
         //Dealloco curr
         curr->next = NULL;
         delete curr;
+        
+    }
     }
     
     if(this->scoreCounter > 0){
         this->arrayScore = new UserArrayData[this->scoreCounter]; //Puntatore ad array di strutture 
     }
     else this->arrayScore = NULL;
-
+/*
     for(int i = 0; i < this->scoreCounter; i++){
         this->arrayScore[i].score = tmp->score;
         for(int j = 0; j < 3 ; j++){
@@ -99,6 +107,7 @@ void MenuScore::CaricaOrdinaScore() {
         }
         tmp = tmp->next;
     }
+*/    
     
     //heapSort(this->arrayScore,scoreCounter);
     //Dealloco tmp(tutta la lista)
@@ -159,6 +168,7 @@ void MenuScore::loopScore() {
 void MenuScore::printAll(){
     char daStampare[100];
     int line = 0;
+    /*
     for(int i = (this->pagina-1)*10; i<(this->pagina*10) ; i++){ //Seleziono la porzione di array che voglio mostrare
         if(i < scoreCounter){
             sprintf(daStampare, "< %d %s \t>",this->arrayScore[i].score,arrayScore[i].nome);
@@ -170,7 +180,11 @@ void MenuScore::printAll(){
             line ++;
         }
     }
+    */
     printLine("Cambia Pagina",0);
     printLine("Indietro",1);
+    //int centerY = gd->getTerminalY()/2;
+    //int centerX = gd->getTerminalX()/2;
+    //sprintf(daStampare, "< %d \t>",this->head->nome);
+    //mvprintw(centerY+(2*(line+1)),centerX-2,"%d",daStampare);
 }
-
