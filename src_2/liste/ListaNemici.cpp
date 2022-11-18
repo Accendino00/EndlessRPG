@@ -143,19 +143,56 @@ bool ListaNemici::removeEntita_p(Nemico *entity,bool contactList, bool deleteEnt
     return returnValue;
 };
 
-bool ListaNemici::removeEntita(Nemico *entity, bool deleteEntita) {
-    return removeEntita_p(entity, false, deleteEntita);
+/**
+ * @brief Cancella un nemico. C'e' una possibilita' che venga generato un artefatto. 
+ * 
+ * In particolare, cancella l'entita dalla clist e poi dalla lista normale.
+ * Se viene cancellata con successo dalla lista, ritorna true.
+ * 
+ * Quando viene cancellato un nemico, puo' venire aggiunto un nuovo
+ * artefatto. Questo viene fatto in base a determinate possibilita'
+ * calcolate da GameData. Vedere GameData per chiarimenti.
+ * 
+ * @param stanza    Stanza dove aggiungere l'artefatto 
+ * @param entity    Il nemico da cancellare
+ * @return true     Se viene cancellata
+ * @return false    Se non viene cancellata
+ */
+bool ListaNemici::removeEntita(Gioco * gioco, Nemico *entity) {
+    int x_artefatto = entity->getX(), y_artefatto = entity->getY();
+    removeEntita_p(entity, true, false); // La cancello dalla contactlist senza cancellare l'entita
+    bool returnValue = removeEntita_p(entity, false, true); // La cancello dalla lista normale cancellando l'entita
+    
+    if (returnValue)
+        gioco->spawnArtefatto(y_artefatto, x_artefatto);
+
+    return returnValue; 
+}
+
+/**
+ * @brief Cancella un nemico.
+ * 
+ * Viene cancellato sia dalla clist che dalla lista dei nemici
+ * normale. Se viene cancellato con successo, ritorna true.
+ * 
+ * @param entity    Il nemico da cancellare
+ * @return true     Se viene cancellata
+ * @return false    Se non viene cancellata
+ */
+bool ListaNemici::removeEntita(Nemico *entity) {
+    removeEntita_p(entity, true, false); // La cancello dalla contactlist senza cancellare l'entita
+    return removeEntita_p(entity, false, true); // La cancello dalla lista normale cancellando l'entita
 }
 
 
 bool ListaNemici::makecList(Entita *entity){
     // Controlla quali entità sono a contatto con l'entità di input e le aggiungo in chead. Ritorno true se ci sono entita a contatto.
 
+    // Cancello la clist che c'era prima
     deletecList();
 
     bool returnValue = false;
     plistaN headTemp = head;
-
     while(headTemp != NULL){
         if (headTemp->e != entity && (entity->controllaContatto(headTemp->e))) {
             addEntita_p(headTemp->e, true);
@@ -199,12 +236,12 @@ void ListaNemici::deleteList(){
         }
         while(temp->prev != NULL) {
             temp = temp->prev;    
-            removeEntita(temp->next->e, true);
+            removeEntita(temp->next->e);
         }
         if (temp->next != NULL) {
-            removeEntita(temp->next->e, true);
+            removeEntita(temp->next->e);
         }
-        removeEntita(temp->e, true);
+        removeEntita(temp->e);
     }
 };
 
@@ -217,15 +254,14 @@ void ListaNemici::stampaTutte(int offsetY, int offsetX) {
     }
 }
 
-void ListaNemici::aggiornaEntita(Stanza * stanza, Player * player) {
+void ListaNemici::aggiornaEntita(Gioco * gioco) {
     plistaN headTemp = head;
     while(headTemp != NULL) {
         if (headTemp->e->getVita() <= 0) {
-            removeEntita_p(headTemp->e, true, false);
-            removeEntita_p(headTemp->e, false, true);
+            removeEntita(gioco, headTemp->e);
             headTemp = head;
         } else {
-            headTemp->e->updateEntita(stanza, player);
+            headTemp->e->updateEntita(gioco->getLivello()->getStanza(), gioco->getPlayer());
             headTemp = headTemp->next; 
         }
     }
@@ -259,13 +295,12 @@ int ListaNemici::lengthcList(){
     return returnvalue;
 }
 
-void ListaNemici::dmgNemiciContactList(int quantita) {
+void ListaNemici::dmgNemiciContactList(Gioco * gioco, int quantita) {
     plistaN headTemp = chead;
     while(headTemp != NULL) {
         headTemp->e->modificaVita(-quantita);
         if (headTemp->e->getVita() <= 0) {
-            removeEntita_p(headTemp->e, true, false);
-            removeEntita_p(headTemp->e, false, true);
+            removeEntita(gioco, headTemp->e);
             headTemp = chead;
         } else {
             headTemp = headTemp->next; 

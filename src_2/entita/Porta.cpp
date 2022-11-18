@@ -21,7 +21,7 @@ Porta::Porta(int type, int direzione, bool portaConChiave, int dimstanzay, int d
         (*this).stampabile[i] = new cchar_t [s_dimx];
     }
 
-
+    this->portaConChiave = portaConChiave;
     if (portaConChiave)
         for(int i = 0; i < s_dimy; i++)
             for(int j = 0; j < s_dimx; j++) 
@@ -70,4 +70,8 @@ void Porta::updateEntita() {
         this->passedActions--;
     }
     */
+}
+
+bool Porta::isPortaConChiave() {
+    return this->portaConChiave;
 }

@@ -25,9 +25,11 @@ public:
 
     bool checkEntity(Porta *entity);
     void addEntita(Porta *entity);
-    bool removeEntita(Porta *entity, bool deleteEntita);
+    bool removeEntita(Porta *entity);
+    void deleteList(bool conChiave);
     void deleteList();
     plistaP getList();
+    int lengthList(bool conChiave);
     int lengthList();
 
     bool makecList(Entita *entity);

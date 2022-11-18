@@ -38,6 +38,9 @@ private:
     int dim_y;
     int dim_x;
 
+    bool esplorata;
+    bool trovata;
+
 public:
     Stanza(int id);
     ~Stanza();
@@ -58,17 +61,28 @@ public:
     ListaProiettili * getListaProiettili();
     void aggiungiProiettile(Proiettile * proiettile);
     void aggiungiNemico (Nemico * nemico);
+    void aggiungiArtefatto (Artefatto * artefatto);
 
-    void calcolo_logica(Player * player);
+    void calcolo_logica(Gioco * gioco);
     void aggiornaTick();
 
-    void dmgNemiciContactList(int quantita);
+    void dmgNemiciContactList(Gioco * gioco, int quantita);
     int dmgDaProiettiliContactList(bool type);
     void cancellaProiettiliSovrapposti(Entita * entita, bool giocatore);
 
     void effettiArtefatti(Player * player);
 
-    int returnId();
+    int getId();
+
+    int getNumNemici();
+
+
+    //getter e setter di esplorata e trovata
+    bool getEsplorata();
+    void setEsplorata(bool esplorata);
+    bool getTrovata();
+    void setTrovata(bool trovata);
+    
 };
 
 

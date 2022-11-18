@@ -9,8 +9,11 @@
 #define PORTA_OVEST 3
 
 class Porta : public Entita {
+private:
+    bool portaConChiave;
 public:
     Porta(int type, int direzione, bool portaConChiave, int dimstanzay, int dimstanzax);
 
     void updateEntita();
+    bool isPortaConChiave();
 };

@@ -22,6 +22,9 @@ Stanza::Stanza(int id){
     this->listaArtefatti = new ListaArtefatti();
     
 
+    this->esplorata = false;
+    this->trovata = false;
+
     this->idStanza = id;
 
     FILE * fin;
@@ -88,7 +91,7 @@ Stanza::Stanza(int id){
     }
 };
 
-int Stanza::returnId(){
+int Stanza::getId(){
     return this->idStanza;
 }
 
@@ -122,7 +125,8 @@ void Stanza::stampa_stanza(){
 
     (*this).listaPorte->stampaTutte(this->zero_y(), this->zero_x());   
     (*this).listaProiettili->stampaTutte(this->zero_y(), this->zero_x());   
-    (*this).listaNemici->stampaTutte(this->zero_y(), this->zero_x());   
+    (*this).listaNemici->stampaTutte(this->zero_y(), this->zero_x());     
+    (*this).listaArtefatti->stampaTutte(this->zero_y(), this->zero_x());   
 }
 
 int Stanza::zero_x(){
@@ -155,40 +159,40 @@ void Stanza::imposta_porte(bool nord, bool sud, bool est, bool ovest, int boss){
         for(int i = 0; i < DIMENSIONE_PORTA_ORIZZONTALE; i++){
             matrice_logica [0] [i + (int)((this->dim_x - DIMENSIONE_PORTA_ORIZZONTALE)/2)] = 0;
         }
-        if(boss != DIRECTION_NN){
-            this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_NORD, false, this->dim_y, this->dim_x));
-        } else{
+        if(boss == DIRECTION_NN){
             this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_NORD, true, this->dim_y, this->dim_x));
+        } else {
+            this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_NORD, false, this->dim_y, this->dim_x));
         }    
     }
     if(sud){
         for(int i = 0; i < DIMENSIONE_PORTA_ORIZZONTALE; i++){
             matrice_logica [this->dim_y-1] [i + (int)((this->dim_x - DIMENSIONE_PORTA_ORIZZONTALE)/2)] = 0;
         }
-        if(boss != DIRECTION_SS){
-            this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_SUD, false, this->dim_y, this->dim_x));
-        } else{
+        if(boss == DIRECTION_SS){
             this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_SUD, true, this->dim_y, this->dim_x));
+        } else{
+            this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_SUD, false, this->dim_y, this->dim_x));
         } 
     }
     if(est){
         for(int i = 0; i < DIMENSIONE_PORTA_VERTICALE; i++){
             matrice_logica [i + (int)((this->dim_y - DIMENSIONE_PORTA_VERTICALE)/2)] [this->dim_x-1] = 0;
         }
-        if(boss != DIRECTION_EE){
-            this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_EST, false, this->dim_y, this->dim_x));
-        } else{
+        if(boss == DIRECTION_EE){
             this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_EST, true, this->dim_y, this->dim_x));
+        } else{
+            this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_EST, false, this->dim_y, this->dim_x));
         }
     }
     if(ovest){
         for(int i = 0; i < DIMENSIONE_PORTA_VERTICALE; i++){
             matrice_logica [i + (int)((this->dim_y - DIMENSIONE_PORTA_VERTICALE)/2)] [0] = 0;
         }
-        if(boss != DIRECTION_OO){
-            this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_OVEST, false, this->dim_y, this->dim_x));
-        } else{
+        if(boss == DIRECTION_OO){
             this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_OVEST, true, this->dim_y, this->dim_x));
+        } else{
+            this->listaPorte->addEntita(new Porta(this->idStanza, PORTA_OVEST, false, this->dim_y, this->dim_x));
         }    
     }
 }
@@ -203,30 +207,70 @@ void Stanza::da_logica_a_stampabile(){
             switch(matrice_logica [i] [j]){
                 Nemico * nemicoGenerato;
                 case STANZA_SPAZIOLIBERO:
-                    setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, FLOOR_PAIR, NULL);
+                    switch(this -> getId()){
+                        case ID_STANZA_SPAWN:
+                            setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, MAP_SPAWN_PAIR, NULL);
+                            break;
+                        case ID_STANZA_NORMALE:
+                            setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, MAP_NORMAL_PAIR, NULL);
+                            break;
+                        case ID_STANZA_BOSS:
+                            setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, MAP_BOSS_PAIR, NULL);
+                            break;
+                    }
                 break;
                 case STANZA_MURO:
-                    setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, WALL_PAIR, NULL);
+                    switch(this -> getId()){
+                        case ID_STANZA_SPAWN:
+                            setcchar(&(matrice_stampabile [i] [j]), L"█", A_NORMAL, MAP_SPAWN_PAIR, NULL);
+                            break;
+                        case ID_STANZA_NORMALE:
+                            setcchar(&(matrice_stampabile [i] [j]), L"█", A_NORMAL, MAP_NORMAL_PAIR, NULL);
+                            break;
+                        case ID_STANZA_BOSS:
+                            setcchar(&(matrice_stampabile [i] [j]), L"█", A_NORMAL, MAP_BOSS_PAIR, NULL);
+                            break;
+                    }
                 break;
                 case STANZA_NEMICONORMALE:
-                    nemicoGenerato = new Nemico(NORMAL_ENEMY, i, j);
+                    nemicoGenerato = new Nemico(NORMAL_ENEMY, i, j, this->getId());
                     listaNemici->addEntita(nemicoGenerato);
                     // Libero lo spazio dalla matrice logica e dalla matrice stampabile dove è stato generato il nemico
                     for (int i_1 = i; i_1 < i + nemicoGenerato->getDimY(); i_1++){
                         for (int j_1 = j; j_1 < j + nemicoGenerato->getDimX(); j_1++){
                             matrice_logica[i_1][j_1] = STANZA_SPAZIOLIBERO;
-                            setcchar(&(matrice_stampabile [i_1] [j_1]), L" ", A_NORMAL, FLOOR_PAIR, NULL);
+                            switch(this -> getId()){
+                                case ID_STANZA_SPAWN:
+                                    setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, MAP_SPAWN_PAIR, NULL);
+                                    break;
+                                case ID_STANZA_NORMALE:
+                                    setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, MAP_NORMAL_PAIR, NULL);
+                                    break;
+                                case ID_STANZA_BOSS:
+                                    setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, MAP_BOSS_PAIR, NULL);
+                                    break;
+                            }
                         }
                     }
                 break;
                 case STANZA_NEMICOBOSS:
-                    nemicoGenerato = new Nemico(BOSS_ENEMY, i, j);
+                    nemicoGenerato = new Nemico(BOSS_ENEMY, i, j, this->getId());
                     listaNemici->addEntita(nemicoGenerato);
                     // Libero lo spazio dalla matrice logica e dalla matrice stampabile dove è stato generato il nemico
                     for (int i_1 = i; i_1 < i + nemicoGenerato->getDimY(); i_1++){
                         for (int j_1 = j; j_1 < j + nemicoGenerato->getDimX(); j_1++){
                             matrice_logica[i_1][j_1] = STANZA_SPAZIOLIBERO;
-                            setcchar(&(matrice_stampabile [i_1] [j_1]), L" ", A_NORMAL, FLOOR_PAIR, NULL);
+                            switch(this -> getId()){
+                                case ID_STANZA_SPAWN:
+                                    setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, MAP_SPAWN_PAIR, NULL);
+                                    break;
+                                case ID_STANZA_NORMALE:
+                                    setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, MAP_NORMAL_PAIR, NULL);
+                                    break;
+                                case ID_STANZA_BOSS:
+                                    setcchar(&(matrice_stampabile [i] [j]), L" ", A_NORMAL, MAP_BOSS_PAIR, NULL);
+                                    break;
+                            }
                         }
                     }
                 break;
@@ -263,6 +307,7 @@ int Stanza::accessibile(Entita * entita, bool giocatore){
     this->listaProiettili-> makecList(entita);
     this->listaNemici-> makecList(entita);
     this->listaPorte-> makecList(entita);
+    this->listaArtefatti-> makecList(entita);
 
     if(this->listaNemici->lengthcList() >= 1){
         returnvalue = STANZA_ACC_NEMICO;
@@ -272,7 +317,9 @@ int Stanza::accessibile(Entita * entita, bool giocatore){
         returnvalue = STANZA_ACC_PROIETTILE_NEMICO;
     } else if(this->listaProiettili->lengthcList(true) >= 1){
         returnvalue = STANZA_ACC_PROIETTILE_GIOCATORE;
-    } 
+    } else if(this->listaArtefatti->lengthcList() >= 1){
+        returnvalue = STANZA_ACC_ARTEFATTO;
+    }
 
     // Controllo accessibilità della cella se sono dentro le mura
     else if(
@@ -362,16 +409,25 @@ void Stanza::aggiungiProiettile(Proiettile * proiettile) {
     this->listaProiettili->addEntita(proiettile);
 }
 
+void Stanza::aggiungiArtefatto (Artefatto * artefatto) {
+    this->listaArtefatti->addEntita(artefatto);
+}
 
-void Stanza::calcolo_logica(Player * player){
+
+void Stanza::calcolo_logica(Gioco * gioco){
     // #TODO
     // Aggiornare la logica del giocatore e dei nemici in base alla posizione dei proiettili nel momento stesso:
     // Se un proiettile nemico si sovrappone al giocatore o un proiettile alleato si sovrappo ad un nemico, allora va cancellato
 
-    this->listaProiettili->aggiornaEntita(this, player);
-    this->listaNemici->aggiornaEntita(this, player);
-    if(this->listaNemici->lengthList() == 0 && this->listaPorte->lengthList() >= 0){
-        this->listaPorte->deleteList();
+    this->listaProiettili->aggiornaEntita(gioco);
+    this->listaNemici->aggiornaEntita(gioco);
+    this->listaArtefatti->aggiornaEntita(gioco);
+    
+    if(this->listaNemici->lengthList() == 0 && this->listaPorte->lengthList(gioco->getPlayer()->getChiave()) > 0){
+        this->listaPorte->deleteList(gioco->getPlayer()->getChiave());
+        this->listaPorte->deleteList(false);
+    } else if (this->listaNemici->lengthList() == 0 && this->listaPorte->lengthList(false) > 0) {
+        this->listaPorte->deleteList(false);
     }
 }
 
@@ -387,8 +443,8 @@ void Stanza::aggiornaTick() {
  * @param quantita Danno da infliggere a tutti i nemici 
  *                 nella contact list
  */
-void Stanza::dmgNemiciContactList(int quantita) {
-    this->listaNemici->dmgNemiciContactList(quantita);
+void Stanza::dmgNemiciContactList(Gioco * gioco, int quantita) {
+    this->listaNemici->dmgNemiciContactList(gioco, quantita);
 }
 
 /**
@@ -423,4 +479,26 @@ void Stanza::cancellaProiettiliSovrapposti(Entita * entita, bool giocatore) {
 
 void Stanza::effettiArtefatti(Player * player){
     this->listaArtefatti->effettiArtefatti(player);
+}
+
+
+int Stanza::getNumNemici() { 
+    return this->listaNemici->lengthList();
+}
+
+// getter e setter di trovata ed esplorata
+bool Stanza::getTrovata() {
+    return this->trovata;
+}
+
+void Stanza::setTrovata(bool trovata) {
+    this->trovata = trovata;
+}
+
+bool Stanza::getEsplorata() {
+    return this->esplorata;
+}
+
+void Stanza::setEsplorata(bool esplorata) {
+    this->esplorata = esplorata;
 }

@@ -25,7 +25,8 @@ public:
 
     bool checkEntity(Nemico *entity);
     void addEntita(Nemico *entity);
-    bool removeEntita(Nemico *entity, bool deleteEntita);
+    bool removeEntita(Gioco * gioco, Nemico *entity);
+    bool removeEntita(Nemico *entity);
     void deleteList();
     plistaN getList();
     int lengthList();
@@ -37,8 +38,8 @@ public:
 
     void stampaTutte(int offsetY, int offsetX);
 
-    void aggiornaEntita(Stanza * stanza, Player * player);
+    void aggiornaEntita(Gioco * gioco);
     void aggiornaTick();
 
-    void dmgNemiciContactList(int quantita);
+    void dmgNemiciContactList(Gioco * gioco, int quantita);
 };

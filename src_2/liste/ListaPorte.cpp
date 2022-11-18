@@ -143,8 +143,9 @@ bool ListaPorte::removeEntita_p(Porta *entity,bool contactList, bool deleteEntit
     return returnValue;
 };
 
-bool ListaPorte::removeEntita(Porta *entity, bool deleteEntita) {
-    return removeEntita_p(entity, false, deleteEntita);
+bool ListaPorte::removeEntita(Porta *entity) {
+    removeEntita_p(entity, true, false); // La cancello dalla contactlist senza cancellare l'entita
+    return removeEntita_p(entity, false, true); // La cancello dalla lista normale cancellando l'entita
 }
 
 
@@ -199,14 +200,27 @@ void ListaPorte::deleteList(){
         }
         while(temp->prev != NULL) {
             temp = temp->prev;    
-            removeEntita(temp->next->e, true);
+            removeEntita(temp->next->e);
         }
         if (temp->next != NULL) {
-            removeEntita(temp->next->e, true);
+            removeEntita(temp->next->e);
         }
-        removeEntita(temp->e, true);
+        removeEntita(temp->e);
     }
 };
+
+
+void ListaPorte::deleteList(bool conChiave) {
+    plistaP temp = getList();
+    while(temp != NULL) {
+        if (temp->e->isPortaConChiave() == conChiave) {
+            removeEntita(temp->e);
+            temp = getList();
+        } else {
+            temp = temp->next;
+        }
+    }
+}
 
 
 void ListaPorte::stampaTutte(int offsetY, int offsetX) {
@@ -215,6 +229,18 @@ void ListaPorte::stampaTutte(int offsetY, int offsetX) {
         headTemp->e->stampa(offsetY, offsetX);
         headTemp = headTemp->next; 
     }
+}
+
+
+int ListaPorte::lengthList(bool conChiave) {
+    int returnvalue=0;
+    listaP * tmp = this-> head;
+    while(tmp!=NULL){
+        if (tmp->e->isPortaConChiave() == conChiave)
+            returnvalue+=1;
+        tmp = tmp -> next;
+    }
+    return returnvalue;
 }
 
 int ListaPorte::lengthList(){
@@ -236,3 +262,4 @@ int ListaPorte::lengthcList(){
     }
     return returnvalue;
 }
+

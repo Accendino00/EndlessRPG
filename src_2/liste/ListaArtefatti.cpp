@@ -143,8 +143,9 @@ bool ListaArtefatti::removeEntita_p(Artefatto *entity, bool contactList, bool de
     return returnValue;
 };
 
-bool ListaArtefatti::removeEntita(Artefatto *Artefatto, bool deleteEntita) {
-    return removeEntita_p(Artefatto, false, deleteEntita);
+bool ListaArtefatti::removeEntita(Artefatto *entity) {
+    removeEntita_p(entity, true, false); // La cancello dalla contactlist senza cancellare l'entita
+    return removeEntita_p(entity, false, true); // La cancello dalla lista normale cancellando l'entita
 }
 
 
@@ -199,12 +200,12 @@ void ListaArtefatti::deleteList(){
         }
         while(temp->prev != NULL) {
             temp = temp->prev;    
-            removeEntita(temp->next->e, true);
+            removeEntita(temp->next->e);
         }
         if (temp->next != NULL) {
-            removeEntita(temp->next->e, true);
+            removeEntita(temp->next->e);
         }
-        removeEntita(temp->e, true);
+        removeEntita(temp->e);
     }
 };
 
@@ -238,34 +239,31 @@ int ListaArtefatti::lengthcList(){
 }
 
 void ListaArtefatti::effettiArtefatti(Player * player){
-
-    listaA * tmp = this-> chead;
+    listaA * tmp = this->chead;
     while(tmp!=NULL){
-        switch(tmp->e->getIDArtefatto()){
-            case AUMENTA_HP:
-                player->modificaVita((rand() % (player->getVita()-10))+10);
-            break;
-            case AUMENTA_ATTACCO:
-                player->modificaDanno((rand() % (8))+3);
-            break;               
-            case ATTACCO_DIETRO:
-                player->aggiungiDirezioneAttacco(DIRECTION_EE);
-            break;
-            case ATTACCO_DIAGONALE:
-                player->aggiungiDirezioneAttacco(DIRECTION_SE);
-            break;
-            case AUMENTA_DIFESA:
-                player->modificaDifesa((rand() % (10)+5));
-            break;
-            case AUMENTA_SPRINT:
-                player->modificaSprint(2);
-            break;
-            case CHIAVE:
-                player->setChiave(true);
-            break;
-
-        }
-        tmp = tmp -> next;
+        if (tmp->e->getVita() > 0) {
+            tmp->e->applicaEffetto(player);
+        } 
+        removeEntita(tmp->e);
+        tmp = this->chead;
     }
 
+}
+
+void ListaArtefatti::aggiornaEntita(Gioco * gioco) {
+    plistaA headTemp = head;
+    while(headTemp != NULL) {
+        if (headTemp->e->getVita() <= 0) {
+            removeEntita(headTemp->e);
+            headTemp = head;
+        } else {
+            headTemp->e->updateEntita(gioco->getPlayer());
+            if(headTemp->e->getVita() == 0) {
+                removeEntita(headTemp->e);
+                headTemp = head;
+            } else {
+                headTemp = headTemp->next;
+            }
+        }
+    }
 }

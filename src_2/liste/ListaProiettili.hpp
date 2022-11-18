@@ -40,7 +40,7 @@ public:
 
     void stampaTutte(int offsetY, int offsetX);
 
-    void aggiornaEntita(Stanza * stanza, Player * player);
+    void aggiornaEntita(Gioco * gioco);
     void aggiornaTick();
 
     int dmgDaProiettiliContactList(bool type);

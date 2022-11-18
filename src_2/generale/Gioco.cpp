@@ -1,16 +1,3 @@
-#include "../generale/libs.hpp"
-
-Gioco::Gioco(){
-    // Viene generato il giocatore al centro della stanza iniziale, con 50 punti vita
-    player = new Player((int)DIM_STANZA_SPAWN_Y/2,(int)DIM_STANZA_SPAWN_X/2, 50);
-    this->gameOver = false;
-}
-
-Gioco::~Gioco() {
-    delete this->player;
-    delete livello_corrente;
-}
-
 /*
     Ordine di calcolo della logica:
 
@@ -105,6 +92,38 @@ Gioco::~Gioco() {
 
     poi, infine, faccio il calcolo della logica del livello per capire se devo mantenere le porte, quale porte mantenenre e quale cancellare
 */
+#include "../generale/libs.hpp"
+
+Gioco::Gioco(){
+    // Viene generato il giocatore al centro della stanza iniziale, con 50 punti vita
+    player = new Player((int)DIM_STANZA_SPAWN_Y/2,(int)DIM_STANZA_SPAWN_X/2, 50);
+    this->gameOver = false;
+}
+
+Gioco::~Gioco() {
+    delete this->player;
+    delete livello_corrente;
+}
+
+Player * Gioco::getPlayer(){
+    return this->player;
+}
+Livello * Gioco::getLivello() {
+    return this->livello_corrente;
+}
+int Gioco::getLivelloCounter() {
+    return this->livello_counter;
+}
+
+void Gioco::setPlayer(Player * player) {
+    this->player = player;
+}
+void Gioco::setLivello(Livello * livello) {
+    this->livello_corrente = livello;
+}
+void Gioco::setLivelloCounter(int livello_counter) {
+    this->livello_counter = livello_counter;
+}
 
 //da fare i metodi che mi riportano dei bool se il boss è morto
 
@@ -135,13 +154,11 @@ void Gioco::gameLoop() {
 
         /*** Calcolo della logica ***/
 
-        livello_corrente -> calcolo_logica(this->player);
+        livello_corrente -> calcolo_logica(this);
         
         /*** Stampa ***/
 
-        mvprintw(23,11, "Livello : %d", livello_counter);
-
-        livello_corrente -> stampa(this->player);
+        livello_corrente -> stampa();
     
         this->player->stampa(livello_corrente->offsetY(), livello_corrente->offsetX());
         this->player->stampaHUDplayer();
@@ -150,13 +167,19 @@ void Gioco::gameLoop() {
             mvprintw(livello_corrente->getStanza()->zero_y()+1, livello_corrente->getStanza()->zero_x()+1, "Premere 'l' per cambiare livello");
             if(gd->checkInput('l')){
                 delete livello_corrente;
-                livello_corrente = new Livello();
-                livello_counter++;
+                livello_corrente = new Livello(livello_counter++);
                 player->modificaCoordinate((int)DIM_STANZA_SPAWN_Y/2,(int)DIM_STANZA_SPAWN_X/2);
+                player->setFrame(FRAME_OF_E);
+                player->setChiave(false);
             }
         }
         // Fine del frame e refresh dello schermo
         gd->frameFinish();
         refresh();
     } while (! (gameOver) );
+}
+
+void Gioco::spawnArtefatto(int y, int x) {
+    // #TODO aggiungere le chance di spawnare artefatti;
+    this->livello_corrente->getStanza()->aggiungiArtefatto(new Artefatto(y,x,(rand() % TIPOART_MAX) + 1));
 }

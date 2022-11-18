@@ -254,14 +254,14 @@ void ListaProiettili::stampaTutte(int offsetY, int offsetX) {
 }
 
 
-void ListaProiettili::aggiornaEntita(Stanza * stanza, Player * player) {
+void ListaProiettili::aggiornaEntita(Gioco * gioco) {
     plistaPro headTemp = head;
     while(headTemp != NULL) {
         if (headTemp->e->getVita() <= 0) {
             removeEntita(headTemp->e);
             headTemp = head;
         } else {
-            headTemp->e->updateEntita(stanza, player);
+            headTemp->e->updateEntita(gioco);
             headTemp = headTemp->next; 
         }
     }
@@ -339,6 +339,8 @@ int ListaProiettili::lengthcList(bool type){
  * se type è vero, allora somma i proiettili del giocatore, altrimenti 
  * somma i proiettili dei nemici.
  * 
+ * Cancella i proiettili che vengono usati per fare questo calcolo.
+ * 
  * @param type      Se vero, somma i proiettili del giocatore. Se falso, 
  *                  somma i proiettili dei nemici.
  * @return int 
@@ -352,5 +354,6 @@ int ListaProiettili::dmgDaProiettiliContactList(bool type) {
         }
         tmp = tmp -> next;
     }
+    deletecList_fromList(type);
     return returnvalue;
 }

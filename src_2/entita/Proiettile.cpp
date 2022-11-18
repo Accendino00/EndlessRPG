@@ -1,6 +1,6 @@
 #include "../generale/libs.hpp"
 
-Proiettile::Proiettile(int y, int x, bool playerProjectile, int direzione, int danno) {
+Proiettile::Proiettile(int y, int x, bool playerProjectile, int direzione, int danno, int tipoStanza) {
     this->lastTick = gd->getCurrentTick();
     this->x = x;
     this->y = y;
@@ -38,7 +38,18 @@ Proiettile::Proiettile(int y, int x, bool playerProjectile, int direzione, int d
     this->damage = danno;
 
     this->playerProjectile = playerProjectile;
-    short color = (playerProjectile) ? (PLAYER_BULLET_PAIR) : (ENEMY_BULLET_PAIR);
+    short color = 0;
+    switch(tipoStanza){
+        case ID_STANZA_SPAWN:
+            color = (playerProjectile) ? (PLAYER_BULLET_PAIR_E) : (ENEMY_BULLET_PAIR_E);
+        break;
+        case ID_STANZA_NORMALE:
+            color = (playerProjectile) ? (PLAYER_BULLET_PAIR_N) : (ENEMY_BULLET_PAIR_N);
+        break;
+        case ID_STANZA_BOSS:
+            color = (playerProjectile) ? (PLAYER_BULLET_PAIR_B) : (ENEMY_BULLET_PAIR_B);
+        break;
+    }
     switch(direzione) {
         case DIRECTION_NN:
             setcchar(&(this->stampabile[0][0]), L"\u21D1", A_NORMAL, color, NULL);
@@ -67,29 +78,47 @@ Proiettile::Proiettile(int y, int x, bool playerProjectile, int direzione, int d
     }
 }
 
-void Proiettile::updateEntita(Stanza * stanza, Player * player) {
+void Proiettile::updateEntita(Gioco * gioco) {
     this->Entita::updateEntita();
     while (this->getVita() > 0 && this->passedActions > 0) {
         // Interazione con il giocatore
         this->muovi(this->direzione,1);
-        if (!this->isPlayerProjectile()  && player->controllaContatto(this->getX(), this->getY(), this->getDimX(), this->getDimY())) {
+        if (!this->isPlayerProjectile()  && gioco->getPlayer()->controllaContatto(this->getX(), this->getY(), this->getDimX(), this->getDimY())) {
             // Per danneggiare il giocatore, modifico la sua vita con il negativo del danno che fa il proiettile
-            player->modificaVita(- (this->getDamage())); 
+            gioco->getPlayer()->modificaVita(- (this->getDamage())); 
             this->setVita(0);
         } else {
             this->muovi(this->direzione,-1);
         }
 
         // Interazione con tutte le altre entità / la stanza
-        switch(movimentoValido(this->direzione, 1, stanza, false)) {
+        switch(movimentoValido(this->direzione, 1, gioco->getLivello()->getStanza(), false)) {
             case STANZA_ACC_LIBERO:
                 this->muovi(this->direzione,1);
                 break;
             case STANZA_ACC_NEMICO:
                 if (this->isPlayerProjectile()) {
-                    stanza->dmgNemiciContactList(this->getDamage());
+                    gioco->getLivello()->getStanza()
+                         ->dmgNemiciContactList(gioco, this->getDamage());
                     this->setVita(0);
                 } else{
+                    this->muovi(this->direzione,1);
+                }
+                break;
+            case STANZA_ACC_ARTEFATTO:
+                this->muovi(this->direzione,1);
+                break;
+            case STANZA_ACC_PROIETTILE_GIOCATORE:
+                if (this->isPlayerProjectile()) {
+                    this->muovi(this->direzione,1);
+                } else {
+                    this->setVita(0);
+                }
+                break;
+            case STANZA_ACC_PROIETTILE_NEMICO:
+                if (this->isPlayerProjectile()) {
+                    this->setVita(0);
+                } else {
                     this->muovi(this->direzione,1);
                 }
                 break;

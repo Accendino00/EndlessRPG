@@ -13,17 +13,22 @@ private:
     int current_y;
     int current_x;
 
+    int numLivello;
+
 public:
     Livello();
+    Livello(int numLivello);
     ~Livello();
 
     void scegli_lato(Stanza *** matrice_livello , int * x, int *y);
     void imposta_stanza();
     void stanza_corrente();
-    void stampa(Player * player);
+    void stampa();
     bool cambia_stanza(int direzione);
-    void calcolo_logica(Player * player);
+    void calcolo_logica(Gioco * player);
+    
     bool livello_successivo();
+
     bool Bossisdead();
     bool isBossstanza();
 
@@ -35,4 +40,14 @@ public:
 
     int offsetY();
     int offsetX();
+
+    int getNumNemici();
+
+    void stampaMinimappa();
+
+    // Getter e setter di numLivello
+    int getNumLivello();
+    void setNumLivello(int numLivello);
+
+    void esploraStanza(int y, int x);
 };

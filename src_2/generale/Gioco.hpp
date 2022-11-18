@@ -13,5 +13,15 @@ public:
     Gioco();
     ~Gioco();
 
+    Player * getPlayer();
+    Livello * getLivello();
+    int getLivelloCounter();
+
+    void setPlayer(Player * player);
+    void setLivello(Livello * livello);
+    void setLivelloCounter(int livello_counter);
+
+    void spawnArtefatto(int y, int x);
+
     void gameLoop();
 };

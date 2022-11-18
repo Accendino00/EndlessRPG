@@ -6,7 +6,7 @@ private:
     bool playerProjectile;
     int direzione;
 public:
-    Proiettile(int y, int x, bool playerProjectile, int direzione, int danno);
-    void updateEntita(Stanza * stanza, Player * player);
+    Proiettile(int y, int x, bool playerProjectile, int direzione, int danno, int tipoStanza);
+    void updateEntita(Gioco * gioco);
     bool isPlayerProjectile();
 };

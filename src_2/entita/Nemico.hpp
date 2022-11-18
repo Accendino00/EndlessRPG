@@ -83,7 +83,7 @@ private:
     int patternDirezione; // Usata per nemici che si muovono in maniera ripetitiva
 
 public:
-    Nemico(int type, int posy, int posx);
+    Nemico(int type, int posy, int posx, int tipoStanza);
     ~Nemico();
 
     void updateEntita(Stanza * stanza, Player * player);

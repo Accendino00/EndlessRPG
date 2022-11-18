@@ -8,7 +8,7 @@
  *      i file hpp. 
  */
 
-
+class Gioco;
 class Player;
 class Nemico;
 class Proiettile;

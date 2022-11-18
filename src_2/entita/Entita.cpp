@@ -66,10 +66,10 @@ Entita::~Entita() {
 void Entita::stampa(int offsetY, int offsetX) {
     int offsetDisplay = (*this).h_dimx * currentFrame;
     for(int i = 0; i < (*this).h_dimy; i++) {
-        for(int j = offsetDisplay; j < ((*this).h_dimx + (offsetDisplay)); j++) {
+        for(int j = 0; j < ((*this).h_dimx); j++) {
             mvadd_wch(  (this->y)+i+offsetY, 
                         (this->x)+j+offsetX, 
-                        & (this->stampabile)[i][j]);
+                        & (this->stampabile)[i][j+offsetDisplay]);
         }
     } 
 }

@@ -17,7 +17,7 @@ private:
     // true = chead
     bool checkEntity_p(Artefatto *entity, bool contactList);
     void addEntita_p(Artefatto *entity, bool contactList);
-    bool removeEntita_p(Artefatto *entity,bool contactList, bool deleteEntita);
+    bool removeEntita_p(Artefatto *entity, bool contactList, bool deleteEntita);
 
 public:
     ListaArtefatti();
@@ -25,7 +25,7 @@ public:
 
     bool checkEntity(Artefatto *entity);
     void addEntita(Artefatto *entity);
-    bool removeEntita(Artefatto *entity, bool deleteEntita);
+    bool removeEntita(Artefatto *entity);
     void deleteList();
     plistaA getList();
     int lengthList();
@@ -35,6 +35,8 @@ public:
     void deletecList();
     int lengthcList();
 
+
+    void aggiornaEntita(Gioco * gioco);
     void effettiArtefatti(Player * player);
 
     void stampaTutte(int offsetY, int offsetX);

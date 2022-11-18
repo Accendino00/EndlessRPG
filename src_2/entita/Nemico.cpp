@@ -1,6 +1,6 @@
 #include "../generale/libs.hpp"
 
-Nemico::Nemico (int type, int posy, int posx) {
+Nemico::Nemico (int type, int posy, int posx, int tipoStanza) {
 
     // Impostazione dell'hitbox e della dimensione dello stampabile. 
     // Inoltre il giocatore ha 1 solo frame di stampa
@@ -18,8 +18,20 @@ Nemico::Nemico (int type, int posy, int posx) {
 
     this->passedActions = 0;
     this->lastTick = gd->getCurrentTick();
-   
-    setcchar(&(this->stampabile[0][0]), L"N", A_NORMAL, PLAYER_COLOR_PAIR, NULL);
+    
+    short color = 0;
+    switch(tipoStanza){
+        case ID_STANZA_SPAWN:
+            color = (ENEMY_BULLET_PAIR_E);
+        break;
+        case ID_STANZA_NORMALE:
+            color = (ENEMY_BULLET_PAIR_N);
+        break;
+        case ID_STANZA_BOSS:
+            color = (ENEMY_BULLET_PAIR_B);
+        break;
+    }
+    setcchar(&(this->stampabile[0][0]), L"N", A_NORMAL, color, NULL);
     
     this->y = posy;
     this->x = posx;
@@ -93,22 +105,33 @@ void Nemico::updateEntita(Stanza * stanza, Player * player) {
         if( (azione & MUOVI_DIREZIONE) == MUOVI_DIREZIONE ) {
             for(int i = DIRECTION_NN; i <= DIRECTION_NO; i = i << 1) {
                 if((azione & i) == i) {
-                    switch(movimentoValido(i, 1, stanza, false)) {
-                        case STANZA_ACC_LIBERO:
-                            this->muovi(i,1);
-                            break;
-                        case STANZA_ACC_PROIETTILE_GIOCATORE:
-                            stanza->dmgDaProiettiliContactList(true);
-                            stanza->cancellaProiettiliSovrapposti(this, false);
-                            break;
-                        case STANZA_ACC_PORTA:
-                        case STANZA_ACC_MURO:
-                            // Sta fermo
-                            break;
-                        default:
-                            // Non sono contemplate interazioni con altro
-                            break;
+                            // Interazione con il giocatore
+                    this->muovi(i,1);
+                    if (!player->controllaContatto(this->getX(), this->getY(), this->getDimX(), this->getDimY())) {
+                        this->muovi(i,-1);
+                        switch(movimentoValido(i, 1, stanza, false)) {
+                            case STANZA_ACC_LIBERO:
+                                this->muovi(i,1);
+                                break;
+                            case STANZA_ACC_PROIETTILE_GIOCATORE:
+                                stanza->dmgDaProiettiliContactList(true);
+                                stanza->cancellaProiettiliSovrapposti(this, false);
+                                this->muovi(i,1);
+                                break;
+                            case STANZA_ACC_PORTA:
+                            case STANZA_ACC_MURO:
+                                // Sta fermo
+                                break;
+                            default:
+                                // Non si muove
+                                break;
+                        }
+                    } else {
+                        this->muovi(i,-1);
+                        // Se sono a contatto con il giocatore, non mi muovo
                     }
+
+
                 }
             }
         }
@@ -131,15 +154,15 @@ void Nemico::updateEntita(Stanza * stanza, Player * player) {
                     if( (azione & i) == DIRECTION_NO ) { osX = -1; osY =  1;}
                     // Parte dal centro del nemico
                     if ((azione & AZIONE_SPARA_PRINCIPALE) == AZIONE_SPARA_PRINCIPALE) {
-                        stanza->aggiungiProiettile(new Proiettile(this->y,this->x,false,i,this->damage));
+                        stanza->aggiungiProiettile(new Proiettile(this->y,this->x,false,i,this->damage,stanza->getId()));
                     }
                     // Parte dalla destra della direzione dove si spara 
                     if ((azione & AZIONE_SPARA_SECONDARIO) == AZIONE_SPARA_SECONDARIO) {
-                        stanza->aggiungiProiettile(new Proiettile((this->y)+osY,(this->x)+osX,false,i,this->damage));
+                        stanza->aggiungiProiettile(new Proiettile((this->y)+osY,(this->x)+osX,false,i,this->damage,stanza->getId()));
                     }
                     // Parte dalla sinistra della direzione dove si spara 
                     if ((azione & AZIONE_SPARA_TERZIARIO) == AZIONE_SPARA_TERZIARIO) {
-                        stanza->aggiungiProiettile(new Proiettile((this->y)-osY,(this->x)-osX,false,i,this->damage));
+                        stanza->aggiungiProiettile(new Proiettile((this->y)-osY,(this->x)-osX,false,i,this->damage,stanza->getId()));
                     }
                 }
             }
