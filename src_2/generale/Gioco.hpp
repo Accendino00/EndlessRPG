@@ -23,5 +23,6 @@ public:
 
     void spawnArtefatto(int y, int x);
 
+    void cambialivello();
     void gameLoop();
 };

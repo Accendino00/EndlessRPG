@@ -125,7 +125,18 @@ void Gioco::setLivelloCounter(int livello_counter) {
     this->livello_counter = livello_counter;
 }
 
-//da fare i metodi che mi riportano dei bool se il boss è morto
+void Gioco::cambialivello(){
+    if(livello_corrente->getStanza()->getNumNemici()==0){
+        mvprintw(livello_corrente->getStanza()->zero_y()+1, livello_corrente->getStanza()->zero_x()+1, "Premere 'l' per cambiare livello");
+        if(gd->checkInput('l')){
+            delete livello_corrente;
+            livello_corrente = new Livello(livello_counter++);
+            player->modificaCoordinate((int)DIM_STANZA_SPAWN_Y/2,(int)DIM_STANZA_SPAWN_X/2);
+            player->setFrame(FRAME_OF_E);
+            player->setChiave(false);
+        }
+    }    
+}
 
 void Gioco::gameLoop() {
     // Imposto i ticket a 0 quando inizia il gioco
@@ -164,14 +175,7 @@ void Gioco::gameLoop() {
         this->player->stampaHUDplayer();
         
         if(livello_corrente->isBossstanza()){
-            mvprintw(livello_corrente->getStanza()->zero_y()+1, livello_corrente->getStanza()->zero_x()+1, "Premere 'l' per cambiare livello");
-            if(gd->checkInput('l')){
-                delete livello_corrente;
-                livello_corrente = new Livello(livello_counter++);
-                player->modificaCoordinate((int)DIM_STANZA_SPAWN_Y/2,(int)DIM_STANZA_SPAWN_X/2);
-                player->setFrame(FRAME_OF_E);
-                player->setChiave(false);
-            }
+            cambialivello();
         }
         // Fine del frame e refresh dello schermo
         gd->frameFinish();
