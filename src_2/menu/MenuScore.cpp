@@ -166,8 +166,8 @@ void MenuScore::loopScore() {
 }    
 
 void MenuScore::printAll(){
-    char daStampare[100];
-    int line = 0;
+    // char daStampare[100];
+    // int line = 0;
     /*
     for(int i = (this->pagina-1)*10; i<(this->pagina*10) ; i++){ //Seleziono la porzione di array che voglio mostrare
         if(i < scoreCounter){

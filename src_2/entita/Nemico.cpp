@@ -60,31 +60,85 @@ Nemico::Nemico (int type, int posy, int posx, int tipoStanza) {
     if(type == NORMAL_ENEMY) {
         int idNemico = ( rand() % 5 );
         switch(idNemico) {
+            // Trottola (2x2)
+            // idea: si gira e spara in tre direzioni, muovendosi in senso orario (o antiorario) mostrando da dove sta per sparare
             case 0:
 
             break;
+            // Cannoniere (3x3)
+            // idea: mira al giocatore, mostra dove vuole sparare e poi spara usando tutti e tre i cannoni, (destro e sinistro fanno dopo il centrale)
+            // così c'è un effeto tipo "formazione dei jet"
             case 1:
 
             break;
+            // Sputafuoco (1x1)
+            // idea: si muove in una direzione e spara nella direzione opposta (usando un cannone a caso), quando colpisce un muro (accessibile da falso) si gira e ripete
             case 2:
 
             break;
+            // Bombardiere (3x3)
+            // idea: carica un colpo per 2 frame e poi spara in tutte le direzioni usando tutti i cannoni (9*8 = 72 colpi)
+            // dopo che ha finito di caricare il colpo, cambia il timeforaction in modo casuale
             case 3:
 
             break;
+            // Soldato semplice (1x1)
+            // idea: tra una pausa e un altra spara verso il giocatore
             case 4:
+
+            break;
+            // Verme (orizzontale) (2x1)
+            // idea: si muove a pattern da sinistra a destra e spara sopra e sotto, in modo alternato
+            case 5:
+
+            break;
+            // Verme (verticale) (1x2)
+            // idea: si muove a pattern da sopra a sotta spara a destra e a sinistra, in modo alternato
+            case 6:
 
             break;
         }
     } else if (type == BOSS_ENEMY) {
+        // Per i boss, le chance sono 1/3 per ogni tipo di boss
         int idNemico = ( rand() % 3 );
+
         switch(idNemico) {
+            // Super trottola (3x3) 
+            // Spara tanto mentre si gira, e casualmente cambia la velocità e la direzione (quando la cambia sta fermo per un po')
             case 0:
+                // 4 frame per orientazione, 2 frame per attesa idle
+                /* 
+                int nf = 2 + 4;
+                (*this).h_dimy = 3;
+                (*this).h_dimx = 3;
+                (*this).s_dimy = 3;
+                (*this).s_dimx = 3 * nf;  
+                (*this).currentFrame = 0;
+
+                this->maxLife=100;
+                this->currentLife = this->maxLife;
+                
+                this->stampabile = new cchar_t * [1];
+                this->stampabile[0] = new cchar_t [1];
+
+                this->passedActions = 0;
+                this->lastTick = gd->getCurrentTick();
+                */
+
 
             break;
+            // Super cannoniere (5x5) (ha una cornice tipo le mappe, e un cannone che fuoriesce dal centro 3x3)
+            // idea: mira al giocatore per un paio di frame, poi inizia a sparare per diverse volte usando tutti i cannoni 
+            // nella direzione del giocatore (cambiandola mentre il giocatore si muove)
+            // Il caricamento è come se aumentasse il calore del cannone centrale (quindi diventa sempre più giallo fino ad essere chiaro quasi bianco)
+            // sta fermo per più a lungo rispetto alla super trottola
             case 1:
 
             break;
+            // Alternatore (3x3)
+            // Si muove per un numero casuale di step (~10) in una direzione casuale, poi si ferma per un frame e poi 
+            // inizia a sparare in tutte le direzioni usando tutti i cannoni (non insieme, ma casualemnte uno alla volta)
+            // Si illumina la direzione dove ha appena sparato (forse, se ho voglia di farlo)
             case 2:
 
             break;

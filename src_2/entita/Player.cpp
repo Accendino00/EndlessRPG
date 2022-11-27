@@ -165,6 +165,7 @@ void Player::modificaDifesa(int val){
 
 
 void Player::modificaVita(int quantita){
+    // Se cura, allora non può curare di più di quanto ha perso
     if(quantita>0){
         if(quantita + this->getVita() > this->maxLife) {
             this->currentLife = this->maxLife;
@@ -172,6 +173,9 @@ void Player::modificaVita(int quantita){
             this->currentLife += quantita;
         }
     }
+    // Se danno, allora la quantità dipende dalla difesa
+    // Viene usata la formula che si legge sotto in modo da dare più importanza 
+    // alla difesa presa inizalmente e non arrivare mai a 100% di danno negato
     else{
         this->currentLife += quantita*(100/(100+(float)this->difesa));
     }

@@ -72,6 +72,7 @@
 #define MUOVI_PATTERN               0b110000000000000
 
 #define FRAME_PROSSIMO            0b01000000000000000
+#define FRAME_ORIENTAZIONE        0b10000000000000000
 
 class Nemico : public Entita {
 private:
