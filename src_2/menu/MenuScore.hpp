@@ -1,28 +1,29 @@
 #pragma once
 #include "../generale/libs.hpp"
 
-//Dato generico per lo score (punteggio e nome di 3 caratteri)
 struct UserData {
     int score;
-    char nome [4];
-    UserData *next;
-}; typedef UserData *pUserData;
-
-struct UserArrayData {
-    int score;
-    char nome[4];
+    char nome[11];
 };
+
+// Dato generico per lo score (punteggio e nome di 3 caratteri)
+struct UserDataList {
+    UserData data;
+    UserDataList *next;
+}; typedef UserDataList *pUserData;
 
 
 class MenuScore : public Menu {
 private:
-    pUserData head;               //Testa della lista dei punteggi
-    int scoreCounter;              //Grandezza dell'array    
-    UserArrayData * arrayScore;              //Array ordinato con gli score
-    int pagina;                      //Numero della pagina visualizzata
+    int scoreCounter;               // Grandezza dell'array    
+    UserData * arrayScore;          // Array ordinato con gli score
+
+    int pagina;                     // Numero della pagina visualizzata
 
 public:
     MenuScore();
+    ~MenuScore();
+    
     void CaricaOrdinaScore();
     void loopScore();
     void printAll();

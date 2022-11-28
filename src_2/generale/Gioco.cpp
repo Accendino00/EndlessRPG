@@ -181,6 +181,8 @@ void Gioco::gameLoop() {
         gd->frameFinish();
         refresh();
     } while (! (gameOver) );
+
+    // Quando il gioco finisce, c'è la schermata di game over e di salvataggio del punteggio
 }
 
 void Gioco::spawnArtefatto(int y, int x) {

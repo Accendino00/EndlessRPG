@@ -1,30 +1,29 @@
 #include "../generale/libs.hpp"
 
-MenuScore::MenuScore() : Menu(0,4,6) {}
-void heapify(int arr[], int n, int i)
+void heapify(UserData arr[], int n, int i)
 {
     int min = i; // Il valore più grande inizialmente è la radice
     int l = 2 * i + 1; // left = 2*i + 1
     int r = 2 * i + 2; // right = 2*i + 2
  
     // Se il figlio sinistro è più piccolo della radice
-    if (l < n && arr[l] < arr[min])
+    if (l < n && arr[l].score < arr[min].score)
         min = l;
  
     // Se il figlio destro è più piccolo della radice
-    if (r < n && arr[r] < arr[min])
+    if (r < n && arr[r].score < arr[min].score)
         min = r;
  
     // Se il valore più piccolo non è la radice
     if (min != i) {
         //Scambio la radice con il max
-        int tmp = arr[i];  
+        UserData tmp = arr[i];  
         arr[i] = arr[min];
         arr[min] = tmp;
         heapify(arr, n, min);
     }
 }
-void heapSort(int arr[], int n)
+void heapSort(UserData arr[], int n)
 {
     // Costruisco l'heap
     for (int i = n / 2 - 1; i >= 0; i--)
@@ -33,7 +32,7 @@ void heapSort(int arr[], int n)
     // Estraggo gli elementi dall'heap
     for (int i = n - 1; i >= 0; i--) {
         // Sposto la radice attuale alla fine
-        int tmp = arr[0];
+        UserData tmp = arr[0];
         arr[0] = arr[i];
         arr[i] = tmp;
  
@@ -42,81 +41,109 @@ void heapSort(int arr[], int n)
     }
 }
 
-void MenuScore::CaricaOrdinaScore() {
-    pUserData tmp = this->head; // Salvo la testa
-    FILE *fin;
-    fin = fopen("score.csv", "r");
-    // Booleano per uscire dalla lettura
-    bool exit = false;
+MenuScore::MenuScore() : Menu(0,2,6) {
+    // Inizializziamo gli attributi
+    this->scoreCounter = 0;
+    this->pagina = 0;
+
+    // Leggiamo dal file gli score e li assegniamo alla lista di UserDataList
+    pUserData tmp = NULL;
+
+    FILE *fin = fopen("score.csv", "r");
+
+    // Booleano per capire se c'è un errore nel file
+    bool error = false;
     // Temp per la lettura
     char c;
-    this->scoreCounter = 0; //Contatore per dimensione array di ordinamento
-    
-    if (fin != NULL) { // Leggo gli score solo se ve ne sono effettivamente
-    pUserData curr = new UserData;
-        if(feof(fin)){
-        while(!exit) { // Lettura degli score fino a quando li ho letti tutti e devo uscire 
-        
-            for (int i = 0; i < 3; i++) { // Carico il nome
-                c = fgetc(fin);
-                curr->nome[i] = c;
-            }
-            curr->nome[3] = '\0';
-            curr->score = 0;            //Carico il punteggio
-            int i = 10000000;
-            c = fgetc(fin);
-            while (c != '\n') {
-                c = fgetc(fin);
-                if (feof(fin) && c != '\n') {
-                    curr->score += (c - '0') * i;
-                    i /= 10;
+
+    // Se esiste il file di input allora leggo
+    if (fin != NULL && !feof(fin)) { 
+
+        do { // Lettura degli score fino a quando li ho letti tutti e devo uscire 
+            pUserData curr = new UserDataList;
+
+            // Lettura del nome
+            int j = 0;
+            do {
+                c = fgetc(fin); 
+
+                if (c != ';' && c != EOF) {
+                    curr->data.nome[j] = c;
+                    j++;
                 }
+            } while (c != ';' && c != EOF && j < 10); // Leggo fino a quando non trovo il carattere ';' o arrivo al massimo
+            curr->data.nome[j] = '\0'; // Aggiungo il carattere di fine stringa
+
+            if (j == 10 && c != EOF && c != ';') { 
+                // Se ho letto 10 caratteri e non ho trovato il carattere ';' allora leggo anche il prossimo
+                c = fgetc(fin);
             }
-            while (i >= 1) {
-                curr->score = curr->score / 10;
-                i /= 10;
+
+            // Solo se ho letto l'intero numero ed ho un punto e virgola continuo
+            if (c == ';') {
+                // Lettura del punteggio
+                curr->data.score = 0;     
+                do {
+                    c = fgetc(fin);
+                    if (c != '\n' && c != EOF) {
+                        curr->data.score *= 10;
+                        curr->data.score += (c - '0');
+                    }
+                } while(c != '\n' && c != EOF);
+
+
+                this->scoreCounter++;
+
+                if (tmp == NULL) {
+                    tmp = curr;
+                    curr->next = NULL;
+                } else {
+                    pUserData tmp2 = tmp;
+                    while (tmp2->next != NULL) {
+                        tmp2 = tmp2->next;
+                    }
+                    if (tmp2->next == NULL) {
+                        tmp2->next = curr;
+                        curr->next = NULL;
+                    }
+                }
+            } else {
+                error = true;
             }
-            this->scoreCounter++;
-            while(tmp->next!=NULL){
-                tmp = tmp->next;
-            }
-            tmp->next = curr;
         
-        //Controllo per fine del file
-        if (feof(fin)) {
-            exit = true;
+            // Controllo se c'è stato un errore
+            if (error) {
+                delete curr;
+                curr = NULL;
             }
-        }
-        
-        //Dealloco curr
-        curr->next = NULL;
-        delete curr;
-        
+
+        } while(!error);
     }
-    }
-    
+
     if(this->scoreCounter > 0){
-        this->arrayScore = new UserArrayData[this->scoreCounter]; //Puntatore ad array di strutture 
-    }
-    else this->arrayScore = NULL;
-/*
-    for(int i = 0; i < this->scoreCounter; i++){
-        this->arrayScore[i].score = tmp->score;
-        for(int j = 0; j < 3 ; j++){
-            this->arrayScore[i].nome[j] = tmp->nome[j];
-        }
-        tmp = tmp->next;
-    }
-*/    
-    
-    //heapSort(this->arrayScore,scoreCounter);
-    //Dealloco tmp(tutta la lista)
-    //tmp->next=NULL; 
-    //delete tmp;
+        this->arrayScore = new UserData[this->scoreCounter]; //Puntatore ad array di strutture
+        int i = 0;
+        while (tmp != NULL) {
+            this->arrayScore[i] = tmp->data;
+            pUserData tmp2 = tmp;
+            tmp = tmp->next;
+            delete tmp2;
+            tmp2 = NULL;
+            i++;
+        } 
+
+        heapSort(this->arrayScore, this->scoreCounter);
+
+    } else this->arrayScore = NULL;
 }
+
+MenuScore::~MenuScore(){
+  delete [] (this->arrayScore);
+}
+
 void MenuScore::loopScore() {
     bool esciDaScore = false;
-    this->pagina = 1; //Inizializzo le pagine 
+    this->pagina = 0; //Inizializzo le pagine 
     do {
         gd->frameStart();
         gd->getInput();
@@ -124,36 +151,43 @@ void MenuScore::loopScore() {
         this->manageInput();
         int i = 0;
         while(i < gd->getNumOfPressedKeys()) {
-            switch(gd->getKey(i)) {
-                case KEY_LEFT: //Mi muovo a sinistra nella pagina
-                case L'A':
-                case L'a':
-                    if(this->pagina >= 1){
-                        //stampa la pagina precedente    
-                          pagina--;
-
-                    }
-                    break;
-                case KEY_RIGHT: //Mi muovo a destra nella pagina
-                case L'D':
-                case L'd':
-                    if(this->pagina <= (this->scoreCounter)/10){
-                        //stampa la pagina successiva
-                          pagina++;
-                    }
-                    break;
-                case 'q':
-                    esciDaScore = true;
-                    break;
-                case 10:
-                    switch(this->getSelezione()) {
-                        case 0:
+            switch(this->getSelezione()) {
+                // Se sono sul cambia pagina
+                case 0:
+                    switch(gd->getKey(i)) {
+                        case KEY_LEFT: //Mi muovo a sinistra nella pagina
+                        case L'A':
+                        case L'a':
+                            // loop around delle pagine quando diminuisco
+                            if (this->pagina == 0) {
+                                this->pagina = this->scoreCounter / 10;
+                            } else {
+                                this->pagina--;
+                            }
                             break;
-                        case 1:
+                        case KEY_RIGHT: //Mi muovo a destra nella pagina
+                        case L'D':
+                        case L'd':
+                        case 10:
+                            // loop around delle pagine quando aumento
+                            if (this->pagina == this->scoreCounter / 10) {
+                                this->pagina = 0;
+                            } else {
+                                this->pagina++;
+                            }
+                            break;
+                    }
+                break;
+
+                // Se sono sull'uscita    
+                case 1:
+                    switch(gd->getKey(i)) {
+                        case 10:
                             esciDaScore = true;
                             break;
                     }
-            }       break;
+                break;
+            }
             i++;
         }
 
@@ -166,25 +200,23 @@ void MenuScore::loopScore() {
 }    
 
 void MenuScore::printAll(){
-    // char daStampare[100];
-    // int line = 0;
-    /*
-    for(int i = (this->pagina-1)*10; i<(this->pagina*10) ; i++){ //Seleziono la porzione di array che voglio mostrare
+    char daStampare[100];
+    int line = 0;
+    
+    mvprintw((gd->getTerminalY()/2) - 20,gd->getTerminalX()/2-8,"POSIZIONE : NOME - PUNTEGGIO");
+    for(int i = ((this->pagina)*10); i < ((this->pagina+1)*10) ; i++){ //Seleziono la porzione di array che voglio mostrare
         if(i < scoreCounter){
-            sprintf(daStampare, "< %d %s \t>",this->arrayScore[i].score,arrayScore[i].nome);
+            sprintf(daStampare, "< %d° \t:\t %s - %d >", i + 1, arrayScore[i].nome, this->arrayScore[i].score);
             attron(COLOR_PAIR(MENU_NORMAL));
-            int centerY = gd->getTerminalY()/2;
+            int centerY = (gd->getTerminalY()/2) - 20;
             int centerX = gd->getTerminalX()/2;
-            mvprintw(centerY+(2*(line+1)),centerX-2,"%s",daStampare);
+            mvprintw(centerY+(2*(line+1)),centerX-8,"%s",daStampare);
             attroff(COLOR_PAIR(MENU_NORMAL));
             line ++;
         }
     }
-    */
-    printLine("Cambia Pagina",0);
+    
+    sprintf(daStampare, "Cambia pagina < %d >",this->pagina + 1);
+    printLine(daStampare,0);
     printLine("Indietro",1);
-    //int centerY = gd->getTerminalY()/2;
-    //int centerX = gd->getTerminalX()/2;
-    //sprintf(daStampare, "< %d \t>",this->head->nome);
-    //mvprintw(centerY+(2*(line+1)),centerX-2,"%d",daStampare);
 }

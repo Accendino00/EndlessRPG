@@ -24,11 +24,14 @@ public:
     void manageInput(Livello * livello);
     void gestione_player(int input, Livello * livello);
     void muoviPlayer(int direzione, int val, Livello * livello);
-    void modificaDanno(int danno);
+    
     void aggiungiDirezioneAttacco(int direzione);
+    
     void modificaDifesa(int val);
     void modificaVita(int quantita);
     void modificaSprint(int val);
+    void modificaDanno(int danno);
+
     void setChiave(bool val);
     bool getChiave();
 

@@ -34,7 +34,7 @@ void MenuMain::loopMenu() {
                 case 1:
                     // Score
                     m_score = new MenuScore();
-                    m_score->CaricaOrdinaScore();
+                    //m_score->CaricaOrdinaScore();
                     m_score->loopScore();
                     delete m_score;
                     break;
