@@ -29,7 +29,7 @@ Porta::Porta(int type, int direzione, bool portaConChiave, int dimstanzay, int d
     else
         for(int i = 0; i < s_dimy; i++)
             for(int j = 0; j < s_dimx; j++) 
-                setcchar(&(this->stampabile[i][j]), L"╳", A_NORMAL, DOOR_PAIR, NULL);
+                setcchar(&(this->stampabile[i][j]), L"X", A_NORMAL, DOOR_PAIR, NULL);
 
     // Impostazione della posizione della porta in base al tipo di porta e alla sua direzione
     switch(direzione) {

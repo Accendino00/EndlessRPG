@@ -1,6 +1,6 @@
 #include "../generale/libs.hpp"
 
-Proiettile::Proiettile(int y, int x, bool playerProjectile, int direzione, int danno, int tipoStanza) {
+Proiettile::Proiettile(int y, int x, bool playerProjectile, int direzione, int danno, int tipoStanza, double velocita) {
     this->lastTick = gd->getCurrentTick();
     this->x = x;
     this->y = y;
@@ -28,6 +28,8 @@ Proiettile::Proiettile(int y, int x, bool playerProjectile, int direzione, int d
     } else {
         this->ticksForAction = 60;
     }
+
+    this->ticksForAction = (long long int) ((double)this->ticksForAction * (1.0/velocita));
     
     this->stampabile = new cchar_t * [1];
     this->stampabile[0] = new cchar_t [1];

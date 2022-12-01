@@ -3,11 +3,17 @@
 
 class Player:public Entita{
 private:
+    // Utils
     int lastinput;
+
+    // Attributi
     int dashDistanceX, dashDistanceY;
+    int difesa;
+    double velocitaProiettile;
+
+    // Inventario
     bool attacco_dietro;
     bool attacco_diagonale;
-    int difesa;
     bool chiave;
 
 public:
@@ -26,6 +32,7 @@ public:
     void muoviPlayer(int direzione, int val, Livello * livello);
     
     void aggiungiDirezioneAttacco(int direzione);
+    void sparaProiettile(int dir, int offset, Stanza * stanza);
     
     void modificaDifesa(int val);
     void modificaVita(int quantita);

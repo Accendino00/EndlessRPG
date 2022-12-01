@@ -37,6 +37,7 @@ Nemico::Nemico (int type, int posy, int posx, int tipoStanza, int numLivello) {
 
     // Impostazioni della stampa del nemico
 
+
     this->h_dimy = 1;
     this->h_dimx = 1;
     this->s_dimy = 1;
@@ -62,31 +63,34 @@ Nemico::Nemico (int type, int posy, int posx, int tipoStanza, int numLivello) {
     setcchar(&(this->stampabile[0][0]), L"N", A_NORMAL, color, NULL);
 
     // Impostazioni personalizzate del nemico
+    
+    this->velocitaProiettile = 0.9 + (0.5 * scaleFactor);
 
     strcpy(this->nome, "Nemico");
 
     this->ticksForAction = 600;
     this->currentAction = 0;
+
     this->numActions = 12;
-    this->actions = new int[12];
-    for (int i = 0; i < 12; i++) this->actions[i] = 0;
+    this->actions = new int[this->numActions];
+    for (int i = 0; i < this->numActions; i++) this->actions[i] = 0;
     actions[0] = MUOVI_DIREZIONE | DIRECTION_EE;
-    actions[1] = AZIONE_SPARA_DIREZIONE | AZIONE_SPARA_PRINCIPALE | AZIONE_SPARA_SECONDARIO |  AZIONE_SPARA_TERZIARIO | DIRECTION_EE;
+    actions[1] = AZIONE_SPARA_GIOCATORE | AZIONE_SPARA_PRINCIPALE | AZIONE_SPARA_SECONDARIO |  AZIONE_SPARA_TERZIARIO;
     actions[2] = AZIONE_SPARA_DIREZIONE | AZIONE_SPARA_PRINCIPALE | AZIONE_SPARA_SECONDARIO |  AZIONE_SPARA_TERZIARIO | DIRECTION_NE;
     actions[3] = MUOVI_DIREZIONE | DIRECTION_NN;
-    actions[4] = AZIONE_SPARA_DIREZIONE | AZIONE_SPARA_PRINCIPALE | AZIONE_SPARA_SECONDARIO |  AZIONE_SPARA_TERZIARIO | DIRECTION_NN;
+    actions[4] = AZIONE_SPARA_GIOCATORE | AZIONE_SPARA_PRINCIPALE | AZIONE_SPARA_SECONDARIO |  AZIONE_SPARA_TERZIARIO;
     actions[5] = AZIONE_SPARA_DIREZIONE | AZIONE_SPARA_PRINCIPALE | AZIONE_SPARA_SECONDARIO |  AZIONE_SPARA_TERZIARIO | DIRECTION_NO;
     actions[6] = MUOVI_DIREZIONE | DIRECTION_OO;
-    actions[7] = AZIONE_SPARA_DIREZIONE | AZIONE_SPARA_PRINCIPALE | AZIONE_SPARA_SECONDARIO |  AZIONE_SPARA_TERZIARIO | DIRECTION_OO;
+    actions[7] = AZIONE_SPARA_GIOCATORE | AZIONE_SPARA_PRINCIPALE | AZIONE_SPARA_SECONDARIO |  AZIONE_SPARA_TERZIARIO;
     actions[8] = AZIONE_SPARA_DIREZIONE | AZIONE_SPARA_PRINCIPALE | AZIONE_SPARA_SECONDARIO |  AZIONE_SPARA_TERZIARIO | DIRECTION_SO;
     actions[9] = MUOVI_DIREZIONE | DIRECTION_SS;
-    actions[10] = AZIONE_SPARA_DIREZIONE | AZIONE_SPARA_PRINCIPALE | AZIONE_SPARA_SECONDARIO |  AZIONE_SPARA_TERZIARIO | DIRECTION_SS;
+    actions[10] = AZIONE_SPARA_GIOCATORE | AZIONE_SPARA_PRINCIPALE | AZIONE_SPARA_SECONDARIO |  AZIONE_SPARA_TERZIARIO;
     actions[11] = AZIONE_SPARA_DIREZIONE | AZIONE_SPARA_PRINCIPALE | AZIONE_SPARA_SECONDARIO |  AZIONE_SPARA_TERZIARIO | DIRECTION_SE;
 
 
 
     if(type == NORMAL_ENEMY) {
-        int idNemico = ( rand() % 5 );
+        int idNemico = ( rand() % 7 );
         switch(idNemico) {
             // Trottola (2x2)
             // idea: si gira e spara in tre direzioni, muovendosi in senso orario (o antiorario) mostrando da dove sta per sparare
@@ -223,30 +227,16 @@ void Nemico::updateEntita(Stanza * stanza, Player * player) {
         }
 
         if( (azione & AZIONE_SPARA_DIREZIONE) == AZIONE_SPARA_DIREZIONE) {
-            for(int i = DIRECTION_NN; i <= DIRECTION_NO; i = i << 1) {
-                if((azione & i) == i) {
-                    // Offset della posizione di creazione degli spari secondari,
-                    // A seconda della direzione di quello primario
-                    int osX, osY;
-                    if( (azione & i) == DIRECTION_NN ) { osX =  1; osY =  0;}
-                    if( (azione & i) == DIRECTION_SS ) { osX = -1; osY =  0;}
-                    if( (azione & i) == DIRECTION_EE ) { osX =  0; osY = -1;}
-                    if( (azione & i) == DIRECTION_OO ) { osX =  0; osY =  1;}
-                    if( (azione & i) == DIRECTION_NE ) { osX =  1; osY =  1;}
-                    if( (azione & i) == DIRECTION_SE ) { osX =  1; osY = -1;}
-                    if( (azione & i) == DIRECTION_SO ) { osX = -1; osY = -1;}
-                    if( (azione & i) == DIRECTION_NO ) { osX = -1; osY =  1;}
-                    // Parte dal centro del nemico
+            for(int dir = DIRECTION_NN; dir <= DIRECTION_NO; dir = dir << 1) {
+                if((azione & dir) == dir) {
                     if ((azione & AZIONE_SPARA_PRINCIPALE) == AZIONE_SPARA_PRINCIPALE) {
-                        stanza->aggiungiProiettile(new Proiettile(this->y,this->x,false,i,this->damage,stanza->getId()));
+                        sparaProiettile(dir,0,stanza);
                     }
-                    // Parte dalla destra della direzione dove si spara 
                     if ((azione & AZIONE_SPARA_SECONDARIO) == AZIONE_SPARA_SECONDARIO) {
-                        stanza->aggiungiProiettile(new Proiettile((this->y)+osY,(this->x)+osX,false,i,this->damage,stanza->getId()));
+                        sparaProiettile(dir,1,stanza);
                     }
-                    // Parte dalla sinistra della direzione dove si spara 
                     if ((azione & AZIONE_SPARA_TERZIARIO) == AZIONE_SPARA_TERZIARIO) {
-                        stanza->aggiungiProiettile(new Proiettile((this->y)-osY,(this->x)-osX,false,i,this->damage,stanza->getId()));
+                        sparaProiettile(dir,-1,stanza);
                     }
                 }
             }
@@ -263,8 +253,7 @@ void Nemico::updateEntita(Stanza * stanza, Player * player) {
                 } else {
                     dir = DIRECTION_NN;
                 }
-            }
-            if(player->getY() > this->y) {
+            } else if(player->getY() > this->y) {
                 if(player->getX() < this->x) {
                     dir = DIRECTION_SO;
                 } else if(player->getX() > this->x) {
@@ -280,27 +269,16 @@ void Nemico::updateEntita(Stanza * stanza, Player * player) {
                 }
             }
 
-            int osX, osY;
-            if( dir == DIRECTION_NN ) { osX =  1; osY =  0;}
-            if( dir == DIRECTION_SS ) { osX = -1; osY =  0;}
-            if( dir == DIRECTION_EE ) { osX =  0; osY = -1;}
-            if( dir == DIRECTION_OO ) { osX =  0; osY =  1;}
-            if( dir == DIRECTION_NE ) { osX =  1; osY =  1;}
-            if( dir == DIRECTION_SE ) { osX =  1; osY = -1;}
-            if( dir == DIRECTION_SO ) { osX = -1; osY = -1;}
-            if( dir == DIRECTION_NO ) { osX = -1; osY =  1;}
-            // Parte dal centro del nemico
             if ((azione & AZIONE_SPARA_PRINCIPALE) == AZIONE_SPARA_PRINCIPALE) {
-                stanza->aggiungiProiettile(new Proiettile(this->y,this->x,false,dir,this->damage,stanza->getId()));
+                sparaProiettile(dir,0,stanza);
             }
-            // Parte dalla destra della direzione dove si spara 
             if ((azione & AZIONE_SPARA_SECONDARIO) == AZIONE_SPARA_SECONDARIO) {
-                stanza->aggiungiProiettile(new Proiettile((this->y)+osY,(this->x)+osX,false,dir,this->damage,stanza->getId()));
+                sparaProiettile(dir,1,stanza);
             }
-            // Parte dalla sinistra della direzione dove si spara 
             if ((azione & AZIONE_SPARA_TERZIARIO) == AZIONE_SPARA_TERZIARIO) {
-                stanza->aggiungiProiettile(new Proiettile((this->y)-osY,(this->x)-osX,false,dir,this->damage,stanza->getId()));
+                sparaProiettile(dir,-1,stanza);
             }
+
             
         }
 
@@ -344,6 +322,20 @@ bool Nemico::muoviNemico( int direzione, int val, Stanza * stanza, Player * play
         }
     }
     return returnValue;
+}
+
+void Nemico::sparaProiettile(int dir, int offset, Stanza * stanza) {
+            int osX, osY;
+            if( dir == DIRECTION_NN ) { osX =  offset; osY =  0;}
+            if( dir == DIRECTION_SS ) { osX = -offset; osY =  0;}
+            if( dir == DIRECTION_EE ) { osX =  0;      osY = -offset;}
+            if( dir == DIRECTION_OO ) { osX =  0;      osY =  offset;}
+            if( dir == DIRECTION_NE ) { osX =  offset; osY =  offset;}
+            if( dir == DIRECTION_SE ) { osX =  offset; osY = -offset;}
+            if( dir == DIRECTION_SO ) { osX = -offset; osY = -offset;}
+            if( dir == DIRECTION_NO ) { osX = -offset; osY =  offset;}
+
+            stanza->aggiungiProiettile(new Proiettile((this->y)+osY,(this->x)+osX,false,dir,this->damage,stanza->getId(), this->velocitaProiettile));
 }
 
 

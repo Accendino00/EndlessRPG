@@ -10,6 +10,8 @@ Player::Player(int y, int x, int life) {
     (*this).s_dimx = 3;
     (*this).currentFrame = FRAME_OF_E;
 
+    this->velocitaProiettile = 1.0;
+
     this->passedActions = 0;
     this->lastTick = gd->getCurrentTick();
 
@@ -22,7 +24,7 @@ Player::Player(int y, int x, int life) {
     this->maxVita=life;
     this->vita = this->maxVita;
 
-    this->damage = 1;
+    this->damage = 998;
     this->difesa = 10;
 	
     this->stampabile = new cchar_t * [1];
@@ -77,43 +79,43 @@ void Player::gestione_player(int input, Livello * livello){
             // Proiettili
             case (KEY_RIGHT):
                 if(attacco_dietro){
-                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_OO,this->damage,livello->getStanza()->getId()));
+                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_OO,this->damage,livello->getStanza()->getId(), this->velocitaProiettile));
                 }
                 if(attacco_diagonale){
-                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NE,this->damage,livello->getStanza()->getId()));
-                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SE,this->damage,livello->getStanza()->getId()));
+                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NE,this->damage,livello->getStanza()->getId(), this->velocitaProiettile));
+                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SE,this->damage,livello->getStanza()->getId(), this->velocitaProiettile));
                 }
-                livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_EE,this->damage,livello->getStanza()->getId()));
+                livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_EE,this->damage,livello->getStanza()->getId(), this->velocitaProiettile));
                 break;
             case (KEY_DOWN):
                 if(attacco_dietro){
-                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NN,this->damage,livello->getStanza()->getId()));
+                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NN,this->damage,livello->getStanza()->getId(), this->velocitaProiettile));
                 }
                 if(attacco_diagonale){
-                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SO,this->damage,livello->getStanza()->getId()));
-                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SE,this->damage,livello->getStanza()->getId()));
+                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SO,this->damage,livello->getStanza()->getId(), this->velocitaProiettile));
+                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SE,this->damage,livello->getStanza()->getId(), this->velocitaProiettile));
                 }
-                livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SS,this->damage,livello->getStanza()->getId()));
+                livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SS,this->damage,livello->getStanza()->getId(), this->velocitaProiettile));
                 break;
             case (KEY_LEFT):
                 if(attacco_dietro){
-                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_EE,this->damage,livello->getStanza()->getId()));
+                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_EE,this->damage,livello->getStanza()->getId(), this->velocitaProiettile));
                 }
                 if(attacco_diagonale){
-                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NO,this->damage,livello->getStanza()->getId()));
-                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SO,this->damage,livello->getStanza()->getId()));
+                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NO,this->damage,livello->getStanza()->getId(), this->velocitaProiettile));
+                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SO,this->damage,livello->getStanza()->getId(), this->velocitaProiettile));
                 }
-                livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_OO,this->damage,livello->getStanza()->getId()));
+                livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_OO,this->damage,livello->getStanza()->getId(), this->velocitaProiettile));
                 break;
             case (KEY_UP):
                 if(attacco_dietro){
-                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SS,this->damage,livello->getStanza()->getId()));
+                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SS,this->damage,livello->getStanza()->getId(), this->velocitaProiettile));
                 }
                 if(attacco_diagonale){
-                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NE,this->damage,livello->getStanza()->getId()));
-                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NO,this->damage,livello->getStanza()->getId()));
+                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NE,this->damage,livello->getStanza()->getId(), this->velocitaProiettile));
+                    livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NO,this->damage,livello->getStanza()->getId(), this->velocitaProiettile));
                 }
-                livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NN,this->damage,livello->getStanza()->getId()));
+                livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NN,this->damage,livello->getStanza()->getId(), this->velocitaProiettile));
                 break;
 		}
 
@@ -157,6 +159,20 @@ void Player::aggiungiDirezioneAttacco(int direzione){
             this->attacco_diagonale = true;
             break;
     }
+}
+
+void Player::sparaProiettile(int dir, int offset, Stanza * stanza) {
+    int osX, osY;
+    if( dir == DIRECTION_NN ) { osX =  offset; osY =  0;}
+    if( dir == DIRECTION_SS ) { osX = -offset; osY =  0;}
+    if( dir == DIRECTION_EE ) { osX =  0;      osY = -offset;}
+    if( dir == DIRECTION_OO ) { osX =  0;      osY =  offset;}
+    if( dir == DIRECTION_NE ) { osX =  offset; osY =  offset;}
+    if( dir == DIRECTION_SE ) { osX =  offset; osY = -offset;}
+    if( dir == DIRECTION_SO ) { osX = -offset; osY = -offset;}
+    if( dir == DIRECTION_NO ) { osX = -offset; osY =  offset;}
+
+    stanza->aggiungiProiettile(new Proiettile((this->y)+osY,(this->x)+osX,false,dir,this->damage,stanza->getId(), this->velocitaProiettile));
 }
 
 void Player::modificaDifesa(int val){
@@ -237,13 +253,14 @@ void Player::stampaHUDplayer(){
 
     attron(COLOR_PAIR(0));
 
-    mvprintw(coordy + 1, coordx + insideWidth - 10, "╦═════════╣");
-    mvprintw(coordy + 2, coordx + insideWidth - 10, "║Chiave:%lc ║", (this->chiave)? L'✓' : L'x');
-    mvprintw(coordy + 3, coordx + insideWidth - 10, "║         ║");
-    mvprintw(coordy + 3, coordx + insideWidth - 9 , "ATK:%d", this->damage);
-    mvprintw(coordy + 4, coordx + insideWidth - 10, "║         ║");
-    mvprintw(coordy + 4, coordx + insideWidth - 9 , "DEF:%.0lf%%", 100 - (100*(100/(100+(double)this->difesa))));
-    mvprintw(coordy + 5, coordx + insideWidth - 10, "╚═════════╝");
+    mvprintw(coordy + 1, coordx + insideWidth - 11, "╦══════════╣");
+    mvprintw(coordy + 2, coordx + insideWidth - 11, "║ Chiave:%lc ║", (this->chiave)? L'✓' : L'x');
+    mvprintw(coordy + 3, coordx + insideWidth - 11, "║          ║");
+    if(damage < 999) mvprintw(coordy + 3, coordx + insideWidth - 10 , " ATK:%d", this->damage);
+                else mvprintw(coordy + 3, coordx + insideWidth - 10 , " ATK:999+");
+    mvprintw(coordy + 4, coordx + insideWidth - 11, "║          ║");
+    mvprintw(coordy + 4, coordx + insideWidth - 10 , " DEF:%.0lf%%", 100 - (100*(100/(100+(double)this->difesa))));
+    mvprintw(coordy + 5, coordx + insideWidth - 11, "╚══════════╝");
 
 
     mvprintw(coordy + 2, coordx - 1, "╔Inventario═╗");

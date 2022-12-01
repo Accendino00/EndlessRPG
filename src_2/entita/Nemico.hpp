@@ -91,6 +91,8 @@ private:
     // Serve per capire se è stato l'ultimo ad essere colpito
     int tickOfLastHit;
 
+    double velocitaProiettile;
+
 public:
     Nemico(int type, int posy, int posx, int tipoStanza, int numLivello);
     ~Nemico();
@@ -102,6 +104,9 @@ public:
 
     int getType();
     bool isMostrabile();
+
+    void sparaProiettile(int dir, int offset, Stanza * stanza);
+
 
     void modificaVita(int quantita);
     int getTickOfLastHit();
