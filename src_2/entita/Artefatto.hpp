@@ -15,8 +15,7 @@ class Artefatto : public Entita {
     private:
         int idArtefatto;
     public:
-        Artefatto(int y, int x, int type);
-        Artefatto(int type);
+        Artefatto(int y, int x, int type, int tipoStanza);
         int getIDArtefatto();
         void updateEntita(Player * player);
         void applicaEffetto(Player * player);

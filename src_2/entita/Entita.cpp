@@ -6,8 +6,8 @@ Entita::Entita(){
     this->h_dimy = 0;
     this->h_dimx = 0;
     this->stampabile = NULL;
-    this->currentLife = 1;
-    this->maxLife = 1;
+    this->vita = 1;
+    this->maxVita = 1;
 
     this->passedActions = 0;
     this->ticksForAction = 0;
@@ -28,8 +28,8 @@ Entita::Entita(int life, int y,int x, int h_dimy, int h_dimx, cchar_t ** stampa)
     (*this).s_dimx = h_dimx;
     (*this).currentFrame = 0;
 
-    this->currentLife = life;
-    this->maxLife = life;
+    this->vita = life;
+    this->maxVita = life;
 
     this->passedActions = 0;
     this->ticksForAction = 1000; // Placeholder
@@ -220,26 +220,41 @@ int Entita::getMaxFrames() {
     return (this->s_dimx / this->h_dimx);
 }
 
+
+
+// Getter e setter di vita
+int Entita::getVita() {
+    return this->vita;
+}
+
+void Entita::setVita(int quantita) {
+    this->vita = quantita;
+}
+
 void Entita::modificaVita(int quantita) {
-    if(quantita + this->getVita() > this->maxLife) {
-        this->currentLife = this->maxLife;
+    if(quantita + this->getVita() > this->vita) {
+        this->vita = this->vita;
     } else {
-        this->currentLife += quantita;
+        this->vita += quantita;
     }
 }
+
+
+// Getter e setter di MaxVita
+int Entita::getMaxVita() {
+    return this->maxVita;
+}
+
+void Entita::setMaxVita(int quantita) {
+    this->maxVita = quantita;
+}
+
 
 
 int Entita::getDamage() {
     return this->damage;
 }
 
-int Entita::getVita() {
-    return this->currentLife;
-}
-
-void Entita::setVita(int quantita) {
-    this->currentLife = quantita;
-}
 
 void Entita::modificaCoordinate(int new_y, int new_x) {
     (*this).y = new_y;

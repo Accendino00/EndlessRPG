@@ -6,8 +6,9 @@ private:
     Player * player;
     Livello * livello_corrente;
     int livello_counter;
-
     bool gameOver;
+
+    cchar_t consoleEventi [10][64];
 
 public:
     Gioco();
@@ -25,4 +26,7 @@ public:
 
     void cambialivello();
     void gameLoop();
+
+    void printConsoleEventi();
+    void addConsoleEventi(const char * text, int id);
 };

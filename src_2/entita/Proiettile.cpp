@@ -32,8 +32,8 @@ Proiettile::Proiettile(int y, int x, bool playerProjectile, int direzione, int d
     this->stampabile = new cchar_t * [1];
     this->stampabile[0] = new cchar_t [1];
 
-    this->currentLife = 1;
-    this->maxLife = 1;
+    this->vita = 1;
+    this->maxVita = 1;
 
     this->damage = danno;
 

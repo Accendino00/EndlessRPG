@@ -1,6 +1,6 @@
 #include "../generale/libs.hpp"
 
-Artefatto::Artefatto(int y, int x, int type) {
+Artefatto::Artefatto(int y, int x, int type, int tipoStanza) {
     (*this).h_dimy = 1;
     (*this).h_dimx = 1;
     (*this).s_dimy = 1;
@@ -15,8 +15,8 @@ Artefatto::Artefatto(int y, int x, int type) {
 
     this->ticksForAction = 250;
 
-    this->currentLife = 1;
-    this->maxLife = 1;
+    this->vita = 1;
+    this->maxVita = 1;
 
     this->x = x;
     this->y = y;
@@ -48,15 +48,13 @@ Artefatto::Artefatto(int y, int x, int type) {
 
 }
 
-Artefatto::Artefatto(int type) : Artefatto(0,0,type) {}
-
 int Artefatto::getIDArtefatto(){
     return this->idArtefatto;
 }
 
 void Artefatto::updateEntita(Player * player){
     this->Entita::updateEntita();
-    if(this->passedActions >= 1 && this->currentLife > 0){
+    if(this->passedActions >= 1 && this->vita > 0){
         // Fare cose, come cambiare il frame attuale
         this->nextFrame();
         if (player->controllaContatto(this)) {
@@ -70,10 +68,10 @@ void Artefatto::updateEntita(Player * player){
 void Artefatto::applicaEffetto(Player * player) {
     switch(this->idArtefatto) {
         case TIPOART_AUMENTA_HP:
-            player->modificaVita((rand() % (player->getVita()-10))+10);
+            player->modificaVita((rand() % (player->getMaxVita()-10))+10); // La cura avviene tra 10 e maxVita
         break;
         case TIPOART_AUMENTA_ATTACCO:
-            player->modificaDanno((rand() % (8))+3);
+            player->modificaDanno((rand() % (5))+5); // Il danno aumenta da 5 a 10
         break;               
         case TIPOART_ATTACCO_DIETRO:
             player->aggiungiDirezioneAttacco(DIRECTION_EE);
@@ -82,7 +80,7 @@ void Artefatto::applicaEffetto(Player * player) {
             player->aggiungiDirezioneAttacco(DIRECTION_SE);
         break;
         case TIPOART_AUMENTA_DIFESA:
-            player->modificaDifesa((rand() % (10)+5));
+            player->modificaDifesa((rand() % (10)+5)); // La difesa aumenta da 5 a 15
         break;
         case TIPOART_AUMENTA_SPRINT:
             player->modificaSprint(2);
@@ -91,5 +89,5 @@ void Artefatto::applicaEffetto(Player * player) {
             player->setChiave(true);
         break;
     }
-    this->currentLife = 0;
+    this->vita = 0;
 }

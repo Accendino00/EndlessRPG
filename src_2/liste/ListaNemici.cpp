@@ -246,11 +246,30 @@ void ListaNemici::deleteList(){
 };
 
 
+/**
+ * @brief Stampo tutti i nemici della lista, con un offset particolare.
+ * 
+ * Inoltre, stampo anche la barra della salute dell'ultimo nemico colpito.
+ * Se vi è un boss, questa operazione viene fatta automaticamente.
+ * 
+ * @param offsetY 
+ * @param offsetX 
+ */
 void ListaNemici::stampaTutte(int offsetY, int offsetX) {
     plistaN headTemp = head;
-    while(headTemp != NULL) {
-        headTemp->e->stampa(offsetY, offsetX);
-        headTemp = headTemp->next; 
+    if (head != NULL) {
+        Nemico * ultimoColpito = head->e; 
+
+        while(headTemp != NULL) {
+            if (ultimoColpito != NULL && headTemp->e->getTickOfLastHit() > ultimoColpito->getTickOfLastHit()) {
+                ultimoColpito = headTemp->e;
+            }
+            headTemp->e->stampa(offsetY, offsetX);
+            headTemp = headTemp->next; 
+        }
+
+        if(ultimoColpito != NULL && ultimoColpito->getType() != BOSS_ENEMY && ultimoColpito->isMostrabile()) 
+            ultimoColpito->stampaVita(40);
     }
 }
 

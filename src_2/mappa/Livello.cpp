@@ -176,7 +176,7 @@ void Livello::imposta_stanza(){
           }
         }
         this -> matrice_livello [i] [j] -> imposta_porte(nord, sud, est, ovest, boss);
-        this -> matrice_livello [i] [j] -> da_logica_a_stampabile();
+        this -> matrice_livello [i] [j] -> da_logica_a_stampabile(this->numLivello);
       }
     }
   }

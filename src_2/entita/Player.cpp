@@ -19,10 +19,10 @@ Player::Player(int y, int x, int life) {
 	this->dashDistanceY = 5;
 	this->dashDistanceX = this->dashDistanceY*2;
 
-    this->maxLife=life;
-    this->currentLife = this->maxLife;
+    this->maxVita=life;
+    this->vita = this->maxVita;
 
-    this->damage = 100;
+    this->damage = 1;
     this->difesa = 10;
 	
     this->stampabile = new cchar_t * [1];
@@ -167,17 +167,17 @@ void Player::modificaDifesa(int val){
 void Player::modificaVita(int quantita){
     // Se cura, allora non può curare di più di quanto ha perso
     if(quantita>0){
-        if(quantita + this->getVita() > this->maxLife) {
-            this->currentLife = this->maxLife;
+        if(quantita + this->getVita() > this->maxVita) {
+            this->vita = this->maxVita;
         } else {
-            this->currentLife += quantita;
+            this->vita += quantita;
         }
     }
     // Se danno, allora la quantità dipende dalla difesa
     // Viene usata la formula che si legge sotto in modo da dare più importanza 
     // alla difesa presa inizalmente e non arrivare mai a 100% di danno negato
     else{
-        this->currentLife += quantita*(100/(100+(float)this->difesa));
+        this->vita += quantita*(100/(100+(float)this->difesa));
     }
 }
 
@@ -196,30 +196,62 @@ void Player::modificaSprint(int val){
 
 
 void Player::stampaHUDplayer(){
-    int coordy = 0;
-    int coordx = (gd->getTerminalX()/2) - 3;
+    // Stampa la vita
 
-    // Stampa dei cuori
+    // Modo per arrotondare per eccesso
+    int numeroCuori = (this->vita + (10 - 1))/10;
+    int numeroCuoriMax = (this->maxVita + (10 - 1))/10;
+    int insideWidth = numeroCuoriMax > 25 ? numeroCuoriMax : 25;
+
+    // Calcolo coordinate offset
+    int coordy = 3;
+    int coordx = gd->getTerminalX()/2 - insideWidth/2;
+
     attron(COLOR_PAIR(0));
-    mvprintw(coordy+2, coordx - (maxLife/20), "HP : ");
-    attroff(COLOR_PAIR(0));
-    attron(COLOR_PAIR(HEARTS_PAIR));
-    for(int i = currentLife/10; i>0; i--){
-        printw("\u2665");
+
+    mvprintw(coordy - 1, coordx - 1,  "╔");
+    mvprintw(coordy,     coordx - 1,  "║");
+    mvprintw(coordy + 1, coordx - 1,  "╚");
+    for(int i = 0; i < insideWidth; i++) {
+        mvprintw(coordy - 1, coordx + i, "═");
+        mvprintw(coordy + 1, coordx + i, "═");    
     }
-    for(int i = (maxLife-currentLife+5)/10; i>0; i--){
-        printw("\u2661");
+    mvprintw(coordy - 1, coordx + insideWidth, "╗");
+    mvprintw(coordy,     coordx + insideWidth, "║");
+    mvprintw(coordy + 1, coordx + insideWidth, "╝");
+    mvprintw(coordy - 1, coordx, "[P]ersonaggio");
+
+    attroff(COLOR_PAIR(0));
+
+
+    attron(COLOR_PAIR(HEARTS_PAIR));
+    for(int i=0; i<insideWidth; i++){
+        if(i<numeroCuori){
+            mvprintw(coordy, coordx+i, "\u2665");
+        } else if (i<numeroCuoriMax){
+            mvprintw(coordy, coordx+i, "\u2661");
+        }
     }
     attroff(COLOR_PAIR(HEARTS_PAIR));
 
-    // Stampa dell'attacco
-    mvprintw(coordy+4, coordx, "🗡  : %d", this->damage);
 
-    // Stampa della difesa
-    mvprintw(coordy+5, coordx, "🛡  : %.0lf%%", 100 - (100*(100/(100+(double)this->difesa))));
+    attron(COLOR_PAIR(0));
 
-    // Stampa della chiave
-    mvprintw(coordy+6, coordx, "🔑 : %lc", (this->chiave)? L'✓' : L'❌');
+    mvprintw(coordy + 1, coordx + insideWidth - 10, "╦═════════╣");
+    mvprintw(coordy + 2, coordx + insideWidth - 10, "║Chiave:%lc ║", (this->chiave)? L'✓' : L'x');
+    mvprintw(coordy + 3, coordx + insideWidth - 10, "║         ║");
+    mvprintw(coordy + 3, coordx + insideWidth - 9 , "ATK:%d", this->damage);
+    mvprintw(coordy + 4, coordx + insideWidth - 10, "║         ║");
+    mvprintw(coordy + 4, coordx + insideWidth - 9 , "DEF:%.0lf%%", 100 - (100*(100/(100+(double)this->difesa))));
+    mvprintw(coordy + 5, coordx + insideWidth - 10, "╚═════════╝");
+
+
+    mvprintw(coordy + 2, coordx - 1, "╔Inventario═╗");
+    mvprintw(coordy + 3, coordx - 1, "║           ║");
+    mvprintw(coordy + 4, coordx - 1, "║           ║");
+    mvprintw(coordy + 5, coordx - 1, "╚═══════════╝");
+
+    attroff(COLOR_PAIR(0));
 }
 
 

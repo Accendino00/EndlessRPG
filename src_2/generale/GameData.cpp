@@ -240,6 +240,15 @@ void GameData::cycleShowPerformance(bool direction) {
     this->impostazioniSalvate = false;
 }
 
+/**
+ * @brief Ritorna la difficoltà come stringa.
+ * Corrisponde con i valori da 0 a 3 della difficoltà.
+ * 
+ * @return const char*  "Facile"
+ *                      "Normale"
+ *                      "Difficile"
+ *                      "Impossibile" 
+ */
 const char * GameData::getDifficulty() {
     if(this->difficulty==0) {
         return "Facile";
@@ -251,6 +260,8 @@ const char * GameData::getDifficulty() {
         return "Impossibile";
     }
 }
+
+
 void GameData::cycleDifficulty(bool direction) {
     if(direction) {
         this->difficulty = (this->difficulty + 1) % 4;

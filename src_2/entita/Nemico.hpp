@@ -68,8 +68,7 @@
 #define AZIONE_SPARA_TERZIARIO        0b1000000000000
 
 #define MUOVI_DIREZIONE             0b010000000000000
-#define MUOVI_GIOCATORE             0b100000000000000
-#define MUOVI_PATTERN               0b110000000000000
+#define MUOVI_PATTERN               0b100000000000000
 
 #define FRAME_PROSSIMO            0b01000000000000000
 #define FRAME_ORIENTAZIONE        0b10000000000000000
@@ -83,9 +82,27 @@ private:
 
     int patternDirezione; // Usata per nemici che si muovono in maniera ripetitiva
 
+    int type; // BOSS_ENEMY o NORMAL_ENEMY
+
+    char nome [20];
+
+    // Diventa vero dopo che viene colpito una volta;
+    bool mostraVita;
+    // Serve per capire se è stato l'ultimo ad essere colpito
+    int tickOfLastHit;
+
 public:
-    Nemico(int type, int posy, int posx, int tipoStanza);
+    Nemico(int type, int posy, int posx, int tipoStanza, int numLivello);
     ~Nemico();
 
     void updateEntita(Stanza * stanza, Player * player);
+    bool muoviNemico(int direzione, int val, Stanza * stanza, Player * player);
+    void stampa(int offsetY, int offsetX);
+    void stampaVita(int blocchi);
+
+    int getType();
+    bool isMostrabile();
+
+    void modificaVita(int quantita);
+    int getTickOfLastHit();
 };

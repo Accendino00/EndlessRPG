@@ -1,24 +1,52 @@
 #include "../generale/libs.hpp"
 
-Nemico::Nemico (int type, int posy, int posx, int tipoStanza) {
+Nemico::Nemico (int type, int posy, int posx, int tipoStanza, int numLivello) {
 
-    // Impostazione dell'hitbox e della dimensione dello stampabile. 
-    // Inoltre il giocatore ha 1 solo frame di stampa
-    (*this).h_dimy = 1;
-    (*this).h_dimx = 1;
-    (*this).s_dimy = 1;
-    (*this).s_dimx = 1;
-    (*this).currentFrame = 0;
 
-    this->maxLife=100;
-    this->currentLife = this->maxLife;
-	
-    this->stampabile = new cchar_t * [1];
-    this->stampabile[0] = new cchar_t [1];
-
+    // Impostazioni di base
+    this->currentFrame  = 0;
     this->passedActions = 0;
-    this->lastTick = gd->getCurrentTick();
+    this->lastTick      = gd->getCurrentTick();
+    this->tickOfLastHit = gd->getCurrentTick();
     
+    this->type = type;
+    this->mostraVita = false;
+
+    this->y = posy;
+    this->x = posx;
+
+    // Impostazioni variabili in base alla difficoltà ed al livello
+
+    double scaleFactor = 1.0;
+    if (strcmp(gd->getDifficulty(), "Facile") == 0) {
+        scaleFactor = 0.5;
+    } else if (strcmp(gd->getDifficulty(), "Normale") == 0) {
+        scaleFactor = 1.0;
+    } else if (strcmp(gd->getDifficulty(), "Difficile") == 0) {
+        scaleFactor = 1.5;
+    } else if (strcmp(gd->getDifficulty(), "Impossibile") == 0) {
+        scaleFactor = 2.0;
+    }
+
+    scaleFactor = scaleFactor + (numLivello*0.2);
+
+    this->damage  =   5 * scaleFactor;
+    this->maxVita = 100 * scaleFactor;
+    this->vita    = this->maxVita;
+
+
+    // Impostazioni della stampa del nemico
+
+    this->h_dimy = 1;
+    this->h_dimx = 1;
+    this->s_dimy = 1;
+    this->s_dimx = 1;
+
+    this->stampabile = new cchar_t * [s_dimy];
+    for(int i = 0; i < s_dimy; i++) {
+        this->stampabile[i] =  new cchar_t [s_dimx];
+    }
+
     short color = 0;
     switch(tipoStanza){
         case ID_STANZA_SPAWN:
@@ -32,9 +60,10 @@ Nemico::Nemico (int type, int posy, int posx, int tipoStanza) {
         break;
     }
     setcchar(&(this->stampabile[0][0]), L"N", A_NORMAL, color, NULL);
-    
-    this->y = posy;
-    this->x = posx;
+
+    // Impostazioni personalizzate del nemico
+
+    strcpy(this->nome, "Nemico");
 
     this->ticksForAction = 600;
     this->currentAction = 0;
@@ -55,7 +84,6 @@ Nemico::Nemico (int type, int posy, int posx, int tipoStanza) {
     actions[11] = AZIONE_SPARA_DIREZIONE | AZIONE_SPARA_PRINCIPALE | AZIONE_SPARA_SECONDARIO |  AZIONE_SPARA_TERZIARIO | DIRECTION_SE;
 
 
-    this->damage = 5;
 
     if(type == NORMAL_ENEMY) {
         int idNemico = ( rand() % 5 );
@@ -155,42 +183,44 @@ void Nemico::updateEntita(Stanza * stanza, Player * player) {
     this->Entita::updateEntita();
     while (this->passedActions > 0) {
         int azione = this->actions[this->currentAction];
+        
+    
         // Gestione del movimento con direzione
         if( (azione & MUOVI_DIREZIONE) == MUOVI_DIREZIONE ) {
-            for(int i = DIRECTION_NN; i <= DIRECTION_NO; i = i << 1) {
-                if((azione & i) == i) {
-                            // Interazione con il giocatore
-                    this->muovi(i,1);
-                    if (!player->controllaContatto(this->getX(), this->getY(), this->getDimX(), this->getDimY())) {
-                        this->muovi(i,-1);
-                        switch(movimentoValido(i, 1, stanza, false)) {
-                            case STANZA_ACC_LIBERO:
-                                this->muovi(i,1);
-                                break;
-                            case STANZA_ACC_PROIETTILE_GIOCATORE:
-                                stanza->dmgDaProiettiliContactList(true);
-                                stanza->cancellaProiettiliSovrapposti(this, false);
-                                this->muovi(i,1);
-                                break;
-                            case STANZA_ACC_PORTA:
-                            case STANZA_ACC_MURO:
-                                // Sta fermo
-                                break;
-                            default:
-                                // Non si muove
-                                break;
-                        }
-                    } else {
-                        this->muovi(i,-1);
-                        // Se sono a contatto con il giocatore, non mi muovo
-                    }
-
-
+            // Faccio un for che guarda tutte le direzioni in modo orario (vedere GameData.hpp per le define)
+            for(int dir = DIRECTION_NN; dir <= DIRECTION_NO; dir = dir << 1) {
+                if((azione & dir) == dir) { // Se la direzione è proprio quella richiesta allora fa dei controlli
+                    muoviNemico(dir, 1, stanza, player); // Se non si muove, non c'è problema, non fa nulla
                 }
             }
         }
 
         
+        // Gestione del movimento pattern -> se non si può muovere, inverte la sua direzione
+        else if( (azione & MUOVI_PATTERN) == MUOVI_PATTERN ) {
+            switch(patternDirezione) {
+                case DIRECTION_EE:
+                    if(!muoviNemico(DIRECTION_EE, 1, stanza, player)) {
+                        patternDirezione = DIRECTION_OO;
+                    }
+                break;
+                case DIRECTION_OO:
+                    if(!muoviNemico(DIRECTION_OO, 1, stanza, player)) {
+                        patternDirezione = DIRECTION_EE;
+                    }
+                break;
+                case DIRECTION_NN:
+                    if(!muoviNemico(DIRECTION_NN, 1, stanza, player)) {
+                        patternDirezione = DIRECTION_SS;
+                    }
+                break;
+                case DIRECTION_SS:
+                    if(!muoviNemico(DIRECTION_SS, 1, stanza, player)) {
+                        patternDirezione = DIRECTION_NN;
+                    }
+                break;
+            }
+        }
 
         if( (azione & AZIONE_SPARA_DIREZIONE) == AZIONE_SPARA_DIREZIONE) {
             for(int i = DIRECTION_NN; i <= DIRECTION_NO; i = i << 1) {
@@ -222,25 +252,200 @@ void Nemico::updateEntita(Stanza * stanza, Player * player) {
             }
         }
 
-        // Gestione del movimento pattern 
-        /*else if( (azione & MUOVI_PATTERN) == MUOVI_PATTERN ) {
-            switch(patternDirezione) {
-                case DIRECTION_EE:
-                    // if can't move, change direction
-                    this->incrementaX(1);
-                break;
-                case DIRECTION_OO:
-                    this->incrementaX(-1);
-                break;
-                case DIRECTION_NN:
-                    this->incrementaY(-1);
-                break;
-                case DIRECTION_SS:
-                    this->incrementaY(1);
-                break;
+        if( (azione & AZIONE_SPARA_GIOCATORE) == AZIONE_SPARA_GIOCATORE) {
+            // capisce la direzione del giocatore rispetto al proiettile usando le coordinate
+            int dir = DIRECTION_NN;
+            if(player->getY() < this->y) {
+                if(player->getX() < this->x) {
+                    dir = DIRECTION_NO;
+                } else if(player->getX() > this->x) {
+                    dir = DIRECTION_NE; 
+                } else {
+                    dir = DIRECTION_NN;
+                }
             }
-        }*/
+            if(player->getY() > this->y) {
+                if(player->getX() < this->x) {
+                    dir = DIRECTION_SO;
+                } else if(player->getX() > this->x) {
+                    dir = DIRECTION_SE; 
+                } else {
+                    dir = DIRECTION_SS;
+                }
+            } else {
+                if(player->getX() < this->x) {
+                    dir = DIRECTION_OO;
+                } else if(player->getX() > this->x) {
+                    dir = DIRECTION_EE; 
+                }
+            }
+
+            int osX, osY;
+            if( dir == DIRECTION_NN ) { osX =  1; osY =  0;}
+            if( dir == DIRECTION_SS ) { osX = -1; osY =  0;}
+            if( dir == DIRECTION_EE ) { osX =  0; osY = -1;}
+            if( dir == DIRECTION_OO ) { osX =  0; osY =  1;}
+            if( dir == DIRECTION_NE ) { osX =  1; osY =  1;}
+            if( dir == DIRECTION_SE ) { osX =  1; osY = -1;}
+            if( dir == DIRECTION_SO ) { osX = -1; osY = -1;}
+            if( dir == DIRECTION_NO ) { osX = -1; osY =  1;}
+            // Parte dal centro del nemico
+            if ((azione & AZIONE_SPARA_PRINCIPALE) == AZIONE_SPARA_PRINCIPALE) {
+                stanza->aggiungiProiettile(new Proiettile(this->y,this->x,false,dir,this->damage,stanza->getId()));
+            }
+            // Parte dalla destra della direzione dove si spara 
+            if ((azione & AZIONE_SPARA_SECONDARIO) == AZIONE_SPARA_SECONDARIO) {
+                stanza->aggiungiProiettile(new Proiettile((this->y)+osY,(this->x)+osX,false,dir,this->damage,stanza->getId()));
+            }
+            // Parte dalla sinistra della direzione dove si spara 
+            if ((azione & AZIONE_SPARA_TERZIARIO) == AZIONE_SPARA_TERZIARIO) {
+                stanza->aggiungiProiettile(new Proiettile((this->y)-osY,(this->x)-osX,false,dir,this->damage,stanza->getId()));
+            }
+            
+        }
+
         this->currentAction = (this->currentAction + 1) % this->numActions;
         this->passedActions--;
     }
+}
+
+/**
+ * @brief Muove il nemico nella derizione e per una quantità messi come parametro
+ * Se si può muovere, e quindi si è mosso, allora ritorna vero. In caso contrario
+ * ritorna falso.
+ * 
+ * @param direzione     Direzione in cui si vuole muovere
+ * @param val           Valore di quanto si vuole muovere
+ * @param stanza        Stanza in cui si trova il nemico
+ * @param player        Giocatore
+ * @return true         Se si è mosso
+ * @return false        Se non si è mosso
+ */
+bool Nemico::muoviNemico( int direzione, int val, Stanza * stanza, Player * player ) {
+    bool returnValue = false;
+    if (!player->controllaContatto(this->getX(), this->getY(), this->getDimX(), this->getDimY())) {
+        switch(movimentoValido(direzione, val, stanza, false)) {
+            case STANZA_ACC_LIBERO:
+                this->muovi(direzione,val);
+                returnValue = true;
+                break;
+            case STANZA_ACC_PROIETTILE_GIOCATORE:
+                this->modificaVita(-stanza->dmgDaProiettiliContactList(true));
+                stanza->cancellaProiettiliSovrapposti(this, false);
+                this->muovi(direzione,val);
+                returnValue = true;
+                break;
+            case STANZA_ACC_PORTA:
+            case STANZA_ACC_MURO:
+            default:
+                // Se ha incontrato cose bloccanti, allora ritorna falso
+                returnValue = false;
+                break;
+        }
+    }
+    return returnValue;
+}
+
+
+void Nemico::stampa(int offsetY, int offsetX) {
+    Entita::stampa(offsetY, offsetX);
+    if (this->type == BOSS_ENEMY) {
+        stampaVita(50);
+    }
+}
+
+void Nemico::stampaVita (int blocchi) {
+    int vita = this->getVita();
+    int maxVita = this->getMaxVita();
+    int negOffsetY = 5;
+
+    int blocchiVita = ((float)vita * blocchi) / maxVita;
+    int blocchiVitaMancanti = blocchi - blocchiVita;
+
+
+    mvprintw(gd->getTerminalY() - negOffsetY+2, (gd->getTerminalX()/2) - (blocchi/2), "VITA : %d / %d", vita, maxVita);
+
+
+    attron(COLOR_PAIR(HEARTS_PAIR));
+
+
+    // Stampa dei blocchi di vita
+    for(int i = 0; i < blocchiVita; i++) {
+        mvprintw(gd->getTerminalY() - negOffsetY, (gd->getTerminalX()/2) - (blocchi/2) + i, "█");
+    }
+
+    // Stampa della parte rimanente (con spazi per indicare che avrà il carattere dello sfondo, ovvero nero)
+    for(int i = 0; i < blocchiVitaMancanti; i++) {
+        mvprintw(gd->getTerminalY() - negOffsetY, (gd->getTerminalX()/2) - (blocchi/2) + blocchiVita + i, " ");
+    }
+
+    // Stampa dei parziali blocchi di vita ad incrementi di 1/8
+    // usando i cosiddetti "ASCII block elements"
+    if(         ((((float)vita) / maxVita) * blocchi) - blocchiVita < 1. 
+                && ((((float)vita) / maxVita) * blocchi) - blocchiVita > 7/8. )
+        mvprintw(gd->getTerminalY() - negOffsetY, gd->getTerminalX()/2 - blocchi/2 + blocchiVita, "█");
+    else if(    ((((float)vita) / maxVita) * blocchi) - blocchiVita < 7/8. 
+                && ((((float)vita) / maxVita) * blocchi) - blocchiVita > 6/8. )
+        mvprintw(gd->getTerminalY() - negOffsetY, gd->getTerminalX()/2 - blocchi/2 + blocchiVita, "▇");
+    else if(    ((((float)vita) / maxVita) * blocchi) - blocchiVita < 6/8. 
+                && ((((float)vita) / maxVita) * blocchi) - blocchiVita > 5/8. )
+        mvprintw(gd->getTerminalY() - negOffsetY, gd->getTerminalX()/2 - blocchi/2 + blocchiVita, "▆");
+    else if(    ((((float)vita) / maxVita) * blocchi) - blocchiVita < 5/8. 
+                && ((((float)vita) / maxVita) * blocchi) - blocchiVita > 4/8. )
+        mvprintw(gd->getTerminalY() - negOffsetY, gd->getTerminalX()/2 - blocchi/2 + blocchiVita, "▅");
+    else if(    ((((float)vita) / maxVita) * blocchi) - blocchiVita < 4/8. 
+                && ((((float)vita) / maxVita) * blocchi) - blocchiVita > 3/8. )
+        mvprintw(gd->getTerminalY() - negOffsetY, gd->getTerminalX()/2 - blocchi/2 + blocchiVita, "▄");
+    else if(    ((((float)vita) / maxVita) * blocchi) - blocchiVita < 3/8. 
+                && ((((float)vita) / maxVita) * blocchi) - blocchiVita > 2/8. )
+        mvprintw(gd->getTerminalY() - negOffsetY, gd->getTerminalX()/2 - blocchi/2 + blocchiVita, "▃");
+    else if(    ((((float)vita) / maxVita) * blocchi) - blocchiVita < 2/8. 
+                && ((((float)vita) / maxVita) * blocchi) - blocchiVita > 1/8. )
+        mvprintw(gd->getTerminalY() - negOffsetY, gd->getTerminalX()/2 - blocchi/2 + blocchiVita, "▂");
+    else if(    ((((float)vita) / maxVita) * blocchi) - blocchiVita < 1/8. 
+                && ((((float)vita) / maxVita) * blocchi) - blocchiVita > 0 )
+        mvprintw(gd->getTerminalY() - negOffsetY, gd->getTerminalX()/2 - blocchi/2 + blocchiVita, "▁");
+        
+
+    /* 
+        Stampa questa cornice per i blocchi della salute, dove BOSS viene sostituito
+        con il nome nemico di cui si sta stampando la salute.
+
+        ╔BOSS═══════╗
+        ║███████▄   ║
+        ╚═══════════╝
+    */
+
+    mvprintw(gd->getTerminalY() - negOffsetY - 1, gd->getTerminalX()/2 - blocchi/2 - 1, "╔");
+    mvprintw(gd->getTerminalY() - negOffsetY,     gd->getTerminalX()/2 - blocchi/2 - 1, "║");
+    mvprintw(gd->getTerminalY() - negOffsetY + 1, gd->getTerminalX()/2 - blocchi/2 - 1,  "╚");
+    for(int i = 0; i < blocchi; i++) {
+        mvprintw(gd->getTerminalY() - negOffsetY - 1, gd->getTerminalX()/2 - blocchi/2 + i, "═");
+        mvprintw(gd->getTerminalY() - negOffsetY + 1, gd->getTerminalX()/2 - blocchi/2 + i, "═");    
+    }
+    mvprintw(gd->getTerminalY() - negOffsetY - 1, gd->getTerminalX()/2 + blocchi/2, "╗");
+    mvprintw(gd->getTerminalY() - negOffsetY,     gd->getTerminalX()/2 + blocchi/2, "║");
+    mvprintw(gd->getTerminalY() - negOffsetY + 1, gd->getTerminalX()/2 + blocchi/2,  "╝");
+    mvprintw(gd->getTerminalY() - negOffsetY - 1, gd->getTerminalX()/2 - blocchi/2, "%s", this->nome);
+    attroff(COLOR_PAIR(HEARTS_PAIR));
+}
+
+void Nemico::modificaVita(int quantita) {
+    this->mostraVita = true;
+    this->tickOfLastHit = gd->getCurrentTick();
+    Entita::modificaVita(quantita);
+}
+
+int Nemico::getTickOfLastHit() {
+    return this->tickOfLastHit;
+}
+
+
+int Nemico::getType() {
+    return this->type;
+}
+
+
+bool Nemico::isMostrabile() {
+    return this->mostraVita;
 }

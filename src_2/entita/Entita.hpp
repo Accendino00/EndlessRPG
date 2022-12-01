@@ -4,8 +4,8 @@
 class Entita {
 public:
     // Punti salute
-    int maxLife;
-    int currentLife;
+    int vita;
+    int maxVita;
 
     // Danno fatto con il tocco di questa entità
     int damage;
@@ -48,6 +48,9 @@ public:
     int getVita();
     void modificaVita(int quantita);
     void setVita(int quantita);
+
+    int getMaxVita();
+    void setMaxVita(int quantita);
 
     void modificaCoordinate(int new_y, int new_x);
     void incrementaX(int amount);

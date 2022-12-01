@@ -25,11 +25,11 @@ Porta::Porta(int type, int direzione, bool portaConChiave, int dimstanzay, int d
     if (portaConChiave)
         for(int i = 0; i < s_dimy; i++)
             for(int j = 0; j < s_dimx; j++) 
-                setcchar(&(this->stampabile[i][j]), L"/", A_NORMAL, DOOR_KEY_PAIR, NULL);
+                setcchar(&(this->stampabile[i][j]), L"X", A_NORMAL, DOOR_KEY_PAIR, NULL);
     else
         for(int i = 0; i < s_dimy; i++)
             for(int j = 0; j < s_dimx; j++) 
-                setcchar(&(this->stampabile[i][j]), L"/", A_NORMAL, DOOR_PAIR, NULL);
+                setcchar(&(this->stampabile[i][j]), L"╳", A_NORMAL, DOOR_PAIR, NULL);
 
     // Impostazione della posizione della porta in base al tipo di porta e alla sua direzione
     switch(direzione) {
@@ -54,8 +54,8 @@ Porta::Porta(int type, int direzione, bool portaConChiave, int dimstanzay, int d
         
     // Setting di base degli attributi di entita (NON USATI) 
     this->currentFrame = 0;
-    this->maxLife = 1;
-    this->currentLife = 1;
+    this->maxVita = 1;
+    this->vita = 1;
     this->passedActions = 0;
     this->lastTick = gd->getCurrentTick();
     this->ticksForAction = 2000;

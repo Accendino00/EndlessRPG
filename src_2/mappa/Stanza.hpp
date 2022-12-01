@@ -47,7 +47,7 @@ public:
 
     void stampa_stanza();
     void imposta_porte(bool nord, bool sud, bool est, bool ovest, int boss);
-    void da_logica_a_stampabile();
+    void da_logica_a_stampabile(int numLivello);
     int accessibile(int y_entity, int x_entity, bool giocatore);
     int accessibile(Entita * entita, bool giocatore);
     int direzione_porta(int y_entity, int x_entity);

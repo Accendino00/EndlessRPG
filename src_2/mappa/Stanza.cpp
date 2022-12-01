@@ -200,8 +200,12 @@ void Stanza::imposta_porte(bool nord, bool sud, bool est, bool ovest, int boss){
 /**
  * @brief Trasforma la matrice logica in matrice stampabile. 
  * Dopo di questo, la stanza può essere stampata, ovvero il metodo "stampa_stanza" funziona come previsto.
+ * 
+ * Il numero del livello viene usato per generare i nemici
+ * 
+ * @param numLivello Il livello attuale. Più è alto, più i nemici sono forti.
  */
-void Stanza::da_logica_a_stampabile(){
+void Stanza::da_logica_a_stampabile(int numLivello){
     for(int i = 0; i < dim_y; i++){
         for(int j = 0; j < dim_x; j++){
             switch(matrice_logica [i] [j]){
@@ -233,7 +237,7 @@ void Stanza::da_logica_a_stampabile(){
                     }
                 break;
                 case STANZA_NEMICONORMALE:
-                    nemicoGenerato = new Nemico(NORMAL_ENEMY, i, j, this->getId());
+                    nemicoGenerato = new Nemico(NORMAL_ENEMY, i, j, this->getId(), numLivello);
                     listaNemici->addEntita(nemicoGenerato);
                     // Libero lo spazio dalla matrice logica e dalla matrice stampabile dove è stato generato il nemico
                     for (int i_1 = i; i_1 < i + nemicoGenerato->getDimY(); i_1++){
@@ -254,7 +258,7 @@ void Stanza::da_logica_a_stampabile(){
                     }
                 break;
                 case STANZA_NEMICOBOSS:
-                    nemicoGenerato = new Nemico(BOSS_ENEMY, i, j, this->getId());
+                    nemicoGenerato = new Nemico(BOSS_ENEMY, i, j, this->getId(), numLivello);
                     listaNemici->addEntita(nemicoGenerato);
                     // Libero lo spazio dalla matrice logica e dalla matrice stampabile dove è stato generato il nemico
                     for (int i_1 = i; i_1 < i + nemicoGenerato->getDimY(); i_1++){

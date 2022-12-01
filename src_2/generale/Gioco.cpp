@@ -187,5 +187,5 @@ void Gioco::gameLoop() {
 
 void Gioco::spawnArtefatto(int y, int x) {
     // #TODO aggiungere le chance di spawnare artefatti;
-    this->livello_corrente->getStanza()->aggiungiArtefatto(new Artefatto(y,x,(rand() % TIPOART_MAX) + 1));
+    this->livello_corrente->getStanza()->aggiungiArtefatto(new Artefatto(y,x,(rand() % TIPOART_MAX) + 1, this->livello_corrente->getStanza()->getId()));
 }
