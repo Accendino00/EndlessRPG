@@ -127,7 +127,10 @@ void Gioco::setLivelloCounter(int livello_counter) {
 
 void Gioco::cambialivello(){
     if(livello_corrente->getStanza()->getNumNemici()==0){
-        mvprintw(livello_corrente->getStanza()->zero_y()+1, livello_corrente->getStanza()->zero_x()+1, "Premere 'l' per cambiare livello");
+        mvprintw(gd->getTerminalY()/2, (gd->getTerminalX()/2) - 13, "🎉 Hai sconfitto il Boss! 🎉");
+        mvprintw( 6, 10, "╔══════════════════════════════════╗");
+        mvprintw( 7, 10, "║ Premere 'l' per cambiare livello ║");
+        mvprintw( 8, 10, "╚══════════════════════════════════╝");
         if(gd->checkInput('l')){
             delete livello_corrente;
             livello_corrente = new Livello(livello_counter++);
