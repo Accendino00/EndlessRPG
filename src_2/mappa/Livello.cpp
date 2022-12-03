@@ -317,8 +317,8 @@ int Livello::offsetX() {
 }
 
 bool Livello::Bossisdead(){
-  if(this->getStanza()->getId() == ID_STANZA_BOSS){
-    return true;
+  if(this->getStanza()->getId() == ID_STANZA_BOSS && this->getStanza()->getNumNemici() == 0){
+      return true;
   } else {
     return false;
   }

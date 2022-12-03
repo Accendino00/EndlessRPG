@@ -98,6 +98,7 @@ Gioco::Gioco(){
     // Viene generato il giocatore al centro della stanza iniziale, con 50 punti vita
     player = new Player((int)DIM_STANZA_SPAWN_Y/2,(int)DIM_STANZA_SPAWN_X/2, 50);
     this->gameOver = false;
+    this->lvlcleared = false;
 }
 
 Gioco::~Gioco() {
@@ -127,7 +128,6 @@ void Gioco::setLivelloCounter(int livello_counter) {
 
 void Gioco::cambialivello(){
     if(livello_corrente->getStanza()->getNumNemici()==0){
-        mvprintw(gd->getTerminalY()/2, (gd->getTerminalX()/2) - 13, "🎉 Hai sconfitto il Boss! 🎉");
         mvprintw( 6, 10, "╔══════════════════════════════════╗");
         mvprintw( 7, 10, "║ Premere 'l' per cambiare livello ║");
         mvprintw( 8, 10, "╚══════════════════════════════════╝");
@@ -177,9 +177,20 @@ void Gioco::gameLoop() {
         this->player->stampa(livello_corrente->offsetY(), livello_corrente->offsetX());
         this->player->stampaHUDplayer();
         
-        if(livello_corrente->isBossstanza()){
+        
+        if(livello_corrente->Bossisdead()){
+            long long int popupBoss = gd->getCurrentTick();
+            mvprintw((gd->getTerminalY()/2), ((gd->getTerminalX()/2) - 13), "🎉 Hai sconfitto il Boss! 🎉");
+            if((gd->getCurrentTick() - popupBoss) > 10){
+                mvprintw(gd->getTerminalY()/2, (gd->getTerminalX()/2) - 13, "             ");
+            }
+            this->lvlcleared = true;
+        }
+
+        if(lvlcleared){
             cambialivello();
         }
+
         // Fine del frame e refresh dello schermo
         gd->frameFinish();
         refresh();

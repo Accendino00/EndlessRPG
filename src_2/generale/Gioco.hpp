@@ -7,6 +7,7 @@ private:
     Livello * livello_corrente;
     int livello_counter;
     bool gameOver;
+    bool lvlcleared;
 
     cchar_t consoleEventi [10][64];
 
