@@ -17,14 +17,14 @@ Player::Player(int y, int x, int life) {
 
     this->attacco_diagonale = false;
     this->attacco_dietro = false;
+    this->attacco_shotgun = false;
 
-	this->dashDistanceY = 5;
-	this->dashDistanceX = this->dashDistanceY*2;
+	this->sprintDistance = 3;
 
     this->maxVita=life;
     this->vita = this->maxVita;
 
-    this->damage = 998;
+    this->damage = 30;
     this->difesa = 10;
 	
     this->stampabile = new cchar_t * [1];
@@ -67,11 +67,11 @@ void Player::gestione_player(int input, Livello * livello){
 				break;
             // Dash
             case (L' '):
-                for (int i = 0; i < this->dashDistanceX; i++) {
+                for (int i = 0; i < this->sprintDistance*2; i++) {
                     if(this->lastinput == L'd') muoviPlayer(DIRECTION_EE,1,livello);
                     if(this->lastinput == L'a') muoviPlayer(DIRECTION_OO,1,livello);
                 }
-                for (int i = 0; i < this->dashDistanceY; i++) {
+                for (int i = 0; i < this->sprintDistance; i++) {
                     if(this->lastinput == L'w') muoviPlayer(DIRECTION_NN,1,livello);
                     if(this->lastinput == L's') muoviPlayer(DIRECTION_SS,1,livello);
                 }
@@ -85,6 +85,10 @@ void Player::gestione_player(int input, Livello * livello){
                     livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NE,this->damage,livello->getStanza()->getId(), this->velocitaProiettile));
                     livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SE,this->damage,livello->getStanza()->getId(), this->velocitaProiettile));
                 }
+                if(attacco_shotgun){
+                    this->sparaProiettile(DIRECTION_EE, 1, livello->getStanza());
+                    this->sparaProiettile(DIRECTION_EE, -1, livello->getStanza());
+                }
                 livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_EE,this->damage,livello->getStanza()->getId(), this->velocitaProiettile));
                 break;
             case (KEY_DOWN):
@@ -94,6 +98,10 @@ void Player::gestione_player(int input, Livello * livello){
                 if(attacco_diagonale){
                     livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SO,this->damage,livello->getStanza()->getId(), this->velocitaProiettile));
                     livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SE,this->damage,livello->getStanza()->getId(), this->velocitaProiettile));
+                }
+                if(attacco_shotgun){
+                    this->sparaProiettile(DIRECTION_SS, 1, livello->getStanza());
+                    this->sparaProiettile(DIRECTION_SS, -1, livello->getStanza());
                 }
                 livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SS,this->damage,livello->getStanza()->getId(), this->velocitaProiettile));
                 break;
@@ -105,6 +113,10 @@ void Player::gestione_player(int input, Livello * livello){
                     livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NO,this->damage,livello->getStanza()->getId(), this->velocitaProiettile));
                     livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_SO,this->damage,livello->getStanza()->getId(), this->velocitaProiettile));
                 }
+                if(attacco_shotgun){
+                    this->sparaProiettile(DIRECTION_OO, 1, livello->getStanza());
+                    this->sparaProiettile(DIRECTION_OO, -1, livello->getStanza());
+                }
                 livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_OO,this->damage,livello->getStanza()->getId(), this->velocitaProiettile));
                 break;
             case (KEY_UP):
@@ -114,6 +126,10 @@ void Player::gestione_player(int input, Livello * livello){
                 if(attacco_diagonale){
                     livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NE,this->damage,livello->getStanza()->getId(), this->velocitaProiettile));
                     livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NO,this->damage,livello->getStanza()->getId(), this->velocitaProiettile));
+                }
+                if(attacco_shotgun){
+                    this->sparaProiettile(DIRECTION_NN, 1, livello->getStanza());
+                    this->sparaProiettile(DIRECTION_NN, -1, livello->getStanza());
                 }
                 livello->aggiungiProiettile(new Proiettile(this->y, this->x,true,DIRECTION_NN,this->damage,livello->getStanza()->getId(), this->velocitaProiettile));
                 break;
@@ -152,11 +168,14 @@ void Player::modificaDanno(int danno){
 
 void Player::aggiungiDirezioneAttacco(int direzione){
     switch(direzione){
-        case DIRECTION_EE:
+        case TIPOART_ATTACCO_DIETRO:
             this->attacco_dietro = true;
             break;
-        case DIRECTION_SE:
+        case TIPOART_ATTACCO_DIAGONALE:
             this->attacco_diagonale = true;
+            break;
+        case TIPOART_ATTACCO_SHOTGUN:
+            this->attacco_shotgun = true;
             break;
     }
 }
@@ -172,7 +191,8 @@ void Player::sparaProiettile(int dir, int offset, Stanza * stanza) {
     if( dir == DIRECTION_SO ) { osX = -offset; osY = -offset;}
     if( dir == DIRECTION_NO ) { osX = -offset; osY =  offset;}
 
-    stanza->aggiungiProiettile(new Proiettile((this->y)+osY,(this->x)+osX,false,dir,this->damage,stanza->getId(), this->velocitaProiettile));
+    stanza->aggiungiProiettile(new Proiettile((this->y)+osY,(this->x)+osX,true,dir,this->damage,stanza->getId(), this->velocitaProiettile));
+
 }
 
 void Player::modificaDifesa(int val){
@@ -197,6 +217,11 @@ void Player::modificaVita(int quantita){
     }
 }
 
+void Player::modificaMaxVita(int quantita){
+    this->maxVita += quantita;
+    this->modificaVita(quantita);
+}
+
 void Player::setChiave(bool val){
     this->chiave = val;
 };
@@ -206,10 +231,35 @@ bool Player::getChiave(){
 }
 
 void Player::modificaSprint(int val){
-    this->dashDistanceX += val*2;
-    this->dashDistanceY += val;
+    this->sprintDistance += val;
 }
 
+void Player::modificaVelProiettile(int val){
+    this->velocitaProiettile += val;
+}
+
+int Player::getSprint(){
+    return this->sprintDistance;
+}
+
+int Player::getVelProiettile(){
+    return this->velocitaProiettile;
+}
+
+bool Player::getAttacks(int attack){
+    switch(attack){
+        case 1:
+            return this->attacco_dietro;
+        break;
+        case 2:
+            return this->attacco_diagonale;
+        break;
+        case 3:
+            return this->attacco_shotgun;
+        break;
+    }
+    return false;
+}
 
 void Player::stampaHUDplayer(){
     // Stampa la vita
@@ -263,10 +313,22 @@ void Player::stampaHUDplayer(){
     mvprintw(coordy + 5, coordx + insideWidth - 11, "╚══════════╝");
 
 
-    mvprintw(coordy + 2, coordx - 1, "╔Inventario═╗");
-    mvprintw(coordy + 3, coordx - 1, "║           ║");
-    mvprintw(coordy + 4, coordx - 1, "║           ║");
-    mvprintw(coordy + 5, coordx - 1, "╚═══════════╝");
+    mvprintw(coordy + 2, coordx - 1, "╔Inventario:═╗");
+    mvprintw(coordy + 3, coordx - 1, "║%lc           ║", (this->attacco_diagonale)? L'\u2197' : L' ');
+    mvprintw(coordy + 4, coordx - 1, "║%lc           ║", (this->attacco_dietro)? L'\u21C4' : L' ');
+    mvprintw(coordy + 5, coordx - 1, "║%lc           ║", (this->attacco_shotgun)? L'\u21F6' : L' ');
+    mvprintw(coordy + 6, coordx - 1, "║            ║");
+
+    // si bugga quando prendi il primo sprint e poi aggiunge solo 1 icona al posto di 2 ogni powerup
+    for(int i=0; i<this->getSprint(); i++){
+        mvprintw(coordy+6, coordx+i, "\u267F");
+    };
+    mvprintw(coordy + 7, coordx - 1, "║            ║");
+    // non si aggiorna non si sa perche
+    for(float i=1.0; i<=this->getVelProiettile(); i=i+0.5){
+        mvprintw(coordy+7, (coordx-1)+i, "\u26A1");
+    };
+    mvprintw(coordy + 8, coordx - 1, "╚════════════╝");
 
     attroff(COLOR_PAIR(0));
 }

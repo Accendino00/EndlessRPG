@@ -338,7 +338,7 @@ int Livello::getNumNemici() {
   int numNemici = 0;
   for(int i = 0; i < DIM_MATRICE_LIVELLO_Y; i++) {
     for(int j = 0; j < DIM_MATRICE_LIVELLO_X; j++) {
-      if (matrice_livello[i][j] != NULL) {
+      if (matrice_livello[i][j] != NULL && matrice_livello[i][j]->getId() != ID_STANZA_BOSS) {
         numNemici += matrice_livello[i][j]->getNumNemici();
       }
     }

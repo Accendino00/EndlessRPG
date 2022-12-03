@@ -69,6 +69,7 @@ public:
     void changeScore(int amount);
     int getScore();
 
+
     void manageTicks();
     long long int getCurrentTick();
     void resetTicks();
