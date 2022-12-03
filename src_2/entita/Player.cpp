@@ -246,6 +246,20 @@ int Player::getVelProiettile(){
     return this->velocitaProiettile;
 }
 
+bool Player::getAttacks(int attack){
+    switch(attack){
+        case 1:
+            return this->attacco_dietro;
+        break;
+        case 2:
+            return this->attacco_diagonale;
+        break;
+        case 3:
+            return this->attacco_shotgun;
+        break;
+    }
+    return false;
+}
 
 void Player::stampaHUDplayer(){
     // Stampa la vita
@@ -299,10 +313,22 @@ void Player::stampaHUDplayer(){
     mvprintw(coordy + 5, coordx + insideWidth - 11, "╚══════════╝");
 
 
-    mvprintw(coordy + 2, coordx - 1, "╔Inventario═╗");
-    mvprintw(coordy + 3, coordx - 1, "║           ║");
-    mvprintw(coordy + 4, coordx - 1, "║           ║");
-    mvprintw(coordy + 5, coordx - 1, "╚═══════════╝");
+    mvprintw(coordy + 2, coordx - 1, "╔Inventario:═╗");
+    mvprintw(coordy + 3, coordx - 1, "║%lc           ║", (this->attacco_diagonale)? L'\u2197' : L' ');
+    mvprintw(coordy + 4, coordx - 1, "║%lc           ║", (this->attacco_dietro)? L'\u21C4' : L' ');
+    mvprintw(coordy + 5, coordx - 1, "║%lc           ║", (this->attacco_shotgun)? L'\u21F6' : L' ');
+    mvprintw(coordy + 6, coordx - 1, "║            ║");
+
+    // si bugga quando prendi il primo sprint e poi aggiunge solo 1 icona al posto di 2 ogni powerup
+    for(int i=0; i<this->getSprint(); i++){
+        mvprintw(coordy+6, coordx+i, "\u267F");
+    };
+    mvprintw(coordy + 7, coordx - 1, "║            ║");
+    // non si aggiorna non si sa perche
+    for(float i=1.0; i<=this->getVelProiettile(); i=i+0.5){
+        mvprintw(coordy+7, (coordx-1)+i, "\u26A1");
+    };
+    mvprintw(coordy + 8, coordx - 1, "╚════════════╝");
 
     attroff(COLOR_PAIR(0));
 }

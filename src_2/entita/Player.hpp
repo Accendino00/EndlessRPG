@@ -48,5 +48,7 @@ public:
     int getSprint();
     int getVelProiettile();
 
+    bool getAttacks(int attack);
+
     void inventario();
 };
