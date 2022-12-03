@@ -7,7 +7,7 @@ private:
     int lastinput;
 
     // Attributi
-    int dashDistanceX, dashDistanceY;
+    int sprintDistance;
     int difesa;
     double velocitaProiettile;
 
@@ -15,6 +15,7 @@ private:
     bool attacco_dietro;
     bool attacco_diagonale;
     bool chiave;
+    bool attacco_shotgun;
 
 public:
     Player(int y, int x, int life);
@@ -36,11 +37,16 @@ public:
     
     void modificaDifesa(int val);
     void modificaVita(int quantita);
+    void modificaMaxVita(int quantita);
     void modificaSprint(int val);
     void modificaDanno(int danno);
+    void modificaVelProiettile(int val);
 
     void setChiave(bool val);
     bool getChiave();
+
+    int getSprint();
+    int getVelProiettile();
 
     void inventario();
 };

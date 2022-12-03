@@ -7,6 +7,9 @@
 #define TIPOART_AUMENTA_DIFESA                          5
 #define TIPOART_AUMENTA_SPRINT                          6
 #define TIPOART_CHIAVE                                  7
+#define TIPOART_VEL_PROIETTILI                          8
+#define TIPOART_ATTACCO_SHOTGUN                         9
+#define TIPOART_AUMENTA_MAX_HP                          10
 
 #define TIPOART_MAX                                     7
 

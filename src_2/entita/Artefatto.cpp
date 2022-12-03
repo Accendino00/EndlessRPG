@@ -45,6 +45,15 @@ Artefatto::Artefatto(int y, int x, int type, int tipoStanza) {
     else if(type == TIPOART_CHIAVE){
         setcchar(&(this->stampabile[0][0]), L"7", A_NORMAL, PLAYER_COLOR_PAIR_N, NULL);
     }
+    else if(type == TIPOART_ATTACCO_SHOTGUN){
+        setcchar(&(this->stampabile[0][0]), L"9", A_NORMAL, PLAYER_COLOR_PAIR_N, NULL);
+    }
+    else if(type == TIPOART_VEL_PROIETTILI){
+        setcchar(&(this->stampabile[0][0]), L"8", A_NORMAL, PLAYER_COLOR_PAIR_N, NULL);
+    }
+    else if(type == TIPOART_AUMENTA_MAX_HP){
+        setcchar(&(this->stampabile[0][0]), L"A", A_NORMAL, PLAYER_COLOR_PAIR_N, NULL);
+    }
 
 }
 
@@ -74,10 +83,10 @@ void Artefatto::applicaEffetto(Player * player) {
             player->modificaDanno((rand() % (5))+5); // Il danno aumenta da 5 a 10
         break;               
         case TIPOART_ATTACCO_DIETRO:
-            player->aggiungiDirezioneAttacco(DIRECTION_EE);
+            player->aggiungiDirezioneAttacco(TIPOART_ATTACCO_DIETRO);
         break;
         case TIPOART_ATTACCO_DIAGONALE:
-            player->aggiungiDirezioneAttacco(DIRECTION_SE);
+            player->aggiungiDirezioneAttacco(TIPOART_ATTACCO_DIAGONALE);
         break;
         case TIPOART_AUMENTA_DIFESA:
             player->modificaDifesa((rand() % (10)+5)); // La difesa aumenta da 5 a 15
@@ -87,6 +96,15 @@ void Artefatto::applicaEffetto(Player * player) {
         break;
         case TIPOART_CHIAVE:
             player->setChiave(true);
+        break;
+        case TIPOART_VEL_PROIETTILI:
+            player->modificaVelProiettile(0.5);
+        break;
+        case TIPOART_ATTACCO_SHOTGUN:
+            player->aggiungiDirezioneAttacco(TIPOART_ATTACCO_SHOTGUN);
+        break;
+        case TIPOART_AUMENTA_MAX_HP:
+            player->modificaMaxVita(10);
         break;
     }
     this->vita = 0;

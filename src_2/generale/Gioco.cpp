@@ -187,5 +187,81 @@ void Gioco::gameLoop() {
 
 void Gioco::spawnArtefatto(int y, int x) {
     // #TODO aggiungere le chance di spawnare artefatti;
-    this->livello_corrente->getStanza()->aggiungiArtefatto(new Artefatto(y,x,(rand() % TIPOART_MAX) + 1, this->livello_corrente->getStanza()->getId()));
+
+    bool spawn = false;
+
+    if(!(getPlayer()->getChiave())){
+        float keyDroprate;
+        if(this->livello_corrente->getNumNemici() != 0){
+            keyDroprate = ((-1/3.0f)*this->livello_corrente->getNumNemici())+15;
+        }
+        else{
+            keyDroprate = 100;
+        }
+        if(rand() % 100 < keyDroprate){
+            this->livello_corrente->getStanza()->aggiungiArtefatto(new Artefatto(y,x,TIPOART_CHIAVE, this->livello_corrente->getStanza()->getId()));
+            spawn = true;
+        }
+    }
+
+    float atkDietroDroprate = 5.0;
+    if(!(spawn) && rand() % 100 < atkDietroDroprate){
+        this->livello_corrente->getStanza()->aggiungiArtefatto(new Artefatto(y,x,TIPOART_ATTACCO_DIETRO, this->livello_corrente->getStanza()->getId()));
+        spawn = true;
+    }
+
+    float atkDiagonaleDroprate = 3.0;
+    if(!(spawn) && rand() % 100 < atkDiagonaleDroprate){
+        this->livello_corrente->getStanza()->aggiungiArtefatto(new Artefatto(y,x,TIPOART_ATTACCO_DIAGONALE, this->livello_corrente->getStanza()->getId()));
+        spawn = true;
+    }
+
+    float aumentaShotgunDroprate= 3.0;
+    if(!(spawn) && rand() % 100 < aumentaShotgunDroprate){
+        this->livello_corrente->getStanza()->aggiungiArtefatto(new Artefatto(y,x,TIPOART_ATTACCO_SHOTGUN, this->livello_corrente->getStanza()->getId()));
+        spawn = true;
+    }
+
+    float aumentaAttaccoDroprate = 8.0;
+    if(!(spawn) && rand() % 100 < aumentaAttaccoDroprate){
+        this->livello_corrente->getStanza()->aggiungiArtefatto(new Artefatto(y,x,TIPOART_AUMENTA_ATTACCO, this->livello_corrente->getStanza()->getId()));
+        spawn = true;
+    }
+
+    float aumentaSprintDroprate = 5.0;
+    if(getPlayer()->getSprint() < 7){
+        if(!(spawn) && rand() % 100 < aumentaSprintDroprate){
+            this->livello_corrente->getStanza()->aggiungiArtefatto(new Artefatto(y,x,TIPOART_AUMENTA_SPRINT, this->livello_corrente->getStanza()->getId()));
+            spawn = true;
+        }
+    }
+
+    float aumentaVelProiettiliDroprate = 5.0;
+    if(getPlayer()->getVelProiettile() < 5){
+        if(!(spawn) && rand() % 100 < aumentaVelProiettiliDroprate){
+            this->livello_corrente->getStanza()->aggiungiArtefatto(new Artefatto(y,x,TIPOART_VEL_PROIETTILI, this->livello_corrente->getStanza()->getId()));
+            spawn = true;
+        }
+    }
+
+    float aumentaMaxHPDroprate = 5.0;
+    if(!(spawn) && rand() % 100 < aumentaMaxHPDroprate){
+        this->livello_corrente->getStanza()->aggiungiArtefatto(new Artefatto(y,x,TIPOART_AUMENTA_MAX_HP, this->livello_corrente->getStanza()->getId()));
+        spawn = true;
+    }
+
+    float aumentaDifesaDroprate = 10.0;
+    if(!(spawn) && rand() % 100 < aumentaDifesaDroprate){
+        this->livello_corrente->getStanza()->aggiungiArtefatto(new Artefatto(y,x,TIPOART_AUMENTA_DIFESA, this->livello_corrente->getStanza()->getId()));
+        spawn = true;
+    }
+
+
+    float aumentaHPDroprate = 15.0;
+    if(!(spawn) && rand() % 100 < aumentaHPDroprate){
+        this->livello_corrente->getStanza()->aggiungiArtefatto(new Artefatto(y,x,TIPOART_AUMENTA_HP, this->livello_corrente->getStanza()->getId()));
+        spawn = true;
+    }
+
+
 }
