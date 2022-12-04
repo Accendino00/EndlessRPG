@@ -8,6 +8,8 @@ private:
     int livello_counter;
     bool gameOver;
     bool lvlcleared;
+    int livellobattuto;
+    long long int popupBoss;
 
     cchar_t consoleEventi [10][64];
 
@@ -25,6 +27,7 @@ public:
 
     void spawnArtefatto(int y, int x);
 
+    void Bosspopup();
     void cambialivello();
     void gameLoop();
 

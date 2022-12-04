@@ -137,8 +137,20 @@ void Gioco::cambialivello(){
             player->modificaCoordinate((int)DIM_STANZA_SPAWN_Y/2,(int)DIM_STANZA_SPAWN_X/2);
             player->setFrame(FRAME_OF_E);
             player->setChiave(false);
+            this->lvlcleared = false;
         }
     }    
+}
+
+void Gioco::Bosspopup(){
+    if (!this->lvlcleared) {
+        this->livellobattuto = livello_corrente->getNumLivello();
+        this->popupBoss = gd->getCurrentTick();
+        this->lvlcleared = true;
+    }
+    if(this->livellobattuto == livello_corrente->getNumLivello() && gd->getCurrentTick() - popupBoss > 1000 && gd->getCurrentTick() - popupBoss < 3000) {
+        mvprintw((gd->getTerminalY()/2), ((gd->getTerminalX()/2) - 13), "🎉 Hai sconfitto il Boss! 🎉");
+    }
 }
 
 void Gioco::gameLoop() {
@@ -179,12 +191,7 @@ void Gioco::gameLoop() {
         
         
         if(livello_corrente->Bossisdead()){
-            long long int popupBoss = gd->getCurrentTick();
-            mvprintw((gd->getTerminalY()/2), ((gd->getTerminalX()/2) - 13), "🎉 Hai sconfitto il Boss! 🎉");
-            if((gd->getCurrentTick() - popupBoss) > 10){
-                mvprintw(gd->getTerminalY()/2, (gd->getTerminalX()/2) - 13, "             ");
-            }
-            this->lvlcleared = true;
+            Bosspopup();
         }
 
         if(lvlcleared){
