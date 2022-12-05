@@ -149,7 +149,9 @@ void Gioco::Bosspopup(){
         this->lvlcleared = true;
     }
     if(this->livellobattuto == livello_corrente->getNumLivello() && gd->getCurrentTick() - popupBoss > 1000 && gd->getCurrentTick() - popupBoss < 3000) {
-        mvprintw((gd->getTerminalY()/2), ((gd->getTerminalX()/2) - 13), "🎉 Hai sconfitto il Boss! 🎉");
+        mvprintw((gd->getTerminalY()/2)-1, ((gd->getTerminalX()/2) - 15), "╔══════════════════════════════╗");
+        mvprintw((gd->getTerminalY()/2), ((gd->getTerminalX()/2) - 15), "║ 🎉 Hai sconfitto il Boss! 🎉 ║");
+        mvprintw((gd->getTerminalY()/2)+1, ((gd->getTerminalX()/2) - 15), "╚══════════════════════════════╝");
     }
 }
 

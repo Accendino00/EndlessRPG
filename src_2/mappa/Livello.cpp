@@ -352,7 +352,7 @@ void Livello::stampaMinimappa() {
   int offsetx = gd->getTerminalX() - 30;
   int offsety = 3;
 
-  mvprintw(offsety - 2, offsetx, "Livello attuale : %d", this->numLivello);
+  mvprintw(offsety - 2, offsetx, "Livello attuale : %d", this->numLivello+1);
 
   // Stampa tutte le stanze, in base al loro colore e se le ho esplorate
   for(int i = 0; i < DIM_MATRICE_LIVELLO_Y; i++) {

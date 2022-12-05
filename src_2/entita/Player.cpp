@@ -234,7 +234,7 @@ void Player::modificaSprint(int val){
     this->sprintDistance += val;
 }
 
-void Player::modificaVelProiettile(int val){
+void Player::modificaVelProiettile(double val){
     this->velocitaProiettile += val;
 }
 
@@ -242,7 +242,7 @@ int Player::getSprint(){
     return this->sprintDistance;
 }
 
-int Player::getVelProiettile(){
+double Player::getVelProiettile(){
     return this->velocitaProiettile;
 }
 
@@ -321,13 +321,14 @@ void Player::stampaHUDplayer(){
 
     // si bugga quando prendi il primo sprint e poi aggiunge solo 1 icona al posto di 2 ogni powerup
     for(int i=0; i<this->getSprint(); i++){
-        mvprintw(coordy+6, coordx+i, "\u267F");
+        mvprintw(coordy+6, coordx+i, "s");
     };
     mvprintw(coordy + 7, coordx - 1, "║            ║");
     // non si aggiorna non si sa perche
-    for(float i=1.0; i<=this->getVelProiettile(); i=i+0.5){
-        mvprintw(coordy+7, (coordx-1)+i, "\u26A1");
+    for(float i=1.0; i<=this->getVelProiettile(); i+=0.5){
+        mvprintw(coordy+7, (coordx)+((i-1)*2), "v");
     };
+    
     mvprintw(coordy + 8, coordx - 1, "╚════════════╝");
 
     attroff(COLOR_PAIR(0));

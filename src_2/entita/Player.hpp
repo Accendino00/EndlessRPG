@@ -40,13 +40,13 @@ public:
     void modificaMaxVita(int quantita);
     void modificaSprint(int val);
     void modificaDanno(int danno);
-    void modificaVelProiettile(int val);
+    void modificaVelProiettile(double val);
 
     void setChiave(bool val);
     bool getChiave();
 
     int getSprint();
-    int getVelProiettile();
+    double getVelProiettile();
 
     bool getAttacks(int attack);
 
