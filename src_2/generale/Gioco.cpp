@@ -158,7 +158,7 @@ void Gioco::Bosspopup(){
 void Gioco::gameLoop() {
     // Imposto i ticket a 0 quando inizia il gioco
     gd->resetTicks();
-    
+    MenuPause *m_pause;
     this->livello_counter = 1;
     livello_corrente = new Livello();
 
@@ -177,7 +177,9 @@ void Gioco::gameLoop() {
             gameOver = true;
         }
         if(gd->checkInput('p')) {
-            // Pause menu
+             m_pause = new MenuPause();
+                    m_pause->loopPause();
+                    delete m_pause;
         }
 
         /*** Calcolo della logica ***/

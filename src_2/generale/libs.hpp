@@ -53,6 +53,7 @@ extern GameData * gd;
 #include "../menu/MenuMain.hpp"
 #include "../menu/MenuOptions.hpp"
 #include "../menu/MenuCrediti.hpp"
+#include "../menu/MenuPause.hpp"
 #include "../generale/Gioco.hpp"
 
 
