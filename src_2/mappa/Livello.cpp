@@ -284,7 +284,8 @@ void Livello::calcolo_logica(Gioco * gioco){
   if (cambiatoStanza) {
     // Se ho cambiato stanza, aggiorno i tick a quelli di presenti, senza modificare le entità
     this->esploraStanza(current_y, current_x);
-    matrice_livello [current_y] [current_x] -> aggiornaTick();
+    //matrice_livello [current_y] [current_x] -> aggiornaTick();
+    this->aggiornaTick();
     switch(matrice_livello[current_y] [current_x] -> getId()){
       case ID_STANZA_SPAWN:
         gioco->getPlayer()->setFrame(FRAME_OF_E);
@@ -303,6 +304,9 @@ void Livello::aggiungiProiettile(Proiettile * proiettile) {
   this->matrice_livello[this->current_y][this->current_x]->aggiungiProiettile(proiettile);
 }
 
+void Livello::aggiornaTick() {
+  this -> matrice_livello [current_y] [current_x] -> aggiornaTick();
+}
 
 Stanza * Livello::getStanza() {
   return this->matrice_livello[this->current_y][this->current_x];

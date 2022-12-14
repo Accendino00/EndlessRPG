@@ -9,7 +9,6 @@ void MenuPause::loopPause() {
 
     MenuOptions *m_options;
     MenuMain *m_main;
-    Gioco *Gioco;
 
     do {
         gd->frameStart();

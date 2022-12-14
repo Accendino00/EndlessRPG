@@ -50,4 +50,6 @@ public:
     void setNumLivello(int numLivello);
 
     void esploraStanza(int y, int x);
+
+    void aggiornaTick();
 };

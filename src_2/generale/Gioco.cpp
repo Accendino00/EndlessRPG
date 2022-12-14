@@ -177,9 +177,11 @@ void Gioco::gameLoop() {
             gameOver = true;
         }
         if(gd->checkInput('p')) {
-             m_pause = new MenuPause();
-                    m_pause->loopPause();
-                    delete m_pause;
+            m_pause = new MenuPause();
+            m_pause->loopPause();
+            delete m_pause;
+            gd->manageTicks();
+            livello_corrente -> aggiornaTick();
         }
 
         /*** Calcolo della logica ***/
