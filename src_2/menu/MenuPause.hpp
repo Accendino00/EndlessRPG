@@ -4,6 +4,6 @@
 class MenuPause : public Menu {
 public:
     MenuPause();
-    void loopPause();
+    bool loopMenu();
     void printAll();
 };

@@ -23,36 +23,107 @@ Artefatto::Artefatto(int y, int x, int type, int tipoStanza) {
 
     this->idArtefatto = type;
 
+    short color = 0;
+
+    switch(tipoStanza){
+        case ID_STANZA_SPAWN:
+            switch (type) {
+                case TIPOART_AUMENTA_HP:
+                    color = ARTEFATTO_CUORE_PAIR_E;
+                    break;
+                case TIPOART_AUMENTA_ATTACCO:
+                case TIPOART_AUMENTA_DIFESA:
+                case TIPOART_AUMENTA_MAX_HP:
+                    color = ARTEFATTO_STATISTICHE_PAIR_E;
+                    break;
+                case TIPOART_AUMENTA_SPRINT:
+                case TIPOART_ATTACCO_DIETRO:
+                case TIPOART_ATTACCO_DIAGONALE:
+                case TIPOART_ATTACCO_SHOTGUN:
+                case TIPOART_VEL_PROIETTILI:
+                    color = ARTEFATTO_POTENZIAMENTO_PAIR_E;
+                    break;
+                case TIPOART_CHIAVE:
+                    color = ARTEFATTO_CHIAVE_PAIR_E;
+                    break;
+            }
+        break;
+        case ID_STANZA_NORMALE:
+            switch (type) {
+                case TIPOART_AUMENTA_HP:
+                    color = ARTEFATTO_CUORE_PAIR_N;
+                    break;
+                case TIPOART_AUMENTA_ATTACCO:
+                case TIPOART_AUMENTA_DIFESA:
+                case TIPOART_AUMENTA_MAX_HP:
+                    color = ARTEFATTO_STATISTICHE_PAIR_N;
+                    break;
+                case TIPOART_AUMENTA_SPRINT:
+                case TIPOART_ATTACCO_DIETRO:
+                case TIPOART_ATTACCO_DIAGONALE:
+                case TIPOART_ATTACCO_SHOTGUN:
+                case TIPOART_VEL_PROIETTILI:
+                    color = ARTEFATTO_POTENZIAMENTO_PAIR_N;
+                    break;
+                case TIPOART_CHIAVE:
+                    color = ARTEFATTO_CHIAVE_PAIR_N;
+                    break;
+            }
+        break;
+        case ID_STANZA_BOSS:
+            switch (type) {
+                case TIPOART_AUMENTA_HP:
+                    color = ARTEFATTO_CUORE_PAIR_B;
+                    break;
+                case TIPOART_AUMENTA_ATTACCO:
+                case TIPOART_AUMENTA_DIFESA:
+                case TIPOART_AUMENTA_MAX_HP:
+                    color = ARTEFATTO_STATISTICHE_PAIR_B;
+                    break;
+                case TIPOART_AUMENTA_SPRINT:
+                case TIPOART_ATTACCO_DIETRO:
+                case TIPOART_ATTACCO_DIAGONALE:
+                case TIPOART_ATTACCO_SHOTGUN:
+                case TIPOART_VEL_PROIETTILI:
+                    color = ARTEFATTO_POTENZIAMENTO_PAIR_B;
+                    break;
+                case TIPOART_CHIAVE:
+                    color = ARTEFATTO_CHIAVE_PAIR_B;
+                    break;
+            }
+        break;
+    }
+
 
     if(type == TIPOART_AUMENTA_HP){
-        setcchar(&(this->stampabile[0][0]), L"1", A_NORMAL, PLAYER_COLOR_PAIR_N, NULL);
+        setcchar(&(this->stampabile[0][0]), L"♥", A_NORMAL, color, NULL);
     }
     else if(type == TIPOART_AUMENTA_ATTACCO){
-        setcchar(&(this->stampabile[0][0]), L"2", A_NORMAL, PLAYER_COLOR_PAIR_N, NULL);
+        setcchar(&(this->stampabile[0][0]), L"A", A_NORMAL, color, NULL);
     }
     else if(type == TIPOART_ATTACCO_DIETRO ){
-        setcchar(&(this->stampabile[0][0]), L"3", A_NORMAL, PLAYER_COLOR_PAIR_N, NULL);
+        setcchar(&(this->stampabile[0][0]), L"⇄", A_NORMAL, color, NULL);
     }
     else if(type == TIPOART_ATTACCO_DIAGONALE ){
-        setcchar(&(this->stampabile[0][0]), L"4", A_NORMAL, PLAYER_COLOR_PAIR_N, NULL);
+        setcchar(&(this->stampabile[0][0]), L"↗", A_NORMAL, color, NULL);
     }
     else if(type == TIPOART_AUMENTA_DIFESA){
-        setcchar(&(this->stampabile[0][0]), L"5", A_NORMAL, PLAYER_COLOR_PAIR_N, NULL);
+        setcchar(&(this->stampabile[0][0]), L"D", A_NORMAL, color, NULL);
     }
     else if(type == TIPOART_AUMENTA_SPRINT){
-        setcchar(&(this->stampabile[0][0]), L"6", A_NORMAL, PLAYER_COLOR_PAIR_N, NULL);
+        setcchar(&(this->stampabile[0][0]), L"⟫", A_NORMAL, color, NULL);
     }
     else if(type == TIPOART_CHIAVE){
-        setcchar(&(this->stampabile[0][0]), L"7", A_NORMAL, PLAYER_COLOR_PAIR_N, NULL);
+        setcchar(&(this->stampabile[0][0]), L"C", A_NORMAL, color, NULL);
     }
     else if(type == TIPOART_ATTACCO_SHOTGUN){
-        setcchar(&(this->stampabile[0][0]), L"9", A_NORMAL, PLAYER_COLOR_PAIR_N, NULL);
+        setcchar(&(this->stampabile[0][0]), L"⇶", A_NORMAL, color, NULL);
     }
     else if(type == TIPOART_VEL_PROIETTILI){
-        setcchar(&(this->stampabile[0][0]), L"8", A_NORMAL, PLAYER_COLOR_PAIR_N, NULL);
+        setcchar(&(this->stampabile[0][0]), L"↯", A_NORMAL, color, NULL);
     }
     else if(type == TIPOART_AUMENTA_MAX_HP){
-        setcchar(&(this->stampabile[0][0]), L"A", A_NORMAL, PLAYER_COLOR_PAIR_N, NULL);
+        setcchar(&(this->stampabile[0][0]), L"♥", A_NORMAL, color, NULL);
     }
 
 }

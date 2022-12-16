@@ -1,10 +1,11 @@
 #include "../generale/libs.hpp"
 
-MenuMain::MenuMain() : Menu(0, 4, 0) {}
+MenuMain::MenuMain() : Menu(0, 5, 0) {}
 
 void MenuMain::loopMenu() {
 
     MenuOptions * m_options;
+    MenuIstruzioni * m_istruzioni;
     MenuScore * m_score;
     Gioco * gioco;
 
@@ -43,7 +44,13 @@ void MenuMain::loopMenu() {
                     m_options->loopMenu();
                     delete m_options;
                     break;
-                case 3:
+                case 3:    
+                    // Istruzioni
+                    m_istruzioni = new MenuIstruzioni();
+                    m_istruzioni->loopMenu();
+                    delete m_istruzioni;
+                    break;
+                case 4:
                     // Exit
                     gd->setCloseGame(true);
                     break;
@@ -63,7 +70,8 @@ void MenuMain::printAll() {
     printLine("Gioca", 0);
     printLine("Punteggi", 1);
     printLine("Opzioni", 2);
-    printLine("Esci", 3);
+    printLine("Istruzioni", 3);
+    printLine("Esci", 4);
 }
 
 void MenuMain::printTitle() {

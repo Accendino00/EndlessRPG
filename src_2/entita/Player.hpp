@@ -17,6 +17,9 @@ private:
     bool chiave;
     bool attacco_shotgun;
 
+    // Lo score del giocatore
+    int score;
+
 public:
     Player(int y, int x, int life);
 
@@ -51,4 +54,8 @@ public:
     bool getAttacks(int attack);
 
     void inventario();
+
+    int getScore();
+    void modificaScore(int val);
+    void setScore(int val);
 };

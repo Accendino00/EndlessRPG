@@ -1,7 +1,7 @@
 All: Gioco clean
 
-Gioco: main.o Entita.o Nemico.o Proiettile.o Artefatto.o Porta.o ListaEntita.o ListaNemici.o ListaProiettili.o ListaArtefatti.o ListaPorte.o Stanza.o Livello.o Player.o GameData.o Gioco.o Colors.o Menu.o MenuMain.o MenuScore.o MenuOptions.o MenuCrediti.o MenuPause.o
-	g++ -g -Wall -o Gioco main.o Entita.o Nemico.o Proiettile.o Artefatto.o Porta.o ListaEntita.o ListaNemici.o ListaProiettili.o ListaArtefatti.o ListaPorte.o Stanza.o Livello.o Player.o GameData.o Gioco.o Colors.o Menu.o MenuMain.o MenuScore.o MenuOptions.o MenuCrediti.o MenuPause.o -lncursesw
+Gioco: main.o Entita.o Nemico.o Proiettile.o Artefatto.o Porta.o ListaEntita.o ListaNemici.o ListaProiettili.o ListaArtefatti.o ListaPorte.o Stanza.o Livello.o Player.o GameData.o Gioco.o Colors.o Menu.o MenuMain.o MenuScore.o MenuOptions.o MenuCrediti.o MenuPause.o MenuSalvaScore.o MenuIstruzioni.o
+	g++ -g -Wall -o Gioco main.o Entita.o Nemico.o Proiettile.o Artefatto.o Porta.o ListaEntita.o ListaNemici.o ListaProiettili.o ListaArtefatti.o ListaPorte.o Stanza.o Livello.o Player.o GameData.o Gioco.o Colors.o Menu.o MenuMain.o MenuScore.o MenuOptions.o MenuCrediti.o MenuPause.o MenuSalvaScore.o MenuIstruzioni.o -lncursesw
 
 main.o:
 	g++ -g -Wall -c main.cpp -lncursesw
@@ -68,6 +68,12 @@ MenuCrediti.o:
 
 MenuPause.o:
 	g++ -g -Wall -c ./menu/MenuPause.cpp -lncursesw
+
+MenuSalvaScore.o:
+	g++ -g -Wall -c ./menu/MenuSalvaScore.cpp -lncursesw
+
+MenuIstruzioni.o:
+	g++ -g -Wall -c ./menu/MenuIstruzioni.cpp -lncursesw
 
 Gioco.o:
 	g++ -g -Wall -c ./generale/Gioco.cpp -lncursesw

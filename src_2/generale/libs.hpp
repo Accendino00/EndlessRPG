@@ -54,6 +54,8 @@ extern GameData * gd;
 #include "../menu/MenuOptions.hpp"
 #include "../menu/MenuCrediti.hpp"
 #include "../menu/MenuPause.hpp"
+#include "../menu/MenuSalvaScore.hpp"
+#include "../menu/MenuIstruzioni.hpp"
 #include "../generale/Gioco.hpp"
 
 

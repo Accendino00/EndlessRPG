@@ -159,12 +159,14 @@ bool ListaNemici::removeEntita_p(Nemico *entity,bool contactList, bool deleteEnt
  * @return false    Se non viene cancellata
  */
 bool ListaNemici::removeEntita(Gioco * gioco, Nemico *entity) {
-    int x_artefatto = entity->getX(), y_artefatto = entity->getY();
-    removeEntita_p(entity, true, false); // La cancello dalla contactlist senza cancellare l'entita
-    bool returnValue = removeEntita_p(entity, false, true); // La cancello dalla lista normale cancellando l'entita
+    gioco->getPlayer()->modificaScore(entity->getPunti());
+    int x_artefatto = entity->getX() + (int) ((float)entity->getDimX()/2); 
+    int y_artefatto = entity->getY() + (int) ((float)entity->getDimY()/2);
+    bool returnValue = removeEntita(entity);
     
     if (returnValue)
         gioco->spawnArtefatto(y_artefatto, x_artefatto);
+
 
     return returnValue; 
 }

@@ -96,9 +96,12 @@
 
 Gioco::Gioco(){
     // Viene generato il giocatore al centro della stanza iniziale, con 50 punti vita
-    player = new Player((int)DIM_STANZA_SPAWN_Y/2,(int)DIM_STANZA_SPAWN_X/2, 50);
+    this->player = new Player((int)DIM_STANZA_SPAWN_Y/2,(int)DIM_STANZA_SPAWN_X/2, 50);
     this->gameOver = false;
     this->lvlcleared = false;
+    
+    this->livello_counter = 1;
+    this->livello_corrente = new Livello();
 }
 
 Gioco::~Gioco() {
@@ -158,9 +161,12 @@ void Gioco::Bosspopup(){
 void Gioco::gameLoop() {
     // Imposto i ticket a 0 quando inizia il gioco
     gd->resetTicks();
+
+    this->player->toCurrentTick();
+    this->livello_corrente -> aggiornaTick();
+    
     MenuPause *m_pause;
-    this->livello_counter = 1;
-    livello_corrente = new Livello();
+    MenuSalvaScore *m_salvascore;
 
     do {
         // Inizio del frame, aggiornamento dei tick, lettura input e erase dello schermo
@@ -173,15 +179,13 @@ void Gioco::gameLoop() {
 
         this->player->manageInput(livello_corrente);
 
-        if(gd->checkInput('q')) {
-            gameOver = true;
-        }
         if(gd->checkInput('p')) {
             m_pause = new MenuPause();
-            m_pause->loopPause();
+            gameOver = m_pause->loopMenu();
             delete m_pause;
             gd->manageTicks();
-            livello_corrente -> aggiornaTick();
+            this->livello_corrente -> aggiornaTick();
+            this->player->toCurrentTick();
         }
 
         /*** Calcolo della logica ***/
@@ -204,20 +208,31 @@ void Gioco::gameLoop() {
             cambialivello();
         }
 
+        if(this->player->getVita() <= 0) {
+            gameOver = true;
+        }
+
         // Fine del frame e refresh dello schermo
         gd->frameFinish();
         refresh();
     } while (! (gameOver) );
 
     // Quando il gioco finisce, c'è la schermata di game over e di salvataggio del punteggio
+    m_salvascore = new MenuSalvaScore(this->player->getScore());
+    m_salvascore->loopMenu();
+    delete m_salvascore;
 }
 
 void Gioco::spawnArtefatto(int y, int x) {
-    // #TODO aggiungere le chance di spawnare artefatti;
-
+    
+    // Bool per capire se e' stato spawnato un artefatto
+    // In quanto al massimo se ne puo' spawnare uno
     bool spawn = false;
 
-    if(!(getPlayer()->getChiave())){
+    /////////// CHIAVE
+
+    // SPAWN DELLA CHIAVE
+    if(!(getPlayer()->getChiave()) && !livello_corrente->haArtefatto(TIPOART_CHIAVE)){
         float keyDroprate;
         if(this->livello_corrente->getNumNemici() != 0){
             keyDroprate = ((-1/3.0f)*this->livello_corrente->getNumNemici())+15;
@@ -231,52 +246,73 @@ void Gioco::spawnArtefatto(int y, int x) {
         }
     }
 
+    /////////// POTENZIAMENTI
+
+    // SPAWN DELL'ATTACCO DIETRO
     float atkDietroDroprate = 100.0;
-    if(!(getPlayer()->getAttacks(1))){
+    if(!(getPlayer()->getAttacks(1)) && !livello_corrente->haArtefatto(TIPOART_ATTACCO_DIETRO)){
         if(!(spawn) && rand() % 100 < atkDietroDroprate){
             this->livello_corrente->getStanza()->aggiungiArtefatto(new Artefatto(y,x,TIPOART_ATTACCO_DIETRO, this->livello_corrente->getStanza()->getId()));
             spawn = true;
         }
     }
     
-    if(!(getPlayer()->getAttacks(2))){
+    // SPAWN DELL'ATTACCO DIAGONALE 
     float atkDiagonaleDroprate = 100.0;
+    if(!(getPlayer()->getAttacks(2)) && !livello_corrente->haArtefatto(TIPOART_ATTACCO_DIAGONALE)){
         if(!(spawn) && rand() % 100 < atkDiagonaleDroprate){
             this->livello_corrente->getStanza()->aggiungiArtefatto(new Artefatto(y,x,TIPOART_ATTACCO_DIAGONALE, this->livello_corrente->getStanza()->getId()));
             spawn = true;
         }
     }
 
-    if(!(getPlayer()->getAttacks(3))){
-    float atkShotgunDroprate= 100.0;
-        if(!(spawn) && rand() % 100 < atkShotgunDroprate){
-            this->livello_corrente->getStanza()->aggiungiArtefatto(new Artefatto(y,x,TIPOART_ATTACCO_SHOTGUN, this->livello_corrente->getStanza()->getId()));
-            spawn = true;
-        }
-    }
-
-    float aumentaAttaccoDroprate = 8.0;
-    if(!(spawn) && rand() % 100 < aumentaAttaccoDroprate){
-        this->livello_corrente->getStanza()->aggiungiArtefatto(new Artefatto(y,x,TIPOART_AUMENTA_ATTACCO, this->livello_corrente->getStanza()->getId()));
-        spawn = true;
-    }
-
+    // SPAWN DELL'AUMENTO DELLO SPRINT DEL GIOCATORE
     float aumentaSprintDroprate = 100.0;
-    if(getPlayer()->getSprint() < 7){
+    if(getPlayer()->getSprint() < 6 && !livello_corrente->haArtefatto(TIPOART_AUMENTA_SPRINT)){
         if(!(spawn) && rand() % 100 < aumentaSprintDroprate){
             this->livello_corrente->getStanza()->aggiungiArtefatto(new Artefatto(y,x,TIPOART_AUMENTA_SPRINT, this->livello_corrente->getStanza()->getId()));
             spawn = true;
         }
     }
 
+    // SPAWN DELL'AUMENTO DELLA VELOCITA' DEI PROIETTILI DEL GIOCATORE
     float aumentaVelProiettiliDroprate = 100.0;
-    if(getPlayer()->getVelProiettile() < 5){
+    if(getPlayer()->getVelProiettile() < 2.5 && !livello_corrente->haArtefatto(TIPOART_VEL_PROIETTILI)){
         if(!(spawn) && rand() % 100 < aumentaVelProiettiliDroprate){
             this->livello_corrente->getStanza()->aggiungiArtefatto(new Artefatto(y,x,TIPOART_VEL_PROIETTILI, this->livello_corrente->getStanza()->getId()));
             spawn = true;
         }
     }
 
+    // SPAWN DELL'ATTACCO SHOTGUN
+    float atkShotgunDroprate= 100.0;
+    if(!(getPlayer()->getAttacks(3)) && !livello_corrente->haArtefatto(TIPOART_ATTACCO_SHOTGUN)){
+        if(!(spawn) && rand() % 100 < atkShotgunDroprate){
+            this->livello_corrente->getStanza()->aggiungiArtefatto(new Artefatto(y,x,TIPOART_ATTACCO_SHOTGUN, this->livello_corrente->getStanza()->getId()));
+            spawn = true;
+        }
+    }
+
+
+
+    /////////// STATISTICHE
+
+    // SPAWN DELL'AUMENTO DEL DANNO DEL GIOCATORE
+    float aumentaAttaccoDroprate = 8.0;
+    if(!(spawn) && rand() % 100 < aumentaAttaccoDroprate){
+        this->livello_corrente->getStanza()->aggiungiArtefatto(new Artefatto(y,x,TIPOART_AUMENTA_ATTACCO, this->livello_corrente->getStanza()->getId()));
+        spawn = true;
+    }
+
+    // SPAWN DELL'AUMENTO DELLA DIFESA DEL GIOCATORE
+    float aumentaDifesaDroprate = 10.0;
+    if(!(spawn) && rand() % 100 < aumentaDifesaDroprate){
+        this->livello_corrente->getStanza()->aggiungiArtefatto(new Artefatto(y,x,TIPOART_AUMENTA_DIFESA, this->livello_corrente->getStanza()->getId()));
+        spawn = true;
+    }
+
+
+    // SPAWN DELL'AUMENTO DELLA VITA DEL GIOCATORE
     float aumentaMaxHPDroprate = 5.0;
     if(getPlayer()->maxVita < 300){
         if(!(spawn) && rand() % 100 < aumentaMaxHPDroprate){
@@ -285,13 +321,11 @@ void Gioco::spawnArtefatto(int y, int x) {
         }
     }
 
-    float aumentaDifesaDroprate = 10.0;
-    if(!(spawn) && rand() % 100 < aumentaDifesaDroprate){
-        this->livello_corrente->getStanza()->aggiungiArtefatto(new Artefatto(y,x,TIPOART_AUMENTA_DIFESA, this->livello_corrente->getStanza()->getId()));
-        spawn = true;
-    }
 
 
+    /////////// HP
+
+    // SPAWN DELLA VITA DEL GIOCATORE
     float aumentaHPDroprate = 15.0;
     if(!(spawn) && rand() % 100 < aumentaHPDroprate){
         this->livello_corrente->getStanza()->aggiungiArtefatto(new Artefatto(y,x,TIPOART_AUMENTA_HP, this->livello_corrente->getStanza()->getId()));

@@ -283,54 +283,27 @@ void Stanza::da_logica_a_stampabile(int numLivello){
     }
 }
 
-int Stanza::accessibile(int y_entity, int x_entity, bool giocatore){
-    int returnvalue = STANZA_ACC_MURO;
-    // Prima controllo se c'è la porta, poi controllo se mi sto muovendo fuori da quella porta
-    if(giocatore && direzione_porta(y_entity, x_entity)!=0){
-        returnvalue = STANZA_ACC_LIBERO;
-    }
-    else if(
-        x_entity >= 0 && 
-        x_entity < (this -> dim_x) && 
-        y_entity >= 0 && 
-        y_entity < (this -> dim_y) && 
-        this -> matrice_logica [y_entity] [x_entity] == 0
-    ){
-        returnvalue = STANZA_ACC_LIBERO;
-    }
-    
-    // Da controllare anche il contatto con entita
-
-    return returnvalue;
-}
-
 int Stanza::accessibile(Entita * entita, bool giocatore){
     int returnvalue = STANZA_ACC_LIBERO;
     
     // Controllo contatto con entita
-    this->listaProiettili-> makecList(entita);
-    this->listaNemici-> makecList(entita);
     this->listaPorte-> makecList(entita);
+    this->listaNemici-> makecList(entita);
+    this->listaProiettili-> makecList(entita);
     this->listaArtefatti-> makecList(entita);
 
     if(this->listaNemici->lengthcList() >= 1){
         returnvalue = STANZA_ACC_NEMICO;
-    }  else if(this->listaPorte->lengthcList() >= 1){
+    } else if(this->listaPorte->lengthcList() >= 1){
         returnvalue = STANZA_ACC_PORTA;
-    } else if(this->listaProiettili->lengthcList(false) >= 1){
-        returnvalue = STANZA_ACC_PROIETTILE_NEMICO;
-    } else if(this->listaProiettili->lengthcList(true) >= 1){
-        returnvalue = STANZA_ACC_PROIETTILE_GIOCATORE;
-    } else if(this->listaArtefatti->lengthcList() >= 1){
-        returnvalue = STANZA_ACC_ARTEFATTO;
     }
 
     // Controllo accessibilità della cella se sono dentro le mura
     else if(
         entita->getX() >= 0 && 
-        (entita->getX() + entita->getDimX() - 1) < (this -> dim_x) && 
+        (entita->getX() + entita->getDimX() - 1) < (this->dim_x) && 
         entita->getY() >= 0 && 
-        (entita->getY() + entita->getDimY() - 1) < (this -> dim_y)
+        (entita->getY() + entita->getDimY() - 1) < (this->dim_y)
     ) {
         // Se sono dentro le mura, allora controllo se la cella è libera
         // Se lo è, allora finirò gli else if e ritornerò STANZA_ACC_LIBERO
@@ -341,7 +314,18 @@ int Stanza::accessibile(Entita * entita, bool giocatore){
                 }
             }
         }
+
+        if (returnvalue == STANZA_ACC_LIBERO){
+            if(this->listaProiettili->lengthcList(false) >= 1){
+                returnvalue = STANZA_ACC_PROIETTILE_NEMICO;
+            } else if(this->listaProiettili->lengthcList(true) >= 1){
+                returnvalue = STANZA_ACC_PROIETTILE_GIOCATORE;
+            } else if(this->listaArtefatti->lengthcList() >= 1){
+                returnvalue = STANZA_ACC_ARTEFATTO;
+            }
+        }
     }
+
     // Se sono un giocatore, cerco di uscire fuori dalle mura: mi trovo in una porta? Se falso, allora STANZA_ACC_MURO
     else if(giocatore && direzione_porta(entita->getY(), entita->getX()) == 0){
         returnvalue = STANZA_ACC_MURO;
@@ -349,6 +333,7 @@ int Stanza::accessibile(Entita * entita, bool giocatore){
         // Infine, se non sono un giocatore e sono fuori dalle mura e non ho trovato nient'altro, allora STANZA_ACC_MURO
         returnvalue = STANZA_ACC_MURO;
     }
+    
     
     return returnvalue;
 }
@@ -483,6 +468,11 @@ void Stanza::cancellaProiettiliSovrapposti(Entita * entita, bool giocatore) {
 
 void Stanza::effettiArtefatti(Player * player){
     this->listaArtefatti->effettiArtefatti(player);
+}
+
+bool Stanza::haArtefatto(int type) {
+    // ritorna vero se la lista artefatti contiene l'artefatto di tipo type
+    return this->listaArtefatti->checkEntity(type);
 }
 
 

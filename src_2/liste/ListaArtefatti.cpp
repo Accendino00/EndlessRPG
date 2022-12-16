@@ -38,6 +38,16 @@ bool ListaArtefatti::checkEntity(Artefatto *Artefatto){
     return checkEntity_p(Artefatto, false);
 }
 
+bool ListaArtefatti::checkEntity(int type) {
+    plistaA headTemp = head;
+    bool returnvalue = false;
+    while(headTemp != NULL && !returnvalue){
+            if(headTemp->e->getIDArtefatto() == type) returnvalue = true;
+            else headTemp = headTemp->next;
+    }
+    return returnvalue;
+}
+
 
 void ListaArtefatti::addEntita_p(Artefatto *Artefatto, bool contactList){
 

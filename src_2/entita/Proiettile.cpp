@@ -22,9 +22,8 @@ Proiettile::Proiettile(int y, int x, bool playerProjectile, int direzione, int d
     // Velocità diverse in base alla direzione nella quale viaggiano
     if(this->direzione == DIRECTION_NN || this->direzione == DIRECTION_SS) {
         this->ticksForAction = 50;  
-    }
-    else if(this->direzione == DIRECTION_EE || this->direzione == DIRECTION_OO) {
-        this->ticksForAction = 20;  
+    } else if(this->direzione == DIRECTION_EE || this->direzione == DIRECTION_OO) {
+        this->ticksForAction = 40;  
     } else {
         this->ticksForAction = 60;
     }
@@ -111,17 +110,17 @@ void Proiettile::updateEntita(Gioco * gioco) {
                 this->muovi(this->direzione,1);
                 break;
             case STANZA_ACC_PROIETTILE_GIOCATORE:
-                if (this->isPlayerProjectile()) {
-                    this->muovi(this->direzione,1);
-                } else {
+                this->muovi(this->direzione,1);
+                if (!this->isPlayerProjectile()) {
+                    gioco->getLivello()->getStanza()->cancellaProiettiliSovrapposti(this, false);
                     this->setVita(0);
                 }
                 break;
             case STANZA_ACC_PROIETTILE_NEMICO:
+                this->muovi(this->direzione,1);
                 if (this->isPlayerProjectile()) {
+                    gioco->getLivello()->getStanza()->cancellaProiettiliSovrapposti(this, true);
                     this->setVita(0);
-                } else {
-                    this->muovi(this->direzione,1);
                 }
                 break;
             case STANZA_ACC_PORTA:

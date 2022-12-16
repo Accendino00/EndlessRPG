@@ -24,6 +24,7 @@ public:
     ~ListaArtefatti();
 
     bool checkEntity(Artefatto *entity);
+    bool checkEntity(int type);
     void addEntita(Artefatto *entity);
     bool removeEntita(Artefatto *entity);
     void deleteList();

@@ -188,11 +188,6 @@ bool Livello::livello_successivo(){
   return false;
 }
 
-
-int Livello::accessibile(int y_entity, int x_entity, bool giocatore) {
-  return this->matrice_livello[this->current_y] [this->current_x]->accessibile(y_entity, x_entity, giocatore);
-}
-
 void Livello::stampa(){
   this->matrice_livello[this->current_y] [this->current_x]->stampa_stanza();
   this->stampaMinimappa();
@@ -354,9 +349,32 @@ void Livello::stampaMinimappa() {
 
   // Coordinate in alto a sinistra di dove stampare la minimappa
   int offsetx = gd->getTerminalX() - 30;
-  int offsety = 3;
+  int offsety = 5;
+
+  mvprintw(offsety - 3, offsetx - 2,  "╔");
+  mvprintw(offsety - 2, offsetx - 2,  "║");
+  for(int i = -1; i < 1 + (DIM_MATRICE_LIVELLO_X * 4); i++) {
+      mvprintw(offsety - 3, offsetx + i, "═");
+      mvprintw(offsety - 1, offsetx + i, "═");    
+  }
+  mvprintw(offsety - 3, offsetx + 1 + (DIM_MATRICE_LIVELLO_X * 4), "╗");
+  mvprintw(offsety - 2, offsetx + 1 + (DIM_MATRICE_LIVELLO_X * 4), "║");
+
 
   mvprintw(offsety - 2, offsetx, "Livello attuale : %d", this->numLivello+1);
+
+  mvprintw(offsety - 1, offsetx - 2,  "╠");
+  mvprintw(offsety + (DIM_MATRICE_LIVELLO_Y * 3), offsetx - 2,  "╚");
+  mvprintw(offsety - 1, offsetx + 1 + (DIM_MATRICE_LIVELLO_X * 4), "╣");
+  mvprintw(offsety + (DIM_MATRICE_LIVELLO_Y * 3), offsetx + 1 + (DIM_MATRICE_LIVELLO_X * 4), "╝");
+  for(int i = 0; i < (DIM_MATRICE_LIVELLO_Y * 3); i++) {
+    mvprintw(offsety + i, offsetx - 2, "║");
+    mvprintw(offsety + i, offsetx + 1 + (DIM_MATRICE_LIVELLO_X * 4),  "║");
+  }
+  for(int i = -1; i < 1 + (DIM_MATRICE_LIVELLO_X * 4); i++) {
+    mvprintw(offsety - 1, offsetx + i, "═");
+    mvprintw(offsety + (DIM_MATRICE_LIVELLO_Y * 3), offsetx + i,  "═");
+  }
 
   // Stampa tutte le stanze, in base al loro colore e se le ho esplorate
   for(int i = 0; i < DIM_MATRICE_LIVELLO_Y; i++) {
@@ -483,4 +501,21 @@ void Livello::esploraStanza(int y, int x) {
       matrice_livello[y][x-1]->setTrovata(true);
     }
   }
+}
+
+
+
+bool Livello::haArtefatto(int type) {
+  bool returnValue = false;
+  // controllo in tutte le stanze se la lista degli artefatti contiene un artefatto di quel tipo
+  for (int i = 0; i < DIM_MATRICE_LIVELLO_Y; i++) {
+    for (int j = 0; j < DIM_MATRICE_LIVELLO_X; j++) {
+      if (matrice_livello[i][j] != NULL) {
+        if (matrice_livello[i][j]->haArtefatto(type)) {
+          returnValue = true;
+        }
+      }
+    }
+  }
+  return returnValue;
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include "../generale/libs.hpp"
 
-#define NUMERO_LIVELLI          2
+#define NUMERO_LIVELLI          7
 
 #define DIM_MATRICE_LIVELLO_Y   5
 #define DIM_MATRICE_LIVELLO_X   5
@@ -31,8 +31,6 @@ public:
 
     bool Bossisdead();
     bool isBossstanza();
-
-    int accessibile(int y_entity, int x_entity, bool giocatore);
     
     void aggiungiProiettile(Proiettile * proiettile);
 
@@ -44,6 +42,8 @@ public:
     int getNumNemici();
 
     void stampaMinimappa();
+
+    bool haArtefatto(int type);
 
     // Getter e setter di numLivello
     int getNumLivello();

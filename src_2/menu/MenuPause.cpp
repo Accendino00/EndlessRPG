@@ -1,14 +1,24 @@
 #include "../generale/libs.hpp"
 
-MenuPause::MenuPause():Menu(0,3,1) {}
+MenuPause::MenuPause():Menu(0,4,1) {}
 
 
-
-void MenuPause::loopPause() {
+/**
+ * @brief Loop del menu della pausa.
+ * 
+ * Può venire aperto durante la partita per modificare
+ * le impostazioni, per vedere le istruzioni e per tornare
+ * al menu principale.
+ * 
+ * @return true     Se si vuole tornare al menu principale
+ * @return false    Se non si vuole tornare al menu principale
+ */
+bool MenuPause::loopMenu() {
     bool esciDaPause = false;
+    bool returnValue = false;
 
     MenuOptions *m_options;
-    MenuMain *m_main;
+    MenuIstruzioni * m_istruzioni;
 
     do {
         gd->frameStart();
@@ -30,11 +40,16 @@ void MenuPause::loopPause() {
                             m_options->loopMenu();
                             delete m_options;
                             break;
-                        case 2:
+                        case 2:    
+                            // Istruzioni
+                            m_istruzioni = new MenuIstruzioni();
+                            m_istruzioni->loopMenu();
+                            delete m_istruzioni;
+                            break;
+                        case 3:
                             // Torna al menù principale
-                            m_main = new MenuMain;
-                            m_main->loopMenu();
-                            delete m_main;
+                            esciDaPause = true;
+                            returnValue = true;
                             break;
                     }
                     break;
@@ -47,11 +62,14 @@ void MenuPause::loopPause() {
         gd->frameFinish();
         refresh();
     } while (!esciDaPause);
+
+    return returnValue;
 }    
 
 
 void MenuPause::printAll(){
     printLine("Torna al gioco", 0);
     printLine("Opzioni",1);
-    printLine("Menù principale", 2);    
+    printLine("Istruzioni",2);
+    printLine("Menù principale", 3);    
 }

@@ -57,21 +57,22 @@
 
 // Vedere in GameData i define delle direzioni
 
-#define PAUSA      0b10000000000000000000000000000000
+#define AZIONE_PAUSA    0b10000000000000000000000000000000
 
-#define AZIONE_SPARA_DIREZIONE           0b0100000000    
-#define AZIONE_SPARA_GIOCATORE           0b1000000000
-#define AZIONE_SPARA_CASUALE             0b1100000000
+#define AZIONE_SPARA_DIREZIONE                0b0100000000    
+#define AZIONE_SPARA_GIOCATORE                0b1000000000
+#define AZIONE_SPARA_SPUTAFUOCO               0b1100000000
 
-#define AZIONE_SPARA_PRINCIPALE       0b0010000000000
-#define AZIONE_SPARA_SECONDARIO       0b0100000000000
-#define AZIONE_SPARA_TERZIARIO        0b1000000000000
+#define AZIONE_SPARA_PRINCIPALE            0b0010000000000
+#define AZIONE_SPARA_SECONDARIO            0b0100000000000
+#define AZIONE_SPARA_TERZIARIO             0b1000000000000
 
-#define MUOVI_DIREZIONE             0b010000000000000
-#define MUOVI_PATTERN               0b100000000000000
+#define MUOVI_DIREZIONE                  0b010000000000000
+#define MUOVI_PATTERN                    0b100000000000000
 
-#define FRAME_PROSSIMO            0b01000000000000000
-#define FRAME_ORIENTAZIONE        0b10000000000000000
+#define FRAME_PROSSIMO                 0b01000000000000000
+#define FRAME_ORIENTAZIONE             0b10000000000000000
+#define FRAME_NEUTRO                   0b11000000000000000
 
 class Nemico : public Entita {
 private:
@@ -83,8 +84,9 @@ private:
     int patternDirezione; // Usata per nemici che si muovono in maniera ripetitiva
 
     int type; // BOSS_ENEMY o NORMAL_ENEMY
+    char nome [30];
 
-    char nome [20];
+    int punti; // I punti che da al giocatore quando viene sconfitto
 
     // Diventa vero dopo che viene colpito una volta;
     bool mostraVita;
@@ -107,6 +109,7 @@ public:
 
     void sparaProiettile(int dir, int offset, Stanza * stanza);
 
+    int getPunti();
 
     void modificaVita(int quantita);
     int getTickOfLastHit();

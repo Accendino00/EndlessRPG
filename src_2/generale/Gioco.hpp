@@ -4,14 +4,14 @@
 class Gioco {
 private:
     Player * player;
+
     Livello * livello_corrente;
     int livello_counter;
-    bool gameOver;
     bool lvlcleared;
     int livellobattuto;
-    long long int popupBoss;
 
-    cchar_t consoleEventi [10][64];
+    bool gameOver;
+    long long int popupBoss;
 
 public:
     Gioco();
@@ -30,7 +30,4 @@ public:
     void Bosspopup();
     void cambialivello();
     void gameLoop();
-
-    void printConsoleEventi();
-    void addConsoleEventi(const char * text, int id);
 };

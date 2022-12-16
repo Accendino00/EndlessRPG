@@ -74,115 +74,63 @@ void Entita::stampa(int offsetY, int offsetX) {
     } 
 }
 
+// Overloading del metodo controllaContatto, in modo che lo possa usare direttamente con un'altra entita'
 bool Entita::controllaContatto(Entita * entita) {
-        // Controllo se ciascuno dei 4 vertici di una entità è contenuto tra x e x+dimx e y e y+dimy dell'altra entità
-
-    return (
-        // Primo nel secondo
-        (
-            (this->x >= entita->x && this->x < (entita->x + entita->h_dimx)) 
-                && 
-            (this->y >= entita->y && this->y < (entita->y + entita->h_dimy))
-        )
-            ||
-        (
-            ((this->x + this->h_dimx) > entita->x && (this->x + this->h_dimx) < (entita->x + entita->h_dimx)) 
-                && 
-            ((this->y + this->h_dimy) > entita->y && (this->y + this->h_dimy) < (entita->y + entita->h_dimy))
-        )
-            ||
-        (
-            ((this->x + this->h_dimx) > entita->x && (this->x + this->h_dimx) < (entita->x + entita->h_dimx)) 
-                && 
-            (this->y >= entita->y && this->y < (entita->y + entita->h_dimy))
-        )
-            ||
-        (
-            ((*this).x >= entita->x && (*this).x < (entita->x + entita->h_dimx)) 
-                && 
-            ((this->y + this->h_dimy) > entita->y && (this->y + this->h_dimy) < (entita->y + entita->h_dimy))
-        )
-            ||
-        // Secondo nel primo        
-        (
-            (entita->x >= this->x && entita->x < (this->x + this->h_dimx)) 
-                && 
-            (entita->y >= this->y && entita->y < (this->y + this->h_dimy))
-        )
-            ||
-        (
-            ((entita->x + entita->h_dimx) > this->x && (entita->x + entita->h_dimx) < (this->x + this->h_dimx)) 
-                && 
-            ((entita->y + entita->h_dimy) > this->y && (entita->y + entita->h_dimy) < (this->y + this->h_dimy))
-        )
-            ||
-        (
-            ((entita->x + entita->h_dimx) > this->x && (entita->x + entita->h_dimx) < (this->x + this->h_dimx)) 
-                && 
-            (entita->y >= this->y && entita->y < (this->y + this->h_dimy))
-        )
-            ||
-        (
-            (entita->x >= this->x && entita->x < (this->x + this->h_dimx))
-                && 
-            ((entita->y + entita->h_dimy) > this->y && (entita->y + entita->h_dimy) < (this->y + this->h_dimy))
-        )
-    );
+    // Controllo se ciascuno dei 4 vertici di una entità è contenuto tra x e x+dimx e y e y+dimy dell'altra entità
+    return controllaContatto(entita->x, entita->y, entita->h_dimx, entita->h_dimy);
 }
 
-//overloading del metodo controllaContatto
 bool Entita::controllaContatto(int posx, int posy, int h_dimx, int h_dimy) {
     
-    // Controllo se ciascuno dei 4 vertici di una entità è contenuto tra x e x+dimx e y e y+dimy dell'altra entità
     return (
         // Primo nel secondo
         (
-            (this->x >= posx && this->x < (posx + h_dimx)) 
+            (this->x >= posx && this->x <= (posx + h_dimx - 1)) 
                 && 
-            (this->y >= posy && this->y < (posy + h_dimy))
+            (this->y >= posy && this->y <= (posy + h_dimy - 1))
         )
             ||
         (
-            ((this->x + this->h_dimx) > posx && (this->x + this->h_dimx) < (posx + h_dimx)) 
+            ((this->x + this->h_dimx - 1) >= posx && (this->x + this->h_dimx - 1) <= (posx + h_dimx - 1)) 
                 && 
-            ((this->y + this->h_dimy) > posy && (this->y + this->h_dimy) < (posy + h_dimy))
+            ((this->y + this->h_dimy - 1) >= posy && (this->y + this->h_dimy - 1) <= (posy + h_dimy - 1))
         )
             ||
         (
-            ((this->x + this->h_dimx) > posx && (this->x + this->h_dimx) < (posx + h_dimx)) 
+            ((this->x + this->h_dimx - 1) >= posx && (this->x + this->h_dimx - 1) <= (posx + h_dimx - 1)) 
                 && 
-            (this->y >= posy && this->y < (posy + h_dimy))
+            (this->y >= posy && this->y <= (posy + h_dimy - 1))
         )
             ||
         (
-            ((*this).x >= posx && (*this).x < (posx + h_dimx)) 
+            ((*this).x >= posx && (*this).x <= (posx + h_dimx - 1)) 
                 && 
-            ((this->y + this->h_dimy) > posy && (this->y + this->h_dimy) < (posy + h_dimy))
+            ((this->y + this->h_dimy - 1) >= posy && (this->y + this->h_dimy - 1) <= (posy + h_dimy - 1))
         )
             ||
         // Secondo nel primo        
         (
-            (posx >= this->x && posx < (this->x + this->h_dimx)) 
+            (posx >= this->x && posx <= (this->x + this->h_dimx - 1)) 
                 && 
-            (posy >= this->y && posy < (this->y + this->h_dimy))
+            (posy >= this->y && posy <= (this->y + this->h_dimy - 1))
         )
             ||
         (
-            ((posx + h_dimx) > this->x && (posx + h_dimx) < (this->x + this->h_dimx)) 
+            ((posx + h_dimx - 1) >= this->x && (posx + h_dimx - 1) <= (this->x + this->h_dimx - 1)) 
                 && 
-            ((posy + h_dimy) > this->y && (posy + h_dimy) < (this->y + this->h_dimy))
+            ((posy + h_dimy - 1) >= this->y && (posy + h_dimy - 1) <= (this->y + this->h_dimy - 1))
         )
             ||
         (
-            ((posx + h_dimx) > this->x && (posx + h_dimx) < (this->x + this->h_dimx)) 
+            ((posx + h_dimx - 1) >= this->x && (posx + h_dimx - 1) <= (this->x + this->h_dimx - 1)) 
                 && 
-            (posy >= this->y && posy < (this->y + this->h_dimy))
+            (posy >= this->y && posy <= (this->y + this->h_dimy - 1))
         )
             ||
         (
-            (posx >= this->x && posx < (this->x + this->h_dimx))
+            (posx >= this->x && posx <= (this->x + this->h_dimx - 1))
                 && 
-            ((posy + h_dimy) > this->y && (posy + h_dimy) < (this->y + this->h_dimy))
+            ((posy + h_dimy - 1) >= this->y && (posy + h_dimy - 1) <= (this->y + this->h_dimy - 1))
         )
     );
 }
