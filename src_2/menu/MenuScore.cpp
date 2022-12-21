@@ -206,7 +206,7 @@ void MenuScore::printAll(){
     mvprintw((gd->getTerminalY()/2) - 20,gd->getTerminalX()/2-8,"POSIZIONE : NOME - PUNTEGGIO");
     for(int i = ((this->pagina)*10); i < ((this->pagina+1)*10) ; i++){ //Seleziono la porzione di array che voglio mostrare
         if(i < scoreCounter){
-            sprintf(daStampare, "< %d° \t:\t %s - %d >", i + 1, arrayScore[i].nome, this->arrayScore[i].score);
+            sprintf(daStampare, "< %d° \t:\t %s - %d >", i + 1, this->arrayScore[i].nome, this->arrayScore[i].score);
             attron(COLOR_PAIR(MENU_NORMAL));
             int centerY = (gd->getTerminalY()/2) - 20;
             int centerX = gd->getTerminalX()/2;

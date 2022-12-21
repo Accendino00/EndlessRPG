@@ -23,8 +23,6 @@ private:
 public:
     MenuScore();
     ~MenuScore();
-    
-    void CaricaOrdinaScore();
     void loopScore();
     void printAll();
 
