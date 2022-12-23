@@ -1,7 +1,7 @@
 #include "../generale/libs.hpp"
 
 void initializeColors() {
-    init_color(MENU_TEXT, 1000, 1000, 1000);
+    init_color(MENU_TEXT, 960 , 960 , 960 );
     init_color(MENU_BACKGROUND, 0, 0, 0);
     init_color(MENU_HL_TEXT, 0, 0, 0);
     init_color(MENU_HL_BACKGROUND, 1000, 1000, 1000);
@@ -14,8 +14,8 @@ void initializeColors() {
     init_color(GAME_BACKGROUND,         0   * CC,   0   * CC,   0   * CC);
     
     // Menu
-    init_color(MAIN_TITLE_TEXT,         254 * CC,   135 * CC,   93  * CC);
-    init_color(MAIN_TITLE_BACKGROUND,   53  * CC,   98  * CC,   136 * CC);
+    init_color(MAIN_TITLE_TEXT,         255 * CC,   255 * CC,   51  * CC);
+    init_color(MAIN_TITLE_BACKGROUND,   0  * CC,   0  * CC,   0 * CC);
     init_color(GAME_OVER_TEXT,          255 * CC,   0 * CC,   0  * CC);
     init_color(GAME_OVER_BACKGROUND,    0  * CC,   0  * CC,   0 * CC);
     init_pair(MENU_NORMAL,          MENU_TEXT,              MENU_BACKGROUND);

@@ -18,7 +18,6 @@ void MenuIstruzioni::loopMenu() {
             case 10:
                 switch(this->getSelezione()) {
                     case 0:
-                        // Cambia lettera
                         esciDaIstruzioni = true;
                         break;
                 }

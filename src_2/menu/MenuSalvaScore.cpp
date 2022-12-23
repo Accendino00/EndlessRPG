@@ -45,13 +45,25 @@ void MenuSalvaScore::loopMenu() {
                 case KEY_RIGHT:
                     switch(this->getSelezione()) {
                         case 0:
-                            // Cambia carattere
+                            // Cambia carattere in avanti
                             if(this->letter < 'z'){
                                 this->letter++;
                             }
                             else 
                                 this->letter = 'a';
                             break;
+                    }
+                    break;
+                case KEY_LEFT:
+                    switch(this->getSelezione()){
+                        case 0:
+                            // Cambia carattere indietro
+                            if(this->letter > 'a'){
+                                this->letter--;
+                            }
+                            else
+                                this->letter = 'z';
+                            break;    
                     }
                     break;
             }
@@ -69,27 +81,15 @@ void MenuSalvaScore::loopMenu() {
 
 void MenuSalvaScore::printAll(){
     printGameOver();
-    /*
-    char daStampare[100];
-    if(this->letter >= 'a'){
-        sprintf(daStampare,"Freccia a destra per cambiare lettera < %c          >",this->letter);
-    }
-    */
     
     if(this->letter >= 'a' && x_offset >= 0){
         attron(COLOR_PAIR(MENU_NORMAL));
         int centerY = gd->getTerminalY()/2;
         int centerX = gd->getTerminalX()/2;
-        if (this->getSelezione() == 0) {
-            attron(COLOR_PAIR(MENU_HIGHLIGHT));
-            mvprintw(7+centerY+(2*(0+1)),centerX-4,"Usa la freccia per cambiare lettera:");
-            mvprintw(7+centerY+(2*(0+1)),centerX+(this->x_offset),"<%c>",this->letter);
-        }
-        else 
-            attroff(COLOR_PAIR(MENU_HIGHLIGHT));
+            mvprintw(7+centerY+(2*(1)),centerX,"Usa la freccia per cambiare lettera:");
+            mvprintw(7+centerY+(2*(1)),centerX+(this->x_offset),"<%c>",this->letter);
         attroff(COLOR_PAIR(MENU_NORMAL));
     }
-    
 
     printLine("Salva il tuo score ed esci",1);
     printLine("Esci senza salvare il tuo score", 2);    
