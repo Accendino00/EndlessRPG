@@ -2,21 +2,14 @@
 
 MenuSalvaScore::MenuSalvaScore(int score):Menu(0,3,7) {
     this->score = score;
-    
-    int i = 0;
-    for( char l = 'a'; l<='z'; ++l) {
-        i++;
-        this->alphabet[i] = l;
-    } 
-    this->alphabet[27] = '\0';
-    
 }
 
 
 
 void MenuSalvaScore::loopMenu() {
     bool esciDaSalvaScore = false;
-    this->letter = 0;
+    this->letter = 'a';
+    this->x_offset = 34;
 
     do {
         gd->frameStart();
@@ -30,7 +23,14 @@ void MenuSalvaScore::loopMenu() {
                     switch(this->getSelezione()) {
                         case 0:
                             // Conferma il carattere e vai al prossimo
-                            this->letter = 0;
+                            if(this->letter <= 'z'){
+                                this->x_offset++;
+                                this->letter++;
+                            }
+                            else {
+                                this->x_offset = 34;
+                                this->letter = 'a';
+                            }
                             break;
                         case 1:
                             // Salva ed esci
@@ -46,11 +46,11 @@ void MenuSalvaScore::loopMenu() {
                     switch(this->getSelezione()) {
                         case 0:
                             // Cambia carattere
-                            if(this->letter < 26){
+                            if(this->letter < 'z'){
                                 this->letter++;
                             }
                             else 
-                                this->letter = 0;
+                                this->letter = 'a';
                             break;
                     }
                     break;
@@ -68,11 +68,47 @@ void MenuSalvaScore::loopMenu() {
   
 
 void MenuSalvaScore::printAll(){
-    // Stampa gigantesca di GAME OVER in caratteri cubitali
+    printGameOver();
+    /*
     char daStampare[100];
-    sprintf(daStampare, "%c", this->alphabet[this->letter]);
-    printLine(daStampare,0);
-    //printLine("Seleziona lettera (freccia a destra per cambiare)", 0);
+    if(this->letter >= 'a'){
+        sprintf(daStampare,"Freccia a destra per cambiare lettera < %c          >",this->letter);
+    }
+    */
+    
+    if(this->letter >= 'a' && x_offset >= 0){
+        attron(COLOR_PAIR(MENU_NORMAL));
+        int centerY = gd->getTerminalY()/2;
+        int centerX = gd->getTerminalX()/2;
+        if (this->getSelezione() == 0) {
+            attron(COLOR_PAIR(MENU_HIGHLIGHT));
+            mvprintw(7+centerY+(2*(0+1)),centerX-4,"Usa la freccia per cambiare lettera:");
+            mvprintw(7+centerY+(2*(0+1)),centerX+(this->x_offset),"<%c>",this->letter);
+        }
+        else 
+            attroff(COLOR_PAIR(MENU_HIGHLIGHT));
+        attroff(COLOR_PAIR(MENU_NORMAL));
+    }
+    
+
     printLine("Salva il tuo score ed esci",1);
     printLine("Esci senza salvare il tuo score", 2);    
 }
+
+void MenuSalvaScore::printGameOver(){
+        int centerY = gd->getTerminalY()/2;
+        int centerX = gd->getTerminalX()/2;
+        attron(COLOR_PAIR(GAME_OVER));
+        mvprintw(centerY-13,centerX-15, "███▀▀▀██ ███▀▀▀███ ███▀█▄█▀███ ██▀▀▀");
+        mvprintw(centerY-12,centerX-15, "██    ██ ██     ██ ██   █   ██ ██   ");
+        mvprintw(centerY-11,centerX-15, "██   ▄▄▄ ██▄▄▄▄▄██ ██   ▀   ██ ██▀▀▀");
+        mvprintw(centerY-10,centerX-15, "██    ██ ██     ██ ██       ██ ██   ");
+        mvprintw(centerY-9, centerX-15, "███▄▄▄██ ██     ██ ██       ██ ██▄▄▄");
+        mvprintw(centerY-8, centerX-15, "                                    ");
+        mvprintw(centerY-7, centerX-15, "███▀▀▀███ ▀███  ██▀ ██▀▀▀ ██▀▀▀▀██▄ ");
+        mvprintw(centerY-6, centerX-15, "██     ██   ██  ██  ██    ██     ██ ");
+        mvprintw(centerY-5, centerX-15, "██     ██   ██  ██  ██▀▀▀ ██▄▄▄▄▄▀▀ ");
+        mvprintw(centerY-4, centerX-15, "██     ██   ██  █▀  ██    ██     ██ ");
+        mvprintw(centerY-3, centerX-15, "███▄▄▄███    ▀█▀    ██▄▄▄ ██     ██▄");
+        attroff(COLOR_PAIR(GAME_OVER));
+    };

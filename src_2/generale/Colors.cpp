@@ -16,10 +16,12 @@ void initializeColors() {
     // Menu
     init_color(MAIN_TITLE_TEXT,         254 * CC,   135 * CC,   93  * CC);
     init_color(MAIN_TITLE_BACKGROUND,   53  * CC,   98  * CC,   136 * CC);
+    init_color(GAME_OVER_TEXT,          255 * CC,   0 * CC,   0  * CC);
+    init_color(GAME_OVER_BACKGROUND,    0  * CC,   0  * CC,   0 * CC);
     init_pair(MENU_NORMAL,          MENU_TEXT,              MENU_BACKGROUND);
     init_pair(MENU_HIGHLIGHT,       MENU_HL_TEXT,           MENU_HL_BACKGROUND);
     init_pair(MAIN_TITLE,           MAIN_TITLE_TEXT,        MAIN_TITLE_BACKGROUND);
-
+    init_pair(GAME_OVER,            GAME_OVER_TEXT,         GAME_OVER_BACKGROUND);
 
     // Per la mappa, ogni stanza ha colori diversi
     // I caratteri sono i muri, mentre il background e' lo spazio vuoto

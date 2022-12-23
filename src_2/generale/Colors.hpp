@@ -11,6 +11,8 @@
 
 #define MAIN_TITLE_TEXT         12
 #define MAIN_TITLE_BACKGROUND   13
+#define GAME_OVER_TEXT          47
+#define GAME_OVER_BACKGROUND    48
 
 #define GAME_BACKGROUND         14
 #define PLAYER_COLOR            15
@@ -48,6 +50,7 @@
 #define MENU_NORMAL                 2
 
 #define MAIN_TITLE                  3
+#define GAME_OVER                   4
 
 #define PLAYER_COLOR_PAIR           4
 #define PLAYER_BULLET_PAIR          5

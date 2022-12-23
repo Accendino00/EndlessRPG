@@ -220,3 +220,4 @@ void MenuScore::printAll(){
     printLine(daStampare,0);
     printLine("Indietro",1);
 }
+
