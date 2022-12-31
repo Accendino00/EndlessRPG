@@ -10,6 +10,7 @@ void MenuSalvaScore::loopMenu() {
     bool esciDaSalvaScore = false;
     this->letter = 'a';
     this->x_offset = 34;
+    int nome_utente[100];
 
     do {
         gd->frameStart();
@@ -17,6 +18,7 @@ void MenuSalvaScore::loopMenu() {
         erase();
         this->manageInput();
         int i = 0;
+        int j = 0;
         while(i < gd->getNumOfPressedKeys()) {
             switch(gd->getKey(i)) {
                 case 10:
@@ -25,7 +27,10 @@ void MenuSalvaScore::loopMenu() {
                             // Conferma il carattere e vai al prossimo
                             if(this->letter <= 'z'){
                                 this->x_offset++;
-                                this->letter++;
+                                //if(nome_utente[j] < 100){
+                                    nome_utente[j] = this->letter;
+                                    j++;   
+                                    
                             }
                             else {
                                 this->x_offset = 34;
@@ -33,9 +38,24 @@ void MenuSalvaScore::loopMenu() {
                             }
                             break;
                         case 1:
-                            // Salva ed esci
-                            esciDaSalvaScore = true;
+                            // Salva nome e punteggio ed esci
+                            {
+                            esciDaSalvaScore = true;            
+                            FILE *fin = fopen("score.csv", "w");
+                            int k = 0;
+                            char c;
+                            //finché non arrivi in fondo al file
+                            c = fgetc(fin);
+                            do {
+                               if(c != EOF){
+                                fprintf(fin, "%c",nome_utente[k]);
+                                k++;
+                                c = fgetc(fin);
+                                }
+                            } while(k <= j && k != EOF);
+                            fclose(fin);
                             break;
+                            }
                         case 2:
                             // Esci senza salvare
                             esciDaSalvaScore = true;
@@ -86,8 +106,8 @@ void MenuSalvaScore::printAll(){
         attron(COLOR_PAIR(MENU_NORMAL));
         int centerY = gd->getTerminalY()/2;
         int centerX = gd->getTerminalX()/2;
-            mvprintw(7+centerY+(2*(1)),centerX,"Usa la freccia per cambiare lettera:");
-            mvprintw(7+centerY+(2*(1)),centerX+(this->x_offset),"<%c>",this->letter);
+            mvprintw(centerY+3,-14+centerX,"Usa la freccia per cambiare lettera:");
+            mvprintw(centerY+5,-32+centerX+(this->x_offset),"<%c>",this->letter);
         attroff(COLOR_PAIR(MENU_NORMAL));
     }
 
