@@ -10,28 +10,28 @@ void MenuSalvaScore::loopMenu() {
     bool esciDaSalvaScore = false;
     this->letter = 'a';
     this->x_offset = 34;
-    int nome_utente[100];
-
+    int nome_utente[11];
+    int j = 0;
+    bool forgot_username = true;
     do {
         gd->frameStart();
         gd->getInput();
         erase();
         this->manageInput();
         int i = 0;
-        int j = 0;
         while(i < gd->getNumOfPressedKeys()) {
             switch(gd->getKey(i)) {
                 case 10:
                     switch(this->getSelezione()) {
                         case 0:
                             // Conferma il carattere e vai al prossimo
-                            if(this->letter <= 'z'){
+                            if(this->letter <= 'z' && j <= 10){
                                 this->x_offset++;
-                                //if(nome_utente[j] < 100){
                                     nome_utente[j] = this->letter;
-                                    j++;   
-                                    
-                            }
+                                    j++; 
+                                    forgot_username = false;
+
+                            }  
                             else {
                                 this->x_offset = 34;
                                 this->letter = 'a';
@@ -39,21 +39,30 @@ void MenuSalvaScore::loopMenu() {
                             break;
                         case 1:
                             // Salva nome e punteggio ed esci
-                            {
-                            esciDaSalvaScore = true;            
-                            FILE *fin = fopen("score.csv", "w");
-                            int k = 0;
-                            char c;
-                            //finché non arrivi in fondo al file
-                            c = fgetc(fin);
-                            do {
-                               if(c != EOF){
-                                fprintf(fin, "%c",nome_utente[k]);
-                                k++;
-                                c = fgetc(fin);
+                            {          
+                            FILE *fin = fopen("score.csv", "a" );   
+                            if(!feof(fin)){
+                                // Se l'utente non ha inserito il nome
+                                if(forgot_username == true){
+                                    int random_number = rand()%400;
+                                    fprintf(fin, "Player%d", random_number);
+                                    fprintf(fin, "%s%d\n", ";",this->score);
                                 }
-                            } while(k <= j && k != EOF);
-                            fclose(fin);
+                                else {
+                                    // Aggiungo il carattere di fine stringa
+                                    nome_utente[j+1] = '\0';
+                                    int k = 0;
+                                    char c;
+                                    // Aggiungo il nome utente al file con ;score
+                                    do {
+                                        fprintf(fin, "%c",nome_utente[k]);                                    k++;
+                                        c = fgetc(fin);
+                                        } while(k < j && c != EOF);
+                                    fprintf(fin, "%s%d\n", ";",this->score);
+                                }
+                            }    
+                                fclose(fin);
+                                esciDaSalvaScore = true;  
                             break;
                             }
                         case 2:
