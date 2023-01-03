@@ -1,5 +1,18 @@
 #include "../generale/libs.hpp"
-
+/*
+void bubble_sort(UserData A[], int length){
+    int i, j ;
+    for (i = 0 ; i < length ; i = i+1){
+        for (j = 0 ; j < length-1-i ; j = j+1){
+            if (A[j].score < A[j+1].score){
+                 UserData temp = A[i];
+                A[i] = A[i + 1];
+                A[i + 1] = temp;
+            }
+        }
+    }
+}
+*/
 void heapify(UserData arr[], int n, int i)
 {
     int min = i; // Il valore più grande inizialmente è la radice

@@ -25,16 +25,18 @@ void MenuSalvaScore::loopMenu() {
                     switch(this->getSelezione()) {
                         case 0:
                             // Conferma il carattere e vai al prossimo
-                            if(this->letter <= 'z' && j <= 10){
-                                this->x_offset++;
-                                    nome_utente[j] = this->letter;
-                                    j++; 
-                                    forgot_username = false;
+                            if(j < 10){ // Nome utente massimo di 10 caratteri
+                                if(this->letter <= 'z'){
+                                    this->x_offset++;
+                                        nome_utente[j] = this->letter;
+                                        j++; 
+                                        forgot_username = false;
 
-                            }  
-                            else {
-                                this->x_offset = 34;
-                                this->letter = 'a';
+                                }  
+                                else {
+                                    this->x_offset = 34;
+                                    this->letter = 'a';
+                                }
                             }
                             break;
                         case 1:
@@ -46,7 +48,7 @@ void MenuSalvaScore::loopMenu() {
                                 if(forgot_username == true){
                                     int random_number = rand()%400;
                                     fprintf(fin, "Player%d", random_number);
-                                    fprintf(fin, "%s%d\n", ";",this->score);
+                                    fprintf(fin, ";%d\n",this->score);
                                 }
                                 else {
                                     // Aggiungo il carattere di fine stringa
@@ -58,7 +60,7 @@ void MenuSalvaScore::loopMenu() {
                                         fprintf(fin, "%c",nome_utente[k]);                                    k++;
                                         c = fgetc(fin);
                                         } while(k < j && c != EOF);
-                                    fprintf(fin, "%s%d\n", ";",this->score);
+                                    fprintf(fin, ";%d\n",this->score);
                                 }
                             }    
                                 fclose(fin);
