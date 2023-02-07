@@ -5,7 +5,7 @@ class MenuSalvaScore : public Menu {
 private:
     int score;
     char letter; // Lettera dell'alfabeto selezionata
-    int x_offset;
+    char nome_utente[11];
 
 public:
     MenuSalvaScore(int score);
