@@ -1,7 +1,7 @@
 #pragma once
 #include "../generale/libs.hpp"
 
-#define NUMERO_STANZE_NORMALI 2
+#define NUMERO_STANZE_NORMALI 5
 #define NUMERO_STANZE_BOSS 1
 
 #define DIM_STANZA_SPAWN_X 50

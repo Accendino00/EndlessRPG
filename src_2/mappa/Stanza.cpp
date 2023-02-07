@@ -205,7 +205,7 @@ void Stanza::imposta_porte(bool nord, bool sud, bool est, bool ovest, int boss){
  * 
  * @param numLivello Il livello attuale. Più è alto, più i nemici sono forti.
  */
-void Stanza::da_logica_a_stampabile(int numLivello){
+void Stanza::da_logica_a_stampabile(int numLivello) {
     for(int i = 0; i < dim_y; i++){
         for(int j = 0; j < dim_x; j++){
             switch(matrice_logica [i] [j]){
